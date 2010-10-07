@@ -1,0 +1,5 @@
+#name : <section>...</section>
+# --
+<section$1>
+  $0
+</section>

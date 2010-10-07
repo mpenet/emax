@@ -1,0 +1,5 @@
+#name : <select id="..." class="..." name="">...</select>
+# --
+<select id="$1" class="$2" name="$3">
+  $0
+</select>

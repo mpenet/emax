@@ -1,0 +1,5 @@
+#name : <aside>...</aside>
+# --
+<aside$1>
+  $0
+</aside>
