@@ -1,6 +1,5 @@
-;C-u 0 M-x byte-recompile-directory
+;; C-u 0 M-x byte-recompile-directory
 
-;; I use the Common Lisp stuff all the time
 (require 'cl)
 
 ;; add base plugin dir + subdirs to load-path
@@ -15,7 +14,6 @@
 
 
 ;; yasnippet
-
 (require 'yasnippet)
 (require 'dropdown-list)
 (yas/initialize)
@@ -23,11 +21,11 @@
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
 
-;; ;; emacs 23.2 js-mode
+;; js-mode (emacs 23+)
 (setq js-indent-level 2)
 (add-hook 'js-mode-hook 'yas/minor-mode)
 
-;; web
+;; web utilities
 (require 'zencoding-mode)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
 (setq zencoding-preview-default nil)
@@ -68,10 +66,10 @@
 
 (global-set-key (kbd "<f12>") 'clojure-project)
 
-;;
+;; tramp
 (setq tramp-default-method "ssh")
 
-;; ERC
+;; erc
 (defun djcb-erc-start-or-switch ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
@@ -95,9 +93,10 @@
 (global-set-key (kbd "C-c e") 'djcb-erc-start-or-switch)
 
 
-;; css tab setting
+;; css
 (setq css-indent-offset 2)
 
+;; font
 (set-default-font "Envy Code R:pixelsize=15:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
@@ -109,6 +108,7 @@
 (color-theme-initialize)
 (color-theme-twilight)
 
+;; buffers & files navigation
 (ido-mode t) ; use 'buffer rather than t to use only buffer switching
 (ido-everywhere t)
 (setq ido-enable-flex-matching t
@@ -123,7 +123,6 @@
 ; uniquify buffer names: append path if buffer names are identical
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-
 
 ;; quick project file navigation
 (require 'filecache)
@@ -153,17 +152,14 @@ directory, select directory. Lastly the file is opened."
 	   (setq ido-temp-list choices))))
     (ido-read-buffer prompt)))
 
-;; Change this to filter out your version control files
+;; filter out version control files
 (add-to-list 'file-cache-filter-regexps "\\.svn-base$")
 (global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
-
 
 (require 'recentf)
 (setq recentf-max-saved-items 100)
 
-;(require 'pair-mode)
-
-;; KEYBOARD SHORTCUTS
+;; kb shortcuts
 (global-set-key (kbd "C-z")   'undo)
 (global-set-key (kbd "<f4>") 'start-or-end-kbd-macro)
 (global-set-key (kbd "<f5>") 'call-last-macro-kbd)
@@ -172,7 +168,6 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "C-x m") 'execute-extended-command)
 (global-set-key "\C-x\C-k" 'kill-buffer)
 (global-set-key "\C-x\C-o" 'other-window)
-
 
 (global-set-key (kbd "C-x g") 'rgrep)
 (global-set-key "\C-x\C-g" 'rgrep)
@@ -200,11 +195,7 @@ directory, select directory. Lastly the file is opened."
                                try-complete-file-name-partially
                                try-complete-file-name))
 
-;; stores a position in a file, brings you back to this position
-(global-set-key [f3] '(lambda () (interactive) (point-to-register ?1)))
-(global-set-key [f2] '(lambda () (interactive) (register-to-point ?1)))
-
-
+;; not really used anymore
 (global-set-key (kbd "M-<up>") 'backward-paragraph)
 (global-set-key (kbd "M-<down>") 'forward-paragraph)
 
@@ -212,16 +203,16 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "C-c C-c") 'comment-region)
 (global-set-key (kbd "C-c C-u") 'uncomment-region)
 
-
 ;; macros
 (defun start-or-end-kbd-macro ()
-  "Starts recording a keyboard macro, or if already recording, stops recording it."
+  "Starts recording a keyboard macro, or if already recording,
+   stops recording it."
   (interactive)
   (if defining-kbd-macro
       (end-kbd-macro)
     (start-kbd-macro nil)))
 
-;;toggle full-screen
+;; full-screen
 (defun toggle-fullscreen ()
 (interactive)
 (set-frame-parameter
@@ -231,9 +222,8 @@ directory, select directory. Lastly the file is opened."
      nil
    'fullboth)))
 
-
-;; --------------------------------------------------------
-;; nice little alternative visual bell; Miles Bader <miles /at/ gnu.org>
+;; nice little alternative visual bell.
+;; From Miles Bader <miles /at/ gnu.org>
 (defcustom mode-line-bell-string ""
   "Message displayed in mode-line by `mode-line-bell' function."
   :group 'user)
@@ -259,37 +249,36 @@ directory, select directory. Lastly the file is opened."
   (sit-for mode-line-bell-delay)
   (message ""))
 
-
 (setq ring-bell-function 'mode-line-bell)
 
-;; Turn off toolbar:
+;; Turn off unncessary ui stuff
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
-;; utf8 only plz
+;; utf8 only
 (setq current-language-environment "UTF-8")
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;; Highlight the region between the mark and point
+;; highlight the region between the mark and point
 (transient-mark-mode t)
 
 ;; dont display cursor in non selected windows
 (setq-default cursor-in-non-selected-windows nil)
 
-;;
+;; poor mans paredit
 (show-paren-mode t)
 (setq skeleton-pair t)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 
-;; Add the current line number to the mode bar
+;; add the current line number to the mode bar
 (line-number-mode t)
 
-;; Add the current column number to the mode bar
+;; add the current column number to the mode bar
 (column-number-mode t)
 
 ;; highlight lines with lines longer than 80
@@ -297,25 +286,26 @@ directory, select directory. Lastly the file is opened."
       whitespace-line-column 80)
 (global-whitespace-mode 1)
 
-;; No splash screen
+;; no splash screen
 (setq inhibit-startup-message t)
 
 ;; empty scratch buffer
 (setq initial-scratch-message nil)
 
-;; Shhhh! just flash minibuffer
+;; shhhh! just flash minibuffer
 (setq visible-bell t)
 
 ;; Don't make me type out 'yes', 'y' is good enough.
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Do not use tabs!
+;; tabs are evil
 (setq-default indent-tabs-mode nil)
 
 ;; TAB => 4*'\b'
 (setq-default tab-width 2)
 (setq-default c-basic-offset 2)
 
+;; hassle free indent
 (defun my-unindent ()
   (interactive)
   (indent-rigidly (region-beginning) (region-end) (- tab-width))
@@ -323,7 +313,6 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "C-M-q") 'my-unindent)
 (global-set-key (kbd "<C-M-tab>") 'my-unindent)
-
 
 (defun my-indent ()
   (interactive)
@@ -339,11 +328,10 @@ directory, select directory. Lastly the file is opened."
 ;; case insensitive searches
 (set-default 'case-fold-search t)
 
-;; Typed text replaces the selection if the selection is active
+;; typed text replaces the selection if the selection is active
 (delete-selection-mode t)
 
-
-;; make emacs use the clipboard if in X
+;; make emacs use the clipboard if running in X
 (when window-system
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
@@ -351,6 +339,7 @@ directory, select directory. Lastly the file is opened."
 ;disable backup
 (setq backup-inhibited t)
 (setq make-backup-files nil)
+
 ;disable auto save
 (setq auto-save-default nil)
 (setq auto-save-list-file-prefix nil)
@@ -362,7 +351,7 @@ directory, select directory. Lastly the file is opened."
 (setq save-place nil)
 
 ;; project loader
-(setq projects '("~/gitmu/swisscom"))
+(setq projects '("~/gitmu/floater"))
 
 (loop for project in projects
       do (file-cache-add-directory-using-find project))
