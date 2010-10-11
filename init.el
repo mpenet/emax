@@ -64,7 +64,7 @@
   (save-window-excursion
     (slime)))
 
-(global-set-key (kbd "<f12>") 'clojure-project)
+(global-set-key (kbd "<f11>") 'clojure-project)
 
 ;; tramp
 (setq tramp-default-method "ssh")
@@ -281,7 +281,7 @@ directory, select directory. Lastly the file is opened."
 ;; add the current column number to the mode bar
 (column-number-mode t)
 
-;; highlight lines with lines longer than 80
+;; highlight long lines tails
 (setq whitespace-style (quote (lines-tail))
       whitespace-line-column 80)
 (global-whitespace-mode 1)
@@ -350,8 +350,21 @@ directory, select directory. Lastly the file is opened."
 ;; don't save emacs session
 (setq save-place nil)
 
-;; project loader
-(setq projects '("~/gitmu/floater"))
+;; simple project management
+(defun project-prompt (path)
+  (interactive (list
+                (ido-read-directory-name
+                 "Project root: ")))
+  (load-project path))
 
-(loop for project in projects
-      do (file-cache-add-directory-using-find project))
+(defun load-project (path)
+  (file-cache-clear-cache)
+  (file-cache-add-directory-using-find path))
+
+(global-set-key (kbd "<f12>") 'load-project)
+
+
+(setq initial-projects '("~/gitmu/floater"))
+(loop for project in initial-projects
+      do (load-project project))
+
