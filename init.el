@@ -361,8 +361,7 @@ directory, select directory. Lastly the file is opened."
   (file-cache-clear-cache)
   (file-cache-add-directory-using-find path))
 
-(global-set-key (kbd "<f12>") 'load-project)
-
+(global-set-key (kbd "<f12>") 'project-prompt)
 
 (setq initial-projects '("~/gitmu/floater"))
 (loop for project in initial-projects
