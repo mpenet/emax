@@ -351,7 +351,7 @@ directory, select directory. Lastly the file is opened."
 (setq save-place nil)
 
 ;; simple project management
-(defun project-prompt (path)
+(defun project-path-prompt (path)
   (interactive (list
                 (ido-read-directory-name
                  "Project root: ")))
@@ -361,9 +361,10 @@ directory, select directory. Lastly the file is opened."
   (file-cache-clear-cache)
   (file-cache-add-directory-using-find path))
 
-(global-set-key (kbd "<f12>") 'project-prompt)
+(global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(setq initial-projects '("~/gitmu/floater"))
-(loop for project in initial-projects
-      do (load-project project))
+(setq projects (list "~/gitmu/swisscom"))
+
+(loop for project in projects
+      do (file-cache-add-directory-using-find project))
 
