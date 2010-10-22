@@ -33,6 +33,14 @@
 ;; clojure
 (require 'clojure-mode)
 
+;; haskell
+(require 'haskell-mode)
+(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file")
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+
 (require 'slime)
 (slime-setup)
 
@@ -363,7 +371,7 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(setq projects (list "~/gitmu/swisscom"))
+(setq projects (list "~/gitmu/floater"))
 
 (loop for project in projects
       do (file-cache-add-directory-using-find project))
