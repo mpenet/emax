@@ -105,7 +105,7 @@
 (setq css-indent-offset 2)
 
 ;; font
-(set-default-font "Envy Code R:pixelsize=15:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
+(set-default-font "Terminus:pixelsize=16:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
 (global-font-lock-mode 1)
