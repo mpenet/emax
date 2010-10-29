@@ -106,6 +106,7 @@
 
 ;; font
 ;(set-default-font "Envy Code R:pixelsize=15:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
+;(set-default-font "-xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-*-1")
 (set-default-font  "Inconsolata:pixelsize=16:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
