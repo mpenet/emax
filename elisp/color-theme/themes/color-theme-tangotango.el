@@ -1,4 +1,4 @@
-;;; Emacs Color theme based on the Tango Palette colors. 
+;;; Emacs Color theme based on the Tango Palette colors.
 ;;; First derived from color-theme-tango.el,  created by danranx@gmail.com :
 ;;; http://www.emacswiki.org/emacs/color-theme-tango.el
 
@@ -42,7 +42,7 @@
   (interactive)
   (color-theme-install
    '(color-theme-tangotango
-     ((background-color . "#2e3434")
+     ((background-color . "black")
       (background-mode . dark)
       (border-color . "#888a85")
       (cursor-color . "#fce94f")
@@ -79,7 +79,7 @@
      (font-lock-type-face ((t (:foreground "#8ae234" :bold t))))
      (font-lock-variable-name-face ((t (:foreground "tomato"))))
      (font-lock-warning-face ((t (:bold t :foreground "#f57900"))))
-     (font-lock-function-name-face ((t (:foreground "#edd400" :bold t))))
+     (font-lock-function-name-face ((t (:foreground "orange" :bold t))))
      (comint-highlight-input ((t (:italic t :bold t))))
      (comint-highlight-prompt ((t (:foreground "#8ae234"))))
      (isearch ((t (:background "#f57900" :foreground "#2e3436"))))
@@ -111,7 +111,7 @@
      (custom-button-pressed  ((t (:inherit 'custom-button :box (:style pressed-button)))))
      (custom-button-mouse-pressed-unraised  ((t (:inherit 'custom-button-unraised :background "grey60"))))
      (custom-documentation ((t (:italic t))))
-     (message-cited-text ((t (:foreground "#edd400")))) 
+     (message-cited-text ((t (:foreground "#edd400"))))
      (gnus-cite-face-1 ((t (:foreground "#ad7fa8"))))
      (gnus-cite-face-2 ((t (:foreground "sienna4"))))
      (gnus-cite-face-3 ((t (:foreground "khaki4"))))

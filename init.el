@@ -116,7 +116,8 @@
 (require 'color-theme)
 (setq color-theme-is-global t)
 (color-theme-initialize)
-(color-theme-twilight)
+(color-theme-tangotango)
+;(color-theme-twilight)
 
 ;; buffers & files navigation
 (ido-mode t) ; use 'buffer rather than t to use only buffer switching
