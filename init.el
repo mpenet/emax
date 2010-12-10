@@ -21,9 +21,21 @@
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
 
-;; js-mode (emacs 23+)
-(setq js-indent-level 2)
-(add-hook 'js-mode-hook 'yas/minor-mode)
+;; js-mode (emacs 23+ default)
+;; (setq js-indent-level 2)
+;; (add-hook 'js-mode-hook 'yas/minor-mode)
+
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(setq js2-basic-offset 2
+      js2-use-font-lock-faces t
+      js2-mode-escape-quotes nil
+;      js2-auto-indent-flag nil
+      js2-bounce-indent-p t)
+
+(global-set-key (kbd "C-c C-n") 'js2-next-error)
+(add-hook 'js2-mode-hook 'yas/minor-mode)
+
 
 ;; web utilities
 (require 'zencoding-mode)
@@ -104,6 +116,26 @@
 ;; css
 (setq css-indent-offset 2)
 
+;; less with special changes for hw dir structure
+(defun compile-less-css ()
+  (interactive)
+  (if (string-match "\.less$" (buffer-file-name))
+      (async-shell-command
+       (concat "/var/lib/gems/1.8/bin/lessc "
+               (buffer-file-name)
+               " "
+               ; destination
+               (replace-regexp-in-string "/less/"
+                                         "/css/"
+                                         (replace-regexp-in-string
+                                          "\.less$"
+                                          "\.css"
+                                          (buffer-file-name))))
+       nil nil)))
+
+(global-set-key (kbd "<f10>") 'compile-less-css)
+(setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
+
 ;; font
 ;(set-default-font "Envy Code R:pixelsize=15:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
 (set-default-font "-xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-*-1")
@@ -128,7 +160,7 @@
       ido-case-fold  t
       ido-ignore-buffers
       '("\\` " "^\*Mess" "^\*Back" "^\*scratch" ".*Completion" "^\*Ido")
-      ido-ignore-files '("\\.pyc$"))
+      ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
 (global-set-key "\C-x\C-b" 'ido-switch-buffer) ;; disable annoying buffer menu
 
 ; uniquify buffer names: append path if buffer names are identical
@@ -137,7 +169,7 @@
 
 ;; quick project file navigation
 (require 'filecache)
-(add-to-list 'file-cache-filter-regexps "\\.pyc$" "\\.svn/.*$")
+(add-to-list 'file-cache-filter-regexps "\\.(pyc|jpg|png|gif)" "\\.svn/.*$")
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.
 First select a file, matched using ido-switch-buffer against the contents
@@ -342,6 +374,23 @@ directory, select directory. Lastly the file is opened."
 (setq-default tab-width 2)
 (setq-default c-basic-offset 2)
 
+;; 4 tabs on this project + auto less compile
+(defun hw-setup ()
+  (interactive)
+  (setq-default tab-width 4)
+  (setq-default c-basic-offset 4)
+  (setq css-indent-offset 4)
+  (setq js-indent-level 4)
+  (setq js2-basic-offset 4)
+  (add-hook 'html-mode-hook
+            (lambda ()
+              ;; Default indentation is usually 2 spaces, changing to 4.
+              (set (make-local-variable 'sgml-basic-offset) 4)))
+  (add-hook 'after-save-hook 'compile-less-css))
+
+;; set style to hw
+(hw-setup)
+
 ;; hassle free indent
 (defun my-unindent ()
   (interactive)
@@ -400,7 +449,8 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(setq projects (list "~/gitmu/floater"))
+(setq projects (list "~/gitmu/tipiworld.com/tipi/templates"
+                     "~/gitmu/tipiworld.com/tipi/media"))
 
 (loop for project in projects
       do (file-cache-add-directory-using-find project))
