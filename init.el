@@ -15,6 +15,8 @@
 
 ;; source control
 (require 'magit)
+(global-set-key (kbd "C-c g") 'magit-status)
+(global-set-key "\C-c\C-g" 'magit-status)
 
 ;; yasnippet
 (require 'yasnippet)
