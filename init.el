@@ -13,6 +13,9 @@
         (add-to-list 'load-path name)))))
 
 
+;; source control
+(require 'magit)
+
 ;; yasnippet
 (require 'yasnippet)
 (require 'dropdown-list)
@@ -30,12 +33,21 @@
 (setq js2-basic-offset 2
       js2-use-font-lock-faces t
       js2-mode-escape-quotes nil
+      js2-cleanup-whitespace t
 ;      js2-auto-indent-flag nil
       js2-bounce-indent-p t)
 
 (global-set-key (kbd "C-c C-n") 'js2-next-error)
 (add-hook 'js2-mode-hook 'yas/minor-mode)
 
+(defun js2-before-save ()
+  "FIXED: dont messup my whitespace again!
+  	   Clean up whitespace before saving file.
+  	   You can disable this by customizing `js2-cleanup-whitespace'."
+  (when js2-cleanup-whitespace
+    (let ((col (current-column)))
+    (delete-trailing-whitespace)
+    (indent-to col))))
 
 ;; web utilities
 (require 'zencoding-mode)
