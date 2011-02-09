@@ -27,20 +27,19 @@
 (setq yas/indent-line nil)
 
 ;; js-mode (emacs 23+ default)
-;; (setq js-indent-level 2)
-;; (add-hook 'js-mode-hook 'yas/minor-mode)
+(setq js-indent-level 2)
+(add-hook 'js-mode-hook 'yas/minor-mode)
 
-(autoload 'js2-mode "js2-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(setq js2-basic-offset 2
-      js2-use-font-lock-faces t
-      js2-mode-escape-quotes nil
-      js2-cleanup-whitespace t
-;      js2-auto-indent-flag nil
-      js2-bounce-indent-p t)
-
-(global-set-key (kbd "C-c C-n") 'js2-next-error)
-(add-hook 'js2-mode-hook 'yas/minor-mode)
+;; js2-mode
+;; (autoload 'js2-mode "js2-mode" nil t)
+;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+;; (setq js2-basic-offset 2
+;;       js2-use-font-lock-faces t
+;;       js2-mode-escape-quotes nil
+;;       js2-cleanup-whitespace t
+;;       js2-bounce-indent-p t)
+;; (global-set-key (kbd "C-c C-n") 'js2-next-error)
+;; (add-hook 'js2-mode-hook 'yas/minor-mode)
 
 (defun js2-before-save ()
   "FIXED: dont messup my whitespace again!
@@ -403,7 +402,7 @@ directory, select directory. Lastly the file is opened."
   (add-hook 'after-save-hook 'compile-less-css))
 
 ;; set style to hw
-(hw-setup)
+;; (hw-setup)
 
 ;; hassle free indent
 (defun my-unindent ()
@@ -463,8 +462,7 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(setq projects (list "~/gitmu/tipiworld.com/tipi/templates"
-                     "~/gitmu/tipiworld.com/tipi/media"))
+(setq projects (list "~/gitmu/ezads/"))
 
 (loop for project in projects
       do (file-cache-add-directory-using-find project))
