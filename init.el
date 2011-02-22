@@ -27,7 +27,7 @@
 (setq yas/indent-line nil)
 
 ;; js-mode (emacs 23+ default)
-(setq js-indent-level 2)
+(setq js-indent-level 4)
 (add-hook 'js-mode-hook 'yas/minor-mode)
 
 ;; js2-mode
@@ -127,7 +127,7 @@
 
 
 ;; css
-(setq css-indent-offset 2)
+(setq css-indent-offset 4)
 
 ;; less with special changes for hw dir structure
 (defun compile-less-css ()
@@ -254,8 +254,6 @@ directory, select directory. Lastly the file is opened."
 ;; not really used anymore
  (global-set-key (kbd "M-<up>") 'backward-paragraph)
  (global-set-key (kbd "M-<down>") 'forward-paragraph)
- (global-set-key (kbd "M-p") 'backward-paragraph)
- (global-set-key (kbd "M-n") 'forward-paragraph)
 
 ;; (defvar no-easy-keys-minor-mode-map (make-keymap)
 ;;   "no-easy-keys-minor-mode keymap.")
@@ -384,17 +382,12 @@ directory, select directory. Lastly the file is opened."
 (setq-default indent-tabs-mode nil)
 
 ;; TAB => 4*'\b'
-(setq-default tab-width 2)
-(setq-default c-basic-offset 2)
+(setq-default tab-width 4)
+(setq-default c-basic-offset 4)
 
 ;; 4 tabs on this project + auto less compile
 (defun hw-setup ()
   (interactive)
-  (setq-default tab-width 4)
-  (setq-default c-basic-offset 4)
-  (setq css-indent-offset 4)
-  (setq js-indent-level 4)
-  (setq js2-basic-offset 4)
   (add-hook 'html-mode-hook
             (lambda ()
               ;; Default indentation is usually 2 spaces, changing to 4.
@@ -402,7 +395,7 @@ directory, select directory. Lastly the file is opened."
   (add-hook 'after-save-hook 'compile-less-css))
 
 ;; set style to hw
-;; (hw-setup)
+(hw-setup)
 
 ;; hassle free indent
 (defun my-unindent ()
@@ -466,4 +459,3 @@ directory, select directory. Lastly the file is opened."
 
 (loop for project in projects
       do (file-cache-add-directory-using-find project))
-
