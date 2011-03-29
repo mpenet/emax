@@ -1,3 +1,6 @@
 [submodule "elisp/magit"]
 	path = elisp/magit
 	url = https://github.com/philjackson/magit.git
+[submodule "elisp/clojure-mode"]
+	path = elisp/clojure-mode
+	url = https://github.com/technomancy/clojure-mode.git
