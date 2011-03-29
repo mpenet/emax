@@ -1,0 +1,3 @@
+[submodule "elisp/magit"]
+	path = elisp/magit
+	url = https://github.com/philjackson/magit.git
