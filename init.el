@@ -12,7 +12,6 @@
                  (not (equal f ".")))
         (add-to-list 'load-path name)))))
 
-
 ;; source control
 (require 'magit)
 (global-set-key (kbd "C-c g") 'magit-status)
@@ -134,7 +133,7 @@
   (interactive)
   (if (string-match "\.less$" (buffer-file-name))
       (async-shell-command
-       (concat "/var/lib/gems/1.8/bin/lessc "
+       (concat "lessc "
                (buffer-file-name)
                " "
                ; destination
@@ -150,9 +149,8 @@
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 ;; font
-;(set-default-font "Envy Code R:pixelsize=15:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
-(set-default-font "-xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-*-1")
-;(set-default-font  "Inconsolata:pixelsize=16:foundry=unknown:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
+(set-default-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
+
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
 (global-font-lock-mode 1)
@@ -163,6 +161,7 @@
 (color-theme-initialize)
 (color-theme-tangotango)
 ;(color-theme-twilight)
+
 
 ;; buffers & files navigation
 (ido-mode t) ; use 'buffer rather than t to use only buffer switching
@@ -252,32 +251,32 @@ directory, select directory. Lastly the file is opened."
                                try-complete-file-name))
 
 ;; not really used anymore
- (global-set-key (kbd "M-<up>") 'backward-paragraph)
- (global-set-key (kbd "M-<down>") 'forward-paragraph)
+ ;(global-set-key (kbd "M-<up>") 'backward-paragraph)
+; (global-set-key (kbd "M-<down>") 'forward-paragraph)
 
-;; (defvar no-easy-keys-minor-mode-map (make-keymap)
-;;   "no-easy-keys-minor-mode keymap.")
-;; (let ((f (lambda (m)
-;;            `(lambda () (interactive)
-;;               (message (concat "No! use " ,m " instead."))))))
-;;   (dolist (l '(("<left>" . "C-b") ("<right>" . "C-f") ("<up>" . "C-p")
-;;                ("<down>" . "C-n")
-;;                ("<C-left>" . "M-f") ("<C-right>" . "M-b") ("<C-up>" . "M-{")
-;;                ("<C-down>" . "M-}")
-;;                ("<M-left>" . "M-f") ("<M-right>" . "M-b") ("<M-up>" . "M-{")
-;;                ("<M-down>" . "M-}")
-;;                ("<delete>" . "C-d") ("<C-delete>" . "M-d")
-;;                ("<M-delete>" . "M-d") ("<next>" . "C-v") ("<C-next>" . "M-x <")
-;;                ("<prior>" . "M-v") ("<C-prior>" . "M-x >")
-;;                ("<home>" . "C-a") ("<C-home>" . "M->")
-;;                ("<C-home>" . "M-<") ("<end>" . "C-e") ("<C-end>" . "M->")))
-;;     (define-key no-easy-keys-minor-mode-map
-;;       (read-kbd-macro (car l)) (funcall f (cdr l)))))
-;; (define-minor-mode no-easy-keys-minor-mode
-;;   "A minor mode that disables the arrow-keys, pg-up/down, delete
-;;   and backspace."  t " no-easy-keys"
-;;   'no-easy-keys-minor-mode-map :global t)
-;; (no-easy-keys-minor-mode 1)
+(defvar no-easy-keys-minor-mode-map (make-keymap)
+  "no-easy-keys-minor-mode keymap.")
+(let ((f (lambda (m)
+           `(lambda () (interactive)
+              (message (concat "No! use " ,m " instead."))))))
+  (dolist (l '(("<left>" . "C-b") ("<right>" . "C-f") ("<up>" . "C-p")
+               ("<down>" . "C-n")
+               ("<C-left>" . "M-f") ("<C-right>" . "M-b") ("<C-up>" . "M-{")
+               ("<C-down>" . "M-}")
+               ("<M-left>" . "M-f") ("<M-right>" . "M-b") ("<M-up>" . "M-{")
+               ("<M-down>" . "M-}")
+               ("<delete>" . "C-d") ("<C-delete>" . "M-d")
+               ("<M-delete>" . "M-d") ("<next>" . "C-v") ("<C-next>" . "M-x <")
+               ("<prior>" . "M-v") ("<C-prior>" . "M-x >")
+               ("<home>" . "C-a") ("<C-home>" . "M->")
+               ("<C-home>" . "M-<") ("<end>" . "C-e") ("<C-end>" . "M->")))
+    (define-key no-easy-keys-minor-mode-map
+      (read-kbd-macro (car l)) (funcall f (cdr l)))))
+(define-minor-mode no-easy-keys-minor-mode
+  "A minor mode that disables the arrow-keys, pg-up/down, delete
+  and backspace."  t " no-easy-keys"
+  'no-easy-keys-minor-mode-map :global t)
+(no-easy-keys-minor-mode 1)
 
 ;; make C-c C-c and C-c C-u work for comment/uncomment region in all modes
 (global-set-key (kbd "C-c C-c") 'comment-region)
