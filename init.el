@@ -160,7 +160,7 @@
 (setq color-theme-is-global t)
 (color-theme-initialize)
 (color-theme-tangotango)
-;(color-theme-twilight)
+;(color-theme-solarized-dark)
 
 
 ;; buffers & files navigation
@@ -454,7 +454,7 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(setq projects (list "~/gitmu/ezads/"))
+(setq projects (list "~/gitmu/kud/"))
 
 (loop for project in projects
       do (file-cache-add-directory-using-find project))
