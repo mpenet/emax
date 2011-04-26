@@ -157,10 +157,10 @@
 
 ;; theme (requires 256 color term or X)
 (require 'color-theme)
+(require 'color-theme-solarized)
 (setq color-theme-is-global t)
 (color-theme-initialize)
-(color-theme-tangotango)
-;(color-theme-solarized-dark)
+(color-theme-solarized-dark)
 
 
 ;; buffers & files navigation
