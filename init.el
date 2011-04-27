@@ -146,6 +146,17 @@
 (require 'org-install)
 (require 'htmlize)
 
+;overwrite org-mode tab behavior
+(defun yas/org-very-safe-expand ()
+                 (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (make-variable-buffer-local 'yas/trigger-key)
+            (setq yas/trigger-key [tab])
+            (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+            (define-key yas/keymap [tab] 'yas/next-field)))
+
 ;; (org-babel-do-load-languages
 ;;  'org-babel-load-languages
 ;;  '((emacs-lisp . t)
@@ -155,7 +166,7 @@
 ;;    (haskell . t)
 ;;    (clojure . t)))
 
-;; (setq org-export-htmlize-output-type 'css
+(setq org-export-htmlize-output-type 'css)
 ;;       org-confirm-babel-evaluate nil
 ;;       org-src-fontify-natively t
 ;;       org-src-tab-acts-natively t
