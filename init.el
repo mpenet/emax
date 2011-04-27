@@ -29,26 +29,6 @@
 (setq js-indent-level 4)
 (add-hook 'js-mode-hook 'yas/minor-mode)
 
-;; js2-mode
-;; (autoload 'js2-mode "js2-mode" nil t)
-;; (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-;; (setq js2-basic-offset 2
-;;       js2-use-font-lock-faces t
-;;       js2-mode-escape-quotes nil
-;;       js2-cleanup-whitespace t
-;;       js2-bounce-indent-p t)
-;; (global-set-key (kbd "C-c C-n") 'js2-next-error)
-;; (add-hook 'js2-mode-hook 'yas/minor-mode)
-
-(defun js2-before-save ()
-  "FIXED: dont messup my whitespace again!
-  	   Clean up whitespace before saving file.
-  	   You can disable this by customizing `js2-cleanup-whitespace'."
-  (when js2-cleanup-whitespace
-    (let ((col (current-column)))
-    (delete-trailing-whitespace)
-    (indent-to col))))
-
 ;; web utilities
 (require 'zencoding-mode)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
@@ -122,7 +102,7 @@
       erc-prompt-for-nickserv-password nil)
 
 
-(global-set-key (kbd "C-c e") 'djcb-erc-start-or-switch)
+;(global-set-key (kbd "C-c e") 'djcb-erc-start-or-switch)
 
 
 ;; css
@@ -149,7 +129,7 @@
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 ;; font
-(set-default-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
+(set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
 
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
@@ -161,6 +141,25 @@
 (setq color-theme-is-global t)
 (color-theme-initialize)
 (color-theme-solarized-dark)
+
+;; org-mode
+(require 'org-install)
+(require 'htmlize)
+
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((emacs-lisp . t)
+;;    (sh . t)
+;;    (python . t)
+;;    (js . t)
+;;    (haskell . t)
+;;    (clojure . t)))
+
+;; (setq org-export-htmlize-output-type 'css
+;;       org-confirm-babel-evaluate nil
+;;       org-src-fontify-natively t
+;;       org-src-tab-acts-natively t
+;;       )
 
 
 ;; buffers & files navigation
