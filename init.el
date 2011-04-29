@@ -45,6 +45,7 @@
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
+;; slime + swank-clojure
 (eval-after-load "slime"
   '(progn (slime-setup '(slime-repl))))
 (require 'slime)
@@ -57,24 +58,20 @@
 ;; css
 (setq css-indent-offset 4)
 
-;; less with special changes for hw dir structure
-(defun compile-less-css ()
-  (interactive)
-  (if (string-match "\.less$" (buffer-file-name))
-      (async-shell-command
-       (concat "lessc "
-               (buffer-file-name)
-               " "
-               ; destination
-               (replace-regexp-in-string "/less/"
-                                         "/css/"
-                                         (replace-regexp-in-string
-                                          "\.less$"
-                                          "\.css"
-                                          (buffer-file-name))))
-       nil nil)))
-
-(global-set-key (kbd "<f10>") 'compile-less-css)
+;; less
+(defun compile-less-on-after-save-hook ()
+  (add-hook 'after-save-hook
+            '(lambda ()
+               (interactive)
+               (if (string-match "\.less$" (buffer-file-name))
+                   (async-shell-command
+                    (concat "lessc " (buffer-file-name) " "
+                            (replace-regexp-in-string
+                             "\.less$"
+                             "\.css"
+                             (buffer-file-name)))
+                 nil nil)))))
+(add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 ;; font
@@ -84,7 +81,7 @@
 (setq ns-pop-up-frames nil)
 (global-font-lock-mode 1)
 
-;; theme (requires 256 color term or X)
+;; theme
 (require 'color-theme)
 (require 'color-theme-solarized)
 (setq color-theme-is-global t)
@@ -94,10 +91,10 @@
 ;; org-mode
 (require 'org-install)
 (require 'htmlize)
-
 ;overwrite org-mode tab behavior
 (defun yas/org-very-safe-expand ()
-                 (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
 
 (add-hook 'org-mode-hook
           (lambda ()
@@ -114,7 +111,7 @@
 
 
 ;; buffers & files navigation
-(ido-mode t) ; use 'buffer rather than t to use only buffer switching
+(ido-mode t)
 (ido-everywhere t)
 (setq ido-enable-flex-matching t
       ido-use-filename-at-point t
@@ -192,6 +189,8 @@ directory, select directory. Lastly the file is opened."
 (global-set-key "\C-x n" 'rename-buffer)
 (global-set-key "\C-x\C-n" 'rename-buffer)
 
+(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
+
 (defun open-term ()
   (interactive)
   (ansi-term "bash"))
@@ -210,10 +209,7 @@ directory, select directory. Lastly the file is opened."
                                try-complete-file-name-partially
                                try-complete-file-name))
 
-;; not really used anymore
- ;(global-set-key (kbd "M-<up>") 'backward-paragraph)
-; (global-set-key (kbd "M-<down>") 'forward-paragraph)
-
+;; look 'Ma no arrows
 (defvar no-easy-keys-minor-mode-map (make-keymap)
   "no-easy-keys-minor-mode keymap.")
 (let ((f (lambda (m)
@@ -238,10 +234,6 @@ directory, select directory. Lastly the file is opened."
   'no-easy-keys-minor-mode-map :global t)
 (no-easy-keys-minor-mode 1)
 
-;; make C-c C-c and C-c C-u work for comment/uncomment region in all modes
-(global-set-key (kbd "C-c C-c") 'comment-region)
-(global-set-key (kbd "C-c C-u") 'uncomment-region)
-
 ;; macros
 (defun start-or-end-kbd-macro ()
   "Starts recording a keyboard macro, or if already recording,
@@ -250,45 +242,6 @@ directory, select directory. Lastly the file is opened."
   (if defining-kbd-macro
       (end-kbd-macro)
     (start-kbd-macro nil)))
-
-;; full-screen
-(defun toggle-fullscreen ()
-(interactive)
-(set-frame-parameter
- nil
- 'fullscreen
- (if (frame-parameter nil 'fullscreen)
-     nil
-   'fullboth)))
-
-;; nice little alternative visual bell.
-;; From Miles Bader <miles /at/ gnu.org>
-(defcustom mode-line-bell-string ""
-  "Message displayed in mode-line by `mode-line-bell' function."
-  :group 'user)
-(defcustom mode-line-bell-delay 0.1
-  "Number of seconds `mode-line-bell' displays its message."
-  :group 'user)
-
-(defvar mode-line-bell-cached-string nil)
-(defvar mode-line-bell-propertized-string nil)
-(defun mode-line-bell ()
-  (unless (equal mode-line-bell-string mode-line-bell-cached-string)
-    (setq mode-line-bell-propertized-string
-          (propertize
-           (concat
-	    (propertize
-	     "x"
-	     'display
-	     `(space :align-to (- right ,(string-width mode-line-bell-string))))
-	    mode-line-bell-string)
-           'face '(:background "#888888")))
-    (setq mode-line-bell-cached-string mode-line-bell-string))
-  (message mode-line-bell-propertized-string)
-  (sit-for mode-line-bell-delay)
-  (message ""))
-
-(setq ring-bell-function 'mode-line-bell)
 
 ;; Turn off unncessary ui stuff
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -343,25 +296,13 @@ directory, select directory. Lastly the file is opened."
 ;; TAB => 4*'\b'
 (setq-default tab-width 4)
 (setq-default c-basic-offset 4)
-
-;; 4 tabs on this project + auto less compile
-(defun hw-setup ()
-  (interactive)
-  (add-hook 'html-mode-hook
-            (lambda ()
-              ;; Default indentation is usually 2 spaces, changing to 4.
-              (set (make-local-variable 'sgml-basic-offset) 4)))
-  (add-hook 'after-save-hook 'compile-less-css))
-
-;; set style to hw
-(hw-setup)
+(setq-default sgml-basic-offset 4)
 
 ;; hassle free indent
 (defun my-unindent ()
   (interactive)
   (indent-rigidly (region-beginning) (region-end) (- tab-width))
   (setq mark-active t deactivate-mark nil))
-
 (global-set-key (kbd "C-M-q") 'my-unindent)
 (global-set-key (kbd "<C-M-tab>") 'my-unindent)
 
@@ -369,7 +310,6 @@ directory, select directory. Lastly the file is opened."
   (interactive)
   (indent-rigidly (region-beginning) (region-end) tab-width)
   (setq mark-active t deactivate-mark nil))
-
 (global-set-key (kbd "C-q") 'my-indent)
 (global-set-key (kbd "<C-tab>") 'my-indent)
 
@@ -395,7 +335,7 @@ directory, select directory. Lastly the file is opened."
 (setq auto-save-default nil)
 (setq auto-save-list-file-prefix nil)
 
-;; save hooks
+;; global save hooks
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; don't save emacs session
