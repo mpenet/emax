@@ -25,7 +25,7 @@
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
 
-;; js-mode (emacs 23+ default)
+;; js-mode
 (setq js-indent-level 4)
 (add-hook 'js-mode-hook 'yas/minor-mode)
 
@@ -53,30 +53,6 @@
 
 ;; tramp
 (setq tramp-default-method "ssh")
-
-;; erc
-(defun djcb-erc-start-or-switch ()
-  "Connect to ERC, or switch to last active buffer"
-  (interactive)
-  (if (get-buffer "irc.quakenet.net:6667") ;; ERC already active?
-    (erc-track-switch-buffer 1) ;; yes: switch to last active
-    (erc :server "irc.quakenet.org" :port 6667 :nick "scam" :full-name "scam")))
-
-(erc-track-mode t)
-
-(setq erc-modules '(netsplit fill track completion ring button autojoin
-                             services match stamp track page scrolltobottom)
-      erc-autojoin-mode t
-      erc-timestamp-format "%H:%M "
-      erc-interpret-mirc-color t
-      erc-input-line-position -2
-      erc-prompt ">>"
-      erc-insert-timestamp-function 'erc-insert-timestamp-left
-      erc-prompt-for-nickserv-password nil)
-
-
-;(global-set-key (kbd "C-c e") 'djcb-erc-start-or-switch)
-
 
 ;; css
 (setq css-indent-offset 4)
@@ -129,15 +105,6 @@
             (setq yas/trigger-key [tab])
             (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
             (define-key yas/keymap [tab] 'yas/next-field)))
-
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  '((emacs-lisp . t)
-;;    (sh . t)
-;;    (python . t)
-;;    (js . t)
-;;    (haskell . t)
-;;    (clojure . t)))
 
 (setq org-export-htmlize-output-type 'css)
 ;;       org-confirm-babel-evaluate nil
@@ -221,6 +188,16 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "C-c p") 'check-parens)
 (global-set-key "\C-c\C-p" 'check-parens)
+
+(global-set-key "\C-x n" 'rename-buffer)
+(global-set-key "\C-x\C-n" 'rename-buffer)
+
+(defun open-term ()
+  (interactive)
+  (ansi-term "bash"))
+
+(global-set-key (kbd "C-x t") 'open-term)
+(global-set-key "\C-x\C-t" 'open-term)
 
 ;; hippie expand + dabbrev-expand
 (global-set-key "\M- " 'hippie-expand)
