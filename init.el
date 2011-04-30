@@ -63,8 +63,8 @@
   (add-hook 'after-save-hook
             '(lambda ()
                (interactive)
-               (if (string-match "\.less$" (buffer-file-name))
-                   (let ((file-name (buffer-file-name)))
+               (let ((file-name (buffer-file-name)))
+                 (if (string-match "\.less$" file-name)
                      (async-shell-command
                       (concat "lessc " file-name " "
                               (file-name-directory file-name) "../css/"
