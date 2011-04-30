@@ -65,11 +65,12 @@
                (interactive)
                (if (string-match "\.less$" (buffer-file-name))
                    (let ((file-name (buffer-file-name)))
-                         (async-shell-command
-                          (concat "lessc " file-name " "
-                                   (file-name-directory file-name) "../css/"
-                                   (file-name-sans-extension (file-name-nondirectory file-name))
-                                   ".css") nil nil))))))
+                     (async-shell-command
+                      (concat "lessc " file-name " "
+                              (file-name-directory file-name) "../css/"
+                              (file-name-sans-extension (file-name-nondirectory
+                                                         file-name))
+                              ".css") nil nil))))))
 (add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
