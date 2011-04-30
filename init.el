@@ -64,19 +64,17 @@
             '(lambda ()
                (interactive)
                (if (string-match "\.less$" (buffer-file-name))
-                   (async-shell-command
-                    (concat "lessc " (buffer-file-name) " "
-                            (replace-regexp-in-string
-                             "\.less$"
-                             "\.css"
-                             (buffer-file-name)))
-                 nil nil)))))
+                   (let ((file-name (buffer-file-name)))
+                         (async-shell-command
+                          (concat "lessc " file-name " "
+                                   (file-name-directory file-name) "../css/"
+                                   (file-name-sans-extension (file-name-nondirectory file-name))
+                                   ".css") nil nil))))))
 (add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 ;; font
 (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
-
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
 (global-font-lock-mode 1)
