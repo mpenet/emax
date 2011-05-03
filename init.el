@@ -127,7 +127,13 @@
 
 ;; quick project file navigation
 (require 'filecache)
-(add-to-list 'file-cache-filter-regexps "\\.(pyc|jpg|png|gif)" "\\.svn/.*$")
+
+(setq file-cache-ignore-patterns (list "/[.]git" "/[.]svn" "\\.svn-base$"
+                                       "\\.jar$" "\\.gif$" "\\.jpg$" "\\.png$"
+                                       "\\.log$"))
+(loop for pattern in file-cache-ignore-patterns
+      do (add-to-list 'file-cache-filter-regexps pattern))
+
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.
 First select a file, matched using ido-switch-buffer against the contents
@@ -154,7 +160,6 @@ directory, select directory. Lastly the file is opened."
     (ido-read-buffer prompt)))
 
 ;; filter out version control files
-(add-to-list 'file-cache-filter-regexps "\\.svn-base$")
 (global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
 
 (require 'recentf)
