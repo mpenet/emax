@@ -7,3 +7,6 @@
 [submodule "elisp/emacs-color-theme-solarized"]
 	path = elisp/emacs-color-theme-solarized
 	url = https://github.com/sellout/emacs-color-theme-solarized.git
+[submodule "elisp/elein"]
+	path = elisp/elein
+	url = https://github.com/remvee/elein.git

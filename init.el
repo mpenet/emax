@@ -35,13 +35,8 @@
 ;; clojure
 (require 'clojure-mode)
 
-;; haskell
-(require 'haskell-mode)
-(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file")
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
+;; leiningen
+(require 'elein)
 
 ;; slime + swank-clojure
 (eval-after-load "slime"
@@ -49,6 +44,14 @@
 (require 'slime)
 (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
 (global-set-key (kbd "<f11>") 'slime-connect)
+
+;; haskell
+(require 'haskell-mode)
+(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file")
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
+;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 ;; tramp
 (setq tramp-default-method "ssh")
