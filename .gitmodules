@@ -10,3 +10,6 @@
 [submodule "elisp/elein"]
 	path = elisp/elein
 	url = https://github.com/remvee/elein.git
+[submodule "elisp/slime"]
+	path = elisp/slime
+	url = https://github.com/technomancy/slime.git

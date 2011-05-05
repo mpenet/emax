@@ -37,13 +37,16 @@
 
 ;; leiningen
 (require 'elein)
+(global-set-key (kbd "<f11>") 'elein-swank)
+(global-set-key (kbd "<f10>") 'elein-kill-swank)
 
 ;; slime + swank-clojure
 (eval-after-load "slime"
-  '(progn (slime-setup '(slime-repl))))
+  '(progn (slime-setup '(slime-repl))
+          (setq slime-protocol-version 'ignore)))
 (require 'slime)
 (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-(global-set-key (kbd "<f11>") 'slime-connect)
+
 
 ;; haskell
 (require 'haskell-mode)
