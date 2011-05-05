@@ -1,7 +1,5 @@
 ;; C-u 0 M-x byte-recompile-directory
 
-(require 'cl)
-
 ;; add base plugin dir + subdirs to load-path
 (let ((base "~/.emacs.d/elisp"))
   (add-to-list 'load-path base)
