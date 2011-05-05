@@ -202,6 +202,7 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "C-x t") 'open-term)
 (global-set-key "\C-x\C-t" 'open-term)
 
+
 ;; hippie expand + dabbrev-expand
 (global-set-key "\M- " 'hippie-expand)
 (setq hippie-expand-try-functions-list
@@ -316,6 +317,24 @@ directory, select directory. Lastly the file is opened."
   (setq mark-active t deactivate-mark nil))
 (global-set-key (kbd "C-q") 'my-indent)
 (global-set-key (kbd "<C-tab>") 'my-indent)
+
+(defun untabify-buffer ()
+  (interactive)
+  (untabify (point-min) (point-max)))
+
+(defun indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+  (indent-buffer)
+  (untabify-buffer)
+  (delete-trailing-whitespace))
+
+(global-set-key (kbd "C-c b") 'cleanup-buffer)
+(global-set-key (kbd "C-c C-b") 'cleanup-buffer)
 
 ;; show me everything
 (setq truncate-partial-width-windows nil)
