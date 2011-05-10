@@ -19,6 +19,7 @@
 (require 'yasnippet)
 (require 'dropdown-list)
 (yas/initialize)
+(set-face-background 'yas/field-highlight-face "gray")
 (yas/load-directory "~/.emacs.d/elisp/yasnippet/snippets/")
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
