@@ -16,3 +16,6 @@
 [submodule "elisp/zenburn"]
 	path = elisp/zenburn
 	url = git://github.com/bbatsov/zenburn-emacs.git
+[submodule "elisp/zencoding"]
+	path = elisp/zencoding
+	url = git://github.com/rooney/zencoding.git
