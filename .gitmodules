@@ -13,3 +13,6 @@
 [submodule "elisp/slime"]
 	path = elisp/slime
 	url = https://github.com/technomancy/slime.git
+[submodule "elisp/zenburn"]
+	path = elisp/zenburn
+	url = git://github.com/bbatsov/zenburn-emacs.git

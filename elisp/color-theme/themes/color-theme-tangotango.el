@@ -46,7 +46,7 @@
       (background-mode . dark)
       (border-color . "#888a85")
       (cursor-color . "#fce94f")
-      (foreground-color . "#eeeeec")
+      (foreground-color . "#cfcfcf")
       (mouse-color . "#8ae234"))
      ((help-highlight-face . underline)
       (ibuffer-dired-buffer-face . font-lock-function-name-face)
