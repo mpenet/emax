@@ -87,17 +87,13 @@
 
 ;; theme
 (require 'color-theme)
+(require 'zenburn)
 (require 'color-theme-solarized)
 (setq color-theme-is-global t)
 (color-theme-initialize)
 (color-theme-solarized-dark)
 ;(color-theme-tangotango)
-(require 'zenburn)
 ;(zenburn)
-
-
-
-
 
 ;; org-mode
 (require 'org-install)
