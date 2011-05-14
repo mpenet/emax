@@ -273,6 +273,8 @@ directory, select directory. Lastly the file is opened."
 
 ;; poor mans paredit
 (show-paren-mode t)
+(set-face-foreground 'show-paren-match-face "red")
+
 (setq skeleton-pair t)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
 (global-set-key "[" 'skeleton-pair-insert-maybe)
