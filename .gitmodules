@@ -4,9 +4,6 @@
 [submodule "elisp/clojure-mode"]
 	path = elisp/clojure-mode
 	url = https://github.com/technomancy/clojure-mode.git
-[submodule "elisp/emacs-color-theme-solarized"]
-	path = elisp/emacs-color-theme-solarized
-	url = https://github.com/sellout/emacs-color-theme-solarized.git
 [submodule "elisp/elein"]
 	path = elisp/elein
 	url = https://github.com/remvee/elein.git
