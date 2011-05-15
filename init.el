@@ -19,7 +19,7 @@
 (require 'yasnippet)
 (require 'dropdown-list)
 (yas/initialize)
-(set-face-background 'yas/field-highlight-face "gray")
+;(set-face-background 'yas/field-highlight-face "gray")
 (yas/load-directory "~/.emacs.d/elisp/yasnippet/snippets/")
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
@@ -274,6 +274,7 @@ directory, select directory. Lastly the file is opened."
 ;; poor mans paredit
 (show-paren-mode t)
 (set-face-foreground 'show-paren-match-face "red")
+;(set-face-background 'show-paren-match-face "black")
 
 (setq skeleton-pair t)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
