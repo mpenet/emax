@@ -43,7 +43,7 @@
 
 ;; slime + swank-clojure
 (eval-after-load "slime"
-  '(progn (slime-setup '(slime-repl))
+  '(progn (slime-setup '(slime-repl slime-fancy))
           (setq slime-protocol-version 'ignore)))
 (require 'slime)
 (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
