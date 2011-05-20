@@ -87,10 +87,10 @@
 
 ;; theme
 (require 'color-theme)
-(require 'zenburn)
+(require 'color-theme-zenburn)
 (setq color-theme-is-global t)
-(color-theme-initialize)
-(zenburn)
+;;(color-theme-initialize)
+(color-theme-zenburn)
 ;(color-theme-tangotango)
 
 ;; org-mode
