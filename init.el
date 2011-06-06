@@ -38,8 +38,9 @@
 
 ;; leiningen
 (require 'elein)
-(global-set-key (kbd "<f11>") 'elein-swank)
-(global-set-key (kbd "<f10>") 'elein-kill-swank)
+(global-set-key (kbd "<f9>") 'slime-connect)
+(global-set-key (kbd "<f10>") 'elein-swank)
+(global-set-key (kbd "<f11>") 'elein-kill-swank)
 
 ;; slime + swank-clojure
 (eval-after-load "slime"
