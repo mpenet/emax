@@ -16,3 +16,9 @@
 [submodule "elisp/zencoding"]
 	path = elisp/zencoding
 	url = git://github.com/rooney/zencoding.git
+[submodule "elisp/ac-slime"]
+	path = elisp/ac-slime
+	url = https://github.com/purcell/ac-slime.git
+[submodule "elisp/auto-complete"]
+	path = elisp/auto-complete
+	url = https://github.com/m2ym/auto-complete.git

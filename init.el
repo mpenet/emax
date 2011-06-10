@@ -24,6 +24,39 @@
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
 
+
+;; autocomplete mode
+
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(ac-config-default)
+(global-auto-complete-mode t)
+(auto-complete-mode t)
+
+(define-key ac-completing-map (kbd "C-n") 'ac-next)
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+
+(set-default 'ac-sources
+             '(ac-source-yasnippet
+               ac-source-dictionary
+               ac-source-words-in-buffer
+               ac-source-words-in-same-mode-buffers
+               ac-source-words-in-all-buffer))
+
+(dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
+                sass-mode yaml-mode csv-mode espresso-mode haskell-mode
+                html-mode nxml-mode sh-mode smarty-mode clojure-mode
+                lisp-mode textile-mode markdown-mode tuareg-mode))
+  (add-to-list 'ac-modes mode))
+
+(require 'ac-slime)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(define-globalized-minor-mode real-global-auto-complete-mode
+  auto-complete-mode (lambda ()
+                       (if (not (minibufferp (current-buffer)))
+                         (auto-complete-mode 1))))
+(real-global-auto-complete-mode t)
+
 ;; js-mode
 (setq js-indent-level 4)
 (add-hook 'js-mode-hook 'yas/minor-mode)
