@@ -4,7 +4,7 @@
 (let ((base "~/.emacs.d/elisp"))
   (add-to-list 'load-path base)
   (dolist (f (directory-files base))
-  (let ((name (concat base "/" f)))
+    (let ((name (concat base "/" f)))
       (when (and (file-directory-p name)
                  (not (equal f ".."))
                  (not (equal f ".")))
@@ -26,12 +26,12 @@
 
 
 ;; autocomplete mode
-
 (require 'auto-complete-config)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (ac-config-default)
 (global-auto-complete-mode t)
 (auto-complete-mode t)
+;; (setq ac-auto-start nil)
 
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
@@ -208,7 +208,7 @@ directory, select directory. Lastly the file is opened."
 ;; kb shortcuts
 (global-set-key (kbd "C-z")   'undo)
 (global-set-key (kbd "<f4>") 'start-or-end-kbd-macro)
-(global-set-key (kbd "<f5>") 'call-last-macro-kbd)
+(global-set-key (kbd "<f5>") 'call-last-kbd-macro)
 
 (global-set-key "\C-x\C-m" 'execute-extended-command)
 (global-set-key (kbd "C-x m") 'execute-extended-command)
