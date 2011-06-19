@@ -408,19 +408,30 @@ directory, select directory. Lastly the file is opened."
 (setq save-place nil)
 
 ;; simple project management
+
+(setq project-history-file "~/.emacs.d/project.hist")
+
 (defun project-path-prompt (path)
   (interactive (list
                 (ido-read-directory-name
                  "Project root: ")))
-  (load-project path))
+  (set-project path))
+(global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(defun load-project (path)
+(defun set-project (path)
+  (save-project-history path)
   (file-cache-clear-cache)
   (file-cache-add-directory-using-find path))
 
-(global-set-key (kbd "<f12>") 'project-path-prompt)
+(defun load-project-from-history ()
+  (when (file-exists-p project-history-file)
+    (with-temp-buffer
+      (insert-file-contents project-history-file)
+      (set-project (buffer-string)))))
 
-(setq projects (list "~/gitmu/kud/"))
+(defun save-project-history (project-path)
+  (when (file-exists-p project-history-file)
+    (delete-file project-history-file))
+  (append-to-file project-path nil project-history-file))
 
-(loop for project in projects
-      do (file-cache-add-directory-using-find project))
+(load-project-from-history)
