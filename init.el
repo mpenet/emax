@@ -298,6 +298,8 @@ directory, select directory. Lastly the file is opened."
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(setq slime-net-coding-system 'utf-8-unix)
+
 
 ;; highlight the region between the mark and point
 (transient-mark-mode t)
