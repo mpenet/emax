@@ -71,9 +71,12 @@
 
 ;; paredit
 (require 'paredit)
-(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
-(add-hook 'scheme-mode-hook     'enable-paredit-mode)
-(add-hook 'clojure-mode-hook    'enable-paredit-mode)
+(loop for mode-hook
+      in '(emacs-lisp-mode-hook
+           scheme-mode-hook
+           clojure-mode-hook
+           js-mode-hook)
+      do (add-hook mode-hook 'enable-paredit-mode))
 
 (defun my-paredit-delete ()
   "If a region is active check if it is balanced and delete it otherwise
