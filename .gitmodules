@@ -25,3 +25,6 @@
 [submodule "elisp/org-mode"]
 	path = elisp/org-mode
 	url = git://orgmode.org/org-mode.git
+[submodule "elisp/paredit"]
+	path = elisp/paredit
+	url = https://github.com/emacsmirror/paredit.git

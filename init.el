@@ -69,6 +69,12 @@
 ;; clojure
 (require 'clojure-mode)
 
+;; paredit
+(require 'paredit)
+(add-hook 'emacs-lisp-mode-hook 'enable-paredit-mode)
+(add-hook 'scheme-mode-hook     'enable-paredit-mode)
+(add-hook 'clojure-mode-hook    'enable-paredit-mode)
+
 ;; leiningen
 (require 'elein)
 (global-set-key (kbd "<f9>") 'slime-connect)
