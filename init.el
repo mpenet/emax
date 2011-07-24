@@ -75,6 +75,19 @@
 (add-hook 'scheme-mode-hook     'enable-paredit-mode)
 (add-hook 'clojure-mode-hook    'enable-paredit-mode)
 
+(defun my-paredit-delete ()
+  "If a region is active check if it is balanced and delete it otherwise
+   fallback to regular paredit behavior"
+  (interactive)
+  (if mark-active
+      (paredit-delete-region (region-beginning) (region-end))
+    (paredit-backward-delete)))
+
+(eval-after-load 'paredit
+  '(progn
+     (define-key paredit-mode-map (kbd "<delete>") 'my-paredit-delete)
+     (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
+
 ;; leiningen
 (require 'elein)
 (global-set-key (kbd "<f9>") 'slime-connect)
