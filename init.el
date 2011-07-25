@@ -78,6 +78,13 @@
            js-mode-hook)
       do (add-hook mode-hook 'enable-paredit-mode))
 
+;; dont insert space before a paren on js files
+(add-hook 'js-mode-hook
+          '(lambda ()
+             (add-to-list (make-local-variable
+                           'paredit-space-for-delimiter-predicates)
+                          (lambda (_ _) nil))))
+
 (defun my-paredit-delete ()
   "If a region is active check if it is balanced and delete it otherwise
    fallback to regular paredit behavior"
