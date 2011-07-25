@@ -103,7 +103,7 @@
           (setq slime-protocol-version 'ignore)))
 (require 'slime)
 (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-
+(add-hook 'slime-connected-hook 'slime-redirect-inferior-output)
 
 ;; haskell
 (require 'haskell-mode)
@@ -376,14 +376,12 @@ directory, select directory. Lastly the file is opened."
   (interactive)
   (indent-rigidly (region-beginning) (region-end) (- tab-width))
   (setq mark-active t deactivate-mark nil))
-(global-set-key (kbd "C-M-q") 'my-unindent)
 (global-set-key (kbd "<C-M-tab>") 'my-unindent)
 
 (defun my-indent ()
   (interactive)
   (indent-rigidly (region-beginning) (region-end) tab-width)
   (setq mark-active t deactivate-mark nil))
-(global-set-key (kbd "C-q") 'my-indent)
 (global-set-key (kbd "<C-tab>") 'my-indent)
 
 (defun untabify-buffer ()
