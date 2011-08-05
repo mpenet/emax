@@ -53,7 +53,8 @@
 (add-hook 'slime-mode-hook 'set-up-slime-ac)
 (define-globalized-minor-mode real-global-auto-complete-mode
   auto-complete-mode (lambda ()
-                       (if (not (minibufferp (current-buffer)))
+                       (if (and (not (minibufferp (current-buffer)))
+                                (not (eq 'erc-mode major-mode)))
                          (auto-complete-mode 1))))
 (real-global-auto-complete-mode t)
 
@@ -283,6 +284,29 @@ directory, select directory. Lastly the file is opened."
                                try-complete-lisp-symbol
                                try-complete-file-name-partially
                                try-complete-file-name))
+
+;; ERC
+(defun djcb-erc-start-or-switch ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (if (get-buffer "irc.quakenet.net:6667") ;; ERC already active?
+    (erc-track-switch-buffer 1) ;; yes: switch to last active
+    (erc :server "irc.quakenet.org" :port 6667 :nick "zcam" :full-name "zcam")))
+
+(erc-track-mode t)
+
+(setq erc-modules '(netsplit fill track completion ring button autojoin
+                             services match stamp track page scrolltobottom)
+      erc-autojoin-mode t
+      erc-timestamp-format "%H:%M "
+      erc-interpret-mirc-color t
+      erc-input-line-position -2
+      erc-prompt ">>"
+      erc-insert-timestamp-function 'erc-insert-timestamp-left
+      erc-prompt-for-nickserv-password nil)
+
+(global-set-key (kbd "C-c e") 'djcb-erc-start-or-switch)
+
 
 ;; look 'Ma no arrows
 (defvar no-easy-keys-minor-mode-map (make-keymap)
