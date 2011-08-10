@@ -75,11 +75,12 @@
   (add-hook 'after-save-hook
             '(lambda ()
                (interactive)
-               (let ((file-name (buffer-file-name)))
+               (let* ((file-name (buffer-file-name))
+                      (file-name-dir (file-name-directory file-name)))
                  (if (string-match "\.cljs$" file-name)
                      (async-shell-command
-                      (concat "cljsc " (file-name-directory file-name) " '{:optimizations :advanced}' > "
-                              (file-name-directory file-name) "compiled.js") nil nil))))))
+                      (concat "cljsc " file-name-dir " '{:optimizations :advanced}' > "
+                              file-name-dir "compiled.js") nil nil))))))
 (add-hook 'clojure-mode-hook 'compile-cljs-on-after-save-hook)
 (setq auto-mode-alist (cons '("\\.cljs$" . clojure-mode) auto-mode-alist))
 
