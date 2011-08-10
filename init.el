@@ -70,6 +70,19 @@
 ;; clojure
 (require 'clojure-mode)
 
+;; clojurescript compile after-save
+(defun compile-cljs-on-after-save-hook ()
+  (add-hook 'after-save-hook
+            '(lambda ()
+               (interactive)
+               (let ((file-name (buffer-file-name)))
+                 (if (string-match "\.cljs$" file-name)
+                     (async-shell-command
+                      (concat "cljsc " (file-name-directory file-name) " '{:optimizations :advanced}' > "
+                              (file-name-directory file-name) "compiled.js") nil nil))))))
+(add-hook 'clojure-mode-hook 'compile-cljs-on-after-save-hook)
+(setq auto-mode-alist (cons '("\\.cljs$" . clojure-mode) auto-mode-alist))
+
 ;; paredit
 (require 'paredit)
 (loop for mode-hook
@@ -466,6 +479,15 @@ directory, select directory. Lastly the file is opened."
 
 ;; don't save emacs session
 (setq save-place nil)
+
+;; apply the PATH environment variable to Emacs and set the exec-path
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell
+      (replace-regexp-in-string "[[:space:]\n]*$" ""
+        (shell-command-to-string "$SHELL -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(set-exec-path-from-shell-PATH)
 
 ;; simple project management
 
