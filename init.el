@@ -76,7 +76,8 @@
       in '(emacs-lisp-mode-hook
            scheme-mode-hook
            clojure-mode-hook
-           js-mode-hook)
+           ;; js-mode-hook
+           )
       do (add-hook mode-hook 'enable-paredit-mode))
 
 ;; dont insert space before a paren on js files
@@ -446,6 +447,10 @@ directory, select directory. Lastly the file is opened."
 (when window-system
   (setq x-select-enable-clipboard t)
   (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+
+;; force defaut browser to chrome
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
 
 ;disable backup
 (setq backup-inhibited t)
