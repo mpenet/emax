@@ -379,7 +379,7 @@ directory, select directory. Lastly the file is opened."
 (column-number-mode t)
 
 ;; highlight long lines tails
-(setq whitespace-style (quote (lines-tail))
+(setq whitespace-style '(face trailing lines-tail)
       whitespace-line-column 80)
 (global-whitespace-mode 1)
 
