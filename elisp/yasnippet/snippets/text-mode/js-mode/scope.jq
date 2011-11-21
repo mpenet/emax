@@ -1,3 +1,3 @@
-(function($, win, doc, undefined){
+;(function($, win, doc, undefined){
   $0
-})(jQuery, window, document);
+})(jQuery, window, document)

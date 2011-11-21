@@ -1,19 +1,19 @@
 $1 = Backbone.View.extend({
 
-    defaults: {$2},
+    defaults: {$2}
 
-    events: {$3},
+    , events: {$3}
 
-    tagName: '$4',
-    className: '$5',
+    , tagName: '$4'
+    , className: '$5'
 
 
-    initialize: function(options){
-        this.options = _.extend({}, this.defaults, options);
+    , initialize: function(options){
+        this.options = _.extend({}, this.defaults, options)
         $6
-    },
+    }
 
-    render: function(){
+    , render: function(){
        $7
     }
-});
+})

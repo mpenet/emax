@@ -1,1 +1,1 @@
-$1 = Backbone.Model.extend({$2});
+$1 = Backbone.Model.extend({$2})
