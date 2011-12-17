@@ -160,11 +160,7 @@
 
 ;; theme
 
-<<<<<<< HEAD
 (autoload 'color-theme-zenburn "color-theme-zenburn" nil t)
-=======
-(autoload 'color-theme-zenburn "color-theme-zenburn" "color theme" t)
->>>>>>> 531a757... replace majority of require calls with autoloads & co
 (eval-after-load 'color-theme-zenburn
     '(progn
        (set-face-background 'region "dark slate blue")))
