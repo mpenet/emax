@@ -11,9 +11,10 @@
         (add-to-list 'load-path name)))))
 
 ;; source control
-(require 'magit)
+(autoload 'magit-status "magit" nil t)
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key "\C-c\C-g" 'magit-status)
+
 
 ;; yasnippet
 (require 'yasnippet)
@@ -49,8 +50,10 @@
                 lisp-mode textile-mode markdown-mode tuareg-mode))
   (add-to-list 'ac-modes mode))
 
-(require 'ac-slime)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(autoload 'set-up-slime-ac "ac-slime" nil t)
+(eval-after-load 'ac-slime
+    '(progn (add-hook 'slime-mode-hook 'set-up-slime-ac)))
+
 (define-globalized-minor-mode real-global-auto-complete-mode
   auto-complete-mode (lambda ()
                        (if (and (not (minibufferp (current-buffer)))
@@ -59,26 +62,34 @@
 (real-global-auto-complete-mode t)
 
 ;; js-mode
-(setq js-indent-level 4)
-(add-hook 'js-mode-hook 'yas/minor-mode)
+(eval-after-load 'js-mode
+  '(progn
+     (setq js-indent-level 4)
+     (add-hook 'js-mode-hook 'yas/minor-mode)))
 
 ;; web utilities
-(require 'zencoding-mode)
+(autoload 'zencoding-mode "zencoding-mode" nil t)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
-(setq zencoding-preview-default nil)
+(eval-after-load 'zencoding-mode '(progn (setq zencoding-preview-default nil)))
 
 ;; clojure
-(require 'clojure-mode)
+(autoload 'clojure-mode "clojure-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(eval-after-load 'clojure-mode
+    '(progn
+       ;; leiningen
+       (require 'elein)
+       (global-set-key (kbd "<f9>") 'slime-connect)
+       (global-set-key (kbd "<f10>") 'elein-swank)
+       (global-set-key (kbd "<f11>") 'elein-kill-swank)))
 
 ;; paredit
-(require 'paredit)
+(autoload 'paredit-mode "paredit" nil t)
 (loop for mode-hook
       in '(emacs-lisp-mode-hook
            scheme-mode-hook
-           clojure-mode-hook
-           ;; js-mode-hook
-           )
-      do (add-hook mode-hook 'enable-paredit-mode))
+           clojure-mode-hook)
+      do (add-hook mode-hook (lambda () (paredit-mode +1))))
 
 ;; dont insert space before a paren on js files
 (add-hook 'js-mode-hook
@@ -87,36 +98,33 @@
                            'paredit-space-for-delimiter-predicates)
                           (lambda (_ _) nil))))
 
-(defun my-paredit-delete ()
-  "If a region is active check if it is balanced and delete it otherwise
-   fallback to regular paredit behavior"
-  (interactive)
-  (if mark-active
-      (paredit-delete-region (region-beginning) (region-end))
-    (paredit-backward-delete)))
-
 (eval-after-load 'paredit
   '(progn
+     (defun my-paredit-delete ()
+       "If a region is active check if it is balanced and delete it otherwise
+        fallback to regular paredit behavior"
+       (interactive)
+       (if mark-active
+           (paredit-delete-region (region-beginning) (region-end))
+         (paredit-backward-delete)))
      (define-key paredit-mode-map (kbd "<delete>") 'my-paredit-delete)
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
-;; leiningen
-(require 'elein)
-(global-set-key (kbd "<f9>") 'slime-connect)
-(global-set-key (kbd "<f10>") 'elein-swank)
-(global-set-key (kbd "<f11>") 'elein-kill-swank)
-
+(require 'slime)
 ;; slime + swank-clojure
 (eval-after-load "slime"
   '(progn (slime-setup '(slime-repl slime-fancy))
-          (setq slime-protocol-version 'ignore)))
-(require 'slime)
-(add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-(add-hook 'slime-connected-hook 'slime-redirect-inferior-output)
+          (setq slime-protocol-version 'ignore)
+          (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
+          (add-hook 'slime-connected-hook 'slime-redirect-inferior-output)))
 
 ;; haskell
-(require 'haskell-mode)
-(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file")
+(autoload 'haskell-mode "haskell-mode"  nil t)
+(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
+(eval-after-load 'haskell-mode
+  '(progn (load "~/.emacs.d/elisp/haskell-mode/haskell-site-file")))
+
+
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
@@ -151,26 +159,33 @@
 (global-font-lock-mode 1)
 
 ;; theme
-(require 'color-theme-zenburn)
+
+(autoload 'color-theme-zenburn "color-theme-zenburn" "color theme" t)
+(eval-after-load 'color-theme-zenburn
+    '(progn
+       (set-face-background 'region "dark slate blue")))
 (color-theme-zenburn)
-(set-face-background 'region "dark slate blue")
 
 ;; org-mode
-(require 'org-install)
-(require 'htmlize)
-;; overide org-mode tab behavior
-(defun yas/org-very-safe-expand ()
-  (let ((yas/fallback-behavior 'return-nil))
-    (yas/expand)))
+(autoload 'org-mode "org-install" nil t)
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (make-variable-buffer-local 'yas/trigger-key)
-            (setq yas/trigger-key [tab])
-            (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-            (define-key yas/keymap [tab] 'yas/next-field)))
+(eval-after-load 'org-mode
+    '(progn
+       (require 'htmlize)
+       ;; overide org-mode tab behavior
+       (defun yas/org-very-safe-expand ()
+         (let ((yas/fallback-behavior 'return-nil))
+           (yas/expand)))
 
-(setq org-export-htmlize-output-type 'css)
+       (add-hook 'org-mode-hook
+                 (lambda ()
+                   (make-variable-buffer-local 'yas/trigger-key)
+                   (setq yas/trigger-key [tab])
+                   (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+                   (define-key yas/keymap [tab] 'yas/next-field)))
+
+       (setq org-export-htmlize-output-type 'css)))
+
 ;;       org-confirm-babel-evaluate nil
 ;;       org-src-fontify-natively t
 ;;       org-src-tab-acts-natively t
