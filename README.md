@@ -1,5 +1,5 @@
 
-* Install
+# Install
 
 ```bash
 cd
