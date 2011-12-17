@@ -151,13 +151,9 @@
 (global-font-lock-mode 1)
 
 ;; theme
-(require 'color-theme)
 (require 'color-theme-zenburn)
-(setq color-theme-is-global t)
-;;(color-theme-initialize)
 (color-theme-zenburn)
 (set-face-background 'region "dark slate blue")
-;(color-theme-tangotango)
 
 ;; org-mode
 (require 'org-install)
