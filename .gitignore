@@ -4,3 +4,4 @@ session.*
 /project.hist
 /ac-comphist.dat
 /.org-id-locations
+/tramp
