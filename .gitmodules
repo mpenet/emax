@@ -28,3 +28,6 @@
 [submodule "elisp/paredit"]
 	path = elisp/paredit
 	url = https://github.com/emacsmirror/paredit.git
+[submodule "elisp/haskell-mode"]
+	path = elisp/haskell-mode
+	url = git://github.com/pheaver/haskell-mode.git
