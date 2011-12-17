@@ -456,12 +456,6 @@ directory, select directory. Lastly the file is opened."
 ;; global save hooks
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; automate make-directory if necessary
-(add-hook 'before-save-hook
-          '(lambda ()
-             (or (file-exists-p (file-name-directory buffer-file-name))
-                 (make-directory (file-name-directory buffer-file-name) t))))
-
 ;; don't save emacs session
 (setq save-place nil)
 
