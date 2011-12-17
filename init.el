@@ -52,7 +52,7 @@
 
 (autoload 'set-up-slime-ac "ac-slime" nil t)
 (eval-after-load 'ac-slime
-    '(progn (add-hook 'slime-mode-hook 'set-up-slime-ac)))
+  '(add-hook 'slime-mode-hook 'set-up-slime-ac))
 
 (define-globalized-minor-mode real-global-auto-complete-mode
   auto-complete-mode (lambda ()
@@ -70,7 +70,7 @@
 ;; web utilities
 (autoload 'zencoding-mode "zencoding-mode" nil t)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
-(eval-after-load 'zencoding-mode '(progn (setq zencoding-preview-default nil)))
+(eval-after-load 'zencoding-mode '(setq zencoding-preview-default nil))
 
 ;; clojure
 (autoload 'clojure-mode "clojure-mode" nil t)
@@ -122,7 +122,7 @@
 (autoload 'haskell-mode "haskell-mode"  nil t)
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (eval-after-load 'haskell-mode
-  '(progn (load "~/.emacs.d/elisp/haskell-mode/haskell-site-file")))
+  '(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file"))
 
 
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
@@ -134,7 +134,8 @@
 (setq tramp-default-method "ssh")
 
 ;; css
-(setq css-indent-offset 4)
+(eval-after-load 'css-mode
+  '(setq css-indent-offset 4))
 
 ;; less
 (defun compile-less-on-after-save-hook ()
@@ -162,8 +163,7 @@
 
 (autoload 'color-theme-zenburn "color-theme-zenburn" nil t)
 (eval-after-load 'color-theme-zenburn
-    '(progn
-       (set-face-background 'region "dark slate blue")))
+  '(set-face-background 'region "dark slate blue"))
 (color-theme-zenburn)
 
 ;; org-mode
