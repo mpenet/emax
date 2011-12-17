@@ -19,7 +19,7 @@
 (require 'yasnippet)
 (require 'dropdown-list)
 (yas/initialize)
-;(set-face-background 'yas/field-highlight-face "gray")
+;; (set-face-background 'yas/field-highlight-face "gray")
 (yas/load-directory "~/.emacs.d/elisp/yasnippet/snippets/")
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
@@ -44,9 +44,9 @@
                ac-source-words-in-all-buffer))
 
 (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
-                sass-mode yaml-mode csv-mode espresso-mode haskell-mode
-                html-mode nxml-mode sh-mode smarty-mode clojure-mode
-                lisp-mode textile-mode markdown-mode tuareg-mode))
+                                    sass-mode yaml-mode csv-mode espresso-mode haskell-mode
+                                    html-mode nxml-mode sh-mode smarty-mode clojure-mode
+                                    lisp-mode textile-mode markdown-mode tuareg-mode))
   (add-to-list 'ac-modes mode))
 
 (require 'ac-slime)
@@ -55,7 +55,7 @@
   auto-complete-mode (lambda ()
                        (if (and (not (minibufferp (current-buffer)))
                                 (not (eq 'erc-mode major-mode)))
-                         (auto-complete-mode 1))))
+                           (auto-complete-mode 1))))
 (real-global-auto-complete-mode t)
 
 ;; js-mode
@@ -158,7 +158,7 @@
 ;; org-mode
 (require 'org-install)
 (require 'htmlize)
-;overwrite org-mode tab behavior
+;; overide org-mode tab behavior
 (defun yas/org-very-safe-expand ()
   (let ((yas/fallback-behavior 'return-nil))
     (yas/expand)))
@@ -189,7 +189,7 @@
       ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
 (global-set-key "\C-x\C-b" 'ido-switch-buffer) ;; disable annoying buffer menu
 
-; uniquify buffer names: append path if buffer names are identical
+;; uniquify buffer names: append path if buffer names are identical
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
@@ -223,8 +223,8 @@ directory, select directory. Lastly the file is opened."
 
 (defun file-cache-ido-read (prompt choices)
   (let ((ido-make-buffer-list-hook
-	 (lambda ()
-	   (setq ido-temp-list choices))))
+         (lambda ()
+           (setq ido-temp-list choices))))
     (ido-read-buffer prompt)))
 
 ;; filter out version control files
@@ -287,7 +287,7 @@ directory, select directory. Lastly the file is opened."
   "Connect to ERC, or switch to last active buffer"
   (interactive)
   (if (get-buffer "irc.quakenet.net:6667") ;; ERC already active?
-    (erc-track-switch-buffer 1) ;; yes: switch to last active
+      (erc-track-switch-buffer 1) ;; yes: switch to last active
     (erc :server "irc.quakenet.org" :port 6667 :nick "zcam" :full-name "zcam")))
 
 (erc-track-mode t)
@@ -361,7 +361,7 @@ directory, select directory. Lastly the file is opened."
 ;; poor mans paredit
 (show-paren-mode t)
 (set-face-foreground 'show-paren-match-face "red")
-;(set-face-background 'show-paren-match-face "black")
+;;(set-face-background 'show-paren-match-face "black")
 
 (setq skeleton-pair t)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
@@ -448,11 +448,11 @@ directory, select directory. Lastly the file is opened."
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
-;disable backup
+;; disable backup
 (setq backup-inhibited t)
 (setq make-backup-files nil)
 
-;disable auto save
+;; disable auto save
 (setq auto-save-default nil)
 (setq auto-save-list-file-prefix nil)
 
@@ -471,8 +471,8 @@ directory, select directory. Lastly the file is opened."
 ;; apply the PATH environment variable to Emacs and set the exec-path
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell
-      (replace-regexp-in-string "[[:space:]\n]*$" ""
-        (shell-command-to-string "$SHELL -i -c 'echo $PATH'"))))
+         (replace-regexp-in-string "[[:space:]\n]*$" ""
+                                   (shell-command-to-string "$SHELL -i -c 'echo $PATH'"))))
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 (set-exec-path-from-shell-PATH)
