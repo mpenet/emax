@@ -31,3 +31,6 @@
 [submodule "elisp/haskell-mode"]
 	path = elisp/haskell-mode
 	url = git://github.com/pheaver/haskell-mode.git
+[submodule "elisp/htmlize"]
+	path = elisp/htmlize
+	url = git://github.com/emacsmirror/htmlize.git
