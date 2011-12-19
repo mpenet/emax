@@ -19,12 +19,10 @@
 ;; yasnippet
 (require 'yasnippet)
 (require 'dropdown-list)
-(yas/initialize)
-;; (set-face-background 'yas/field-highlight-face "gray")
-(yas/load-directory "~/.emacs.d/elisp/yasnippet/snippets/")
+(setq yas/snippet-dirs "~/.emacs.d/extras/yasnippet/snippets")
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
-
+(yas/global-mode 1)
 
 ;; autocomplete mode
 (require 'auto-complete-config)

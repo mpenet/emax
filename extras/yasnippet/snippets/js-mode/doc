@@ -1,0 +1,8 @@
+# name: doc
+# key: doc
+# --
+#name : doc
+# --
+/**
+ * $1
+ */

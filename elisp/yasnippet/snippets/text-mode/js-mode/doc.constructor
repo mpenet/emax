@@ -1,7 +1,0 @@
-#name : doc.constructor
-# --
-/**
- * $1
- * @constructor
- */
-

@@ -1,0 +1,8 @@
+# name: defrec
+# key: defrec
+# --
+(defrecord
+  ^{"$1"}
+  $2
+  [$3]
+  $0)

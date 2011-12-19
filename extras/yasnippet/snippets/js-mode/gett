@@ -1,0 +1,4 @@
+# name: gett
+# key: gett
+# --
+gettext('$1')$0

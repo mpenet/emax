@@ -1,5 +1,0 @@
-# -*- coding: utf-8 -*-
-# name: deftest
-# --
-(deftest $1
-  $0)

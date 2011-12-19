@@ -1,0 +1,4 @@
+# name: extend
+# key: extend
+# --
+$.extend($1, {$0})

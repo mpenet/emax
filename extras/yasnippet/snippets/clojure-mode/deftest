@@ -1,0 +1,5 @@
+# name: detest
+# key: detest
+# --
+(deftest $1
+  $0)

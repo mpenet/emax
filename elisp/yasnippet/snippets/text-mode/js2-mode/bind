@@ -1,3 +1,0 @@
-bind('${1: event}', function(e){
-  $0
-});

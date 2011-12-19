@@ -1,5 +1,0 @@
-#name : <select id="..." name="">...</select>
-# --
-<select id="$1" name="$2">
-  $0
-</select>

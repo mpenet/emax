@@ -1,0 +1,6 @@
+# name: bind
+# key: bind
+# --
+bind('${1: event}', function(e){
+  $0
+})

@@ -1,0 +1,6 @@
+# name: def
+# key: def
+# --
+(def
+  ^{:doc "$1"}
+  $0)

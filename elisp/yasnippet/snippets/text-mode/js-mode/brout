@@ -1,9 +1,0 @@
-$1 = Backbone.Router.extend({
-
-    routes: {
-        $2: $3
-    }
-
-    $4
-
-})

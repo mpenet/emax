@@ -1,3 +1,0 @@
-#name : <option value="...">...</option>
-# --
-<option value="$1">$0</option>

@@ -1,3 +1,0 @@
-delegate('${1: event}', {
-  $0
-})

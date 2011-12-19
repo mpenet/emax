@@ -1,0 +1,12 @@
+# name: bcoll
+# key: bcoll
+# --
+$1 = Backbone.Collection.extend({
+
+    defaults: {$2}
+
+    , initialize: function(models, options){
+        this.options = _.extend({}, this.defaults, options)
+        $3
+    }
+})

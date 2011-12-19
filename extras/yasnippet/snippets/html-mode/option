@@ -1,0 +1,4 @@
+# name : <option value="...">...</option>
+# key: option
+# --
+<option value="$1">$0</option>

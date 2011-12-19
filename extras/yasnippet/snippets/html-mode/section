@@ -1,0 +1,6 @@
+#name : <section>...</section>
+# key: section
+# --
+<section$1>
+  $0
+</section>

@@ -1,0 +1,4 @@
+# name: $this
+# key: $this
+# --
+var $this = $(this);

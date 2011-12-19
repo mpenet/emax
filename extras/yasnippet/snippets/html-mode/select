@@ -1,0 +1,6 @@
+# name : <select name="">...</select>
+# key: select
+# --
+<select name="$1">
+  $0
+</select>

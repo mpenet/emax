@@ -1,0 +1,12 @@
+# name: obj
+# key: obj
+# --
+var $1 = $2.$1 = function() {
+  $0
+}
+
+$.extend($1.prototype, {
+
+})
+
+$.extend($1, {$3})

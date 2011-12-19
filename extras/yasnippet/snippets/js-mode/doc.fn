@@ -1,0 +1,9 @@
+# name : doc.fn
+# key: doc
+# --
+/**
+ * $1
+ * @return $2
+ * @type $3
+ * @param {$4} $5 $6
+ */

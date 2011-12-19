@@ -34,3 +34,6 @@
 [submodule "elisp/htmlize"]
 	path = elisp/htmlize
 	url = git://github.com/emacsmirror/htmlize.git
+[submodule "elisp/yasnippet"]
+	path = elisp/yasnippet
+	url = git://github.com/capitaomorte/yasnippet.git

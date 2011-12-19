@@ -1,0 +1,4 @@
+# name: bmod
+# key: bmod
+# --
+$1 = Backbone.Model.extend({$2})

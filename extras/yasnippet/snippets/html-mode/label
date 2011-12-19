@@ -1,0 +1,4 @@
+# name : <label...>...</label>
+# key: label
+# --
+<label for="$1">$0</label>

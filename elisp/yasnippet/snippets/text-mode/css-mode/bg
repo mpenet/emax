@@ -1,3 +1,0 @@
-#name : background: ...
-# --
-background: #$1 url($2) ${3:no-repeat} ${4:0} ${5:0};
