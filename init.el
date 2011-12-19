@@ -61,16 +61,19 @@
                            (auto-complete-mode 1))))
 (real-global-auto-complete-mode t)
 
+
 ;; js-mode
 (eval-after-load 'js-mode
   '(progn
      (setq js-indent-level 4)
      (add-hook 'js-mode-hook 'yas/minor-mode)))
 
+
 ;; web utilities
 (autoload 'zencoding-mode "zencoding-mode" nil t)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
 (eval-after-load 'zencoding-mode '(setq zencoding-preview-default nil))
+
 
 ;; clojure
 (autoload 'clojure-mode "clojure-mode" nil t)
@@ -82,6 +85,7 @@
        (global-set-key (kbd "<f9>") 'slime-connect)
        (global-set-key (kbd "<f10>") 'elein-swank)
        (global-set-key (kbd "<f11>") 'elein-kill-swank)))
+
 
 ;; paredit
 (autoload 'paredit-mode "paredit" nil t)
@@ -110,6 +114,7 @@
      (define-key paredit-mode-map (kbd "<delete>") 'my-paredit-delete)
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
+
 (require 'slime)
 ;; slime + swank-clojure
 (eval-after-load "slime"
@@ -130,12 +135,15 @@
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
+
 ;; tramp
 (setq tramp-default-method "ssh")
+
 
 ;; css
 (eval-after-load 'css-mode
   '(setq css-indent-offset 4))
+
 
 ;; less
 (defun compile-less-on-after-save-hook ()
@@ -153,18 +161,20 @@
 (add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
+
 ;; font
 (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
 (setq ns-use-system-highlight-color nil)
 (setq ns-pop-up-frames nil)
 (global-font-lock-mode 1)
 
-;; theme
 
+;; theme
 (autoload 'color-theme-zenburn "color-theme-zenburn" nil t)
 (eval-after-load 'color-theme-zenburn
   '(set-face-background 'region "dark slate blue"))
 (color-theme-zenburn)
+
 
 ;; org-mode
 (autoload 'org-mode "org-install" nil t)
@@ -186,13 +196,8 @@
 
        (setq org-export-htmlize-output-type 'css)))
 
-;;       org-confirm-babel-evaluate nil
-;;       org-src-fontify-natively t
-;;       org-src-tab-acts-natively t
-;;       )
 
-
-;; buffers & files navigation
+;; buffers, project, files navigation
 (ido-mode t)
 (ido-everywhere t)
 (setq ido-enable-flex-matching t
@@ -207,15 +212,6 @@
 ;; uniquify buffer names: append path if buffer names are identical
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-
-;; quick project file navigation
-(require 'filecache)
-
-(setq file-cache-ignore-patterns (list "/[.]git" "/[.]svn" "\\.svn-base$"
-                                       "\\.jar$" "\\.gif$" "\\.jpg$" "\\.png$"
-                                       "\\.log$"))
-(loop for pattern in file-cache-ignore-patterns
-      do (add-to-list 'file-cache-filter-regexps pattern))
 
 (defun file-cache-ido-find-file (file)
   "Using ido, interactively open file from file cache'.
@@ -242,11 +238,45 @@ directory, select directory. Lastly the file is opened."
            (setq ido-temp-list choices))))
     (ido-read-buffer prompt)))
 
-;; filter out version control files
-(global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
 
-(require 'recentf)
-(setq recentf-max-saved-items 100)
+;; simple project management
+(setq project-history-file "~/.emacs.d/project.hist")
+
+(defun project-path-prompt (path)
+  (interactive (list
+                (ido-read-directory-name
+                 "Project root: ")))
+  (set-project path))
+(global-set-key (kbd "<f12>") 'project-path-prompt)
+
+(defun set-project (path)
+  (save-project-history path)
+  (file-cache-clear-cache)
+  (file-cache-add-directory-using-find path))
+
+(defun load-project-from-history ()
+  (when (file-exists-p project-history-file)
+    (with-temp-buffer
+      (insert-file-contents project-history-file)
+      (set-project (buffer-string)))))
+
+(defun save-project-history (project-path)
+  (when (file-exists-p project-history-file)
+    (delete-file project-history-file))
+  (append-to-file project-path nil project-history-file))
+
+(eval-after-load "ido"
+    '(progn
+       ;; quick project file navigation
+       (require 'filecache)
+       (setq file-cache-ignore-patterns (list "/[.]git" "/[.]svn" "\\.svn-base$"
+                                              "\\.jar$" "\\.gif$" "\\.jpg$" "\\.png$"
+                                              "\\.log$"))
+       (loop for pattern in file-cache-ignore-patterns
+             do (add-to-list 'file-cache-filter-regexps pattern))
+
+       (global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
+       (load-project-from-history)))
 
 ;; kb shortcuts
 (global-set-key (kbd "C-z")   'undo)
@@ -297,6 +327,7 @@ directory, select directory. Lastly the file is opened."
                                try-complete-file-name-partially
                                try-complete-file-name))
 
+
 ;; ERC
 (defun djcb-erc-start-or-switch ()
   "Connect to ERC, or switch to last active buffer"
@@ -345,6 +376,7 @@ directory, select directory. Lastly the file is opened."
   'no-easy-keys-minor-mode-map :global t)
 (no-easy-keys-minor-mode 1)
 
+
 ;; macros
 (defun start-or-end-kbd-macro ()
   "Starts recording a keyboard macro, or if already recording,
@@ -353,6 +385,7 @@ directory, select directory. Lastly the file is opened."
   (if defining-kbd-macro
       (end-kbd-macro)
     (start-kbd-macro nil)))
+
 
 ;; Turn off unncessary ui stuff
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -366,7 +399,6 @@ directory, select directory. Lastly the file is opened."
 (prefer-coding-system 'utf-8)
 (setq slime-net-coding-system 'utf-8-unix)
 
-
 ;; highlight the region between the mark and point
 (transient-mark-mode t)
 
@@ -377,11 +409,11 @@ directory, select directory. Lastly the file is opened."
 (show-paren-mode t)
 (set-face-foreground 'show-paren-match-face "red")
 ;;(set-face-background 'show-paren-match-face "black")
-
 (setq skeleton-pair t)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
+
 
 ;; add the current line number to the mode bar
 (line-number-mode t)
@@ -467,32 +499,3 @@ directory, select directory. Lastly the file is opened."
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 (set-exec-path-from-shell-PATH)
-
-;; simple project management
-
-(setq project-history-file "~/.emacs.d/project.hist")
-
-(defun project-path-prompt (path)
-  (interactive (list
-                (ido-read-directory-name
-                 "Project root: ")))
-  (set-project path))
-(global-set-key (kbd "<f12>") 'project-path-prompt)
-
-(defun set-project (path)
-  (save-project-history path)
-  (file-cache-clear-cache)
-  (file-cache-add-directory-using-find path))
-
-(defun load-project-from-history ()
-  (when (file-exists-p project-history-file)
-    (with-temp-buffer
-      (insert-file-contents project-history-file)
-      (set-project (buffer-string)))))
-
-(defun save-project-history (project-path)
-  (when (file-exists-p project-history-file)
-    (delete-file project-history-file))
-  (append-to-file project-path nil project-history-file))
-
-(load-project-from-history)
