@@ -211,70 +211,70 @@
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
-(defun file-cache-ido-find-file (file)
-  "Using ido, interactively open file from file cache'.
+(autoload 'file-cache-ido-find-file "filecache")
+(eval-after-load 'filecache
+  '(progn
+     (defun file-cache-ido-find-file (file)
+       "Using ido, interactively open file from file cache'.
 First select a file, matched using ido-switch-buffer against the contents
 in `file-cache-alist'. If the file exist in more than one
 directory, select directory. Lastly the file is opened."
-  (interactive (list (file-cache-ido-read "File: "
-                                          (mapcar
-                                           (lambda (x)
-                                             (car x))
-                                           file-cache-alist))))
-  (let* ((record (assoc file file-cache-alist)))
-    (find-file
-     (expand-file-name
-      file
-      (if (= (length record) 2)
-          (car (cdr record))
-        (file-cache-ido-read
-         (format "Find %s in dir: " file) (cdr record)))))))
+       (interactive (list (file-cache-ido-read "File: "
+                                               (mapcar
+                                                (lambda (x)
+                                                  (car x))
+                                                file-cache-alist))))
+       (let* ((record (assoc file file-cache-alist)))
+         (find-file
+          (expand-file-name
+           file
+           (if (= (length record) 2)
+               (car (cdr record))
+             (file-cache-ido-read
+              (format "Find %s in dir: " file) (cdr record)))))))
 
-(defun file-cache-ido-read (prompt choices)
-  (let ((ido-make-buffer-list-hook
-         (lambda ()
-           (setq ido-temp-list choices))))
-    (ido-read-buffer prompt)))
+     (defun file-cache-ido-read (prompt choices)
+       (let ((ido-make-buffer-list-hook
+              (lambda ()
+                (setq ido-temp-list choices))))
+         (ido-read-buffer prompt)))
+
+     (setq file-cache-ignore-patterns (list "/[.]git" "/[.]svn" "\\.svn-base$"
+                                            "\\.jar$" "\\.gif$" "\\.jpg$" "\\.png$"
+                                            "\\.log$"))
+     (loop for pattern in file-cache-ignore-patterns
+           do (add-to-list 'file-cache-filter-regexps pattern))
 
 
-;; simple project management
-(setq project-history-file "~/.emacs.d/project.hist")
+     ;; simple project management
+     (setq project-history-file "~/.emacs.d/project.hist")
 
-(defun project-path-prompt (path)
-  (interactive (list
-                (ido-read-directory-name
-                 "Project root: ")))
-  (set-project path))
-(global-set-key (kbd "<f12>") 'project-path-prompt)
+     (defun project-path-prompt (path)
+       (interactive (list
+                     (ido-read-directory-name
+                      "Project root: ")))
+       (set-project path))
+     (global-set-key (kbd "<f12>") 'project-path-prompt)
 
-(defun set-project (path)
-  (save-project-history path)
-  (file-cache-clear-cache)
-  (file-cache-add-directory-using-find path))
+     (defun set-project (path)
+       (save-project-history path)
+       (file-cache-clear-cache)
+       (file-cache-add-directory-using-find path))
 
-(defun load-project-from-history ()
-  (when (file-exists-p project-history-file)
-    (with-temp-buffer
-      (insert-file-contents project-history-file)
-      (set-project (buffer-string)))))
+     (defun load-project-from-history ()
+       (when (file-exists-p project-history-file)
+         (with-temp-buffer
+           (insert-file-contents project-history-file)
+           (set-project (buffer-string)))))
 
-(defun save-project-history (project-path)
-  (when (file-exists-p project-history-file)
-    (delete-file project-history-file))
-  (append-to-file project-path nil project-history-file))
+     (defun save-project-history (project-path)
+       (when (file-exists-p project-history-file)
+         (delete-file project-history-file))
+       (append-to-file project-path nil project-history-file))
 
-(eval-after-load "ido"
-    '(progn
-       ;; quick project file navigation
-       (require 'filecache)
-       (setq file-cache-ignore-patterns (list "/[.]git" "/[.]svn" "\\.svn-base$"
-                                              "\\.jar$" "\\.gif$" "\\.jpg$" "\\.png$"
-                                              "\\.log$"))
-       (loop for pattern in file-cache-ignore-patterns
-             do (add-to-list 'file-cache-filter-regexps pattern))
+     (load-project-from-history)))
 
-       (global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
-       (load-project-from-history)))
+(global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
 
 ;; kb shortcuts
 (global-set-key (kbd "C-z")   'undo)
