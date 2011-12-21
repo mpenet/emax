@@ -77,13 +77,13 @@
 (autoload 'clojure-mode "clojure-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 (eval-after-load 'clojure-mode
-    '(progn
-       ;; leiningen
-       (require 'elein)
-       (global-set-key (kbd "<f9>") 'slime-connect)
-       (global-set-key (kbd "<f10>") 'elein-swank)
-       (global-set-key (kbd "<f11>") 'elein-kill-swank)))
+  '(progn
+     (global-set-key (kbd "<f10>") 'elein-swank)
+     (global-set-key (kbd "<f11>") 'elein-kill-swank)
+     (global-set-key (kbd "<f9>") 'slime-connect)))
 
+;; leiningen
+(autoload 'clojure-mode "elein" nil t)
 
 ;; paredit
 (autoload 'paredit-mode "paredit" nil t)
