@@ -78,12 +78,14 @@
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 (eval-after-load 'clojure-mode
   '(progn
-     (global-set-key (kbd "<f10>") 'elein-swank)
-     (global-set-key (kbd "<f11>") 'elein-kill-swank)
-     (global-set-key (kbd "<f9>") 'slime-connect)))
+     (global-set-key (kbd "<f9>") 'slime-connect)
+     (require 'elein)))
 
 ;; leiningen
-(autoload 'clojure-mode "elein" nil t)
+(eval-after-load 'elein
+  '(progn
+     (global-set-key (kbd "<f10>") 'elein-swank)
+     (global-set-key (kbd "<f11>") 'elein-kill-swank)))
 
 ;; paredit
 (autoload 'paredit-mode "paredit" nil t)
@@ -113,8 +115,8 @@
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
 
-(require 'slime)
 ;; slime + swank-clojure
+(require 'slime)
 (eval-after-load "slime"
   '(progn (slime-setup '(slime-repl slime-fancy))
           (setq slime-protocol-version 'ignore)
