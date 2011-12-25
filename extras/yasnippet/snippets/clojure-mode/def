@@ -1,6 +1,4 @@
 # name: def
 # key: def
 # --
-(def
-  ^{:doc "$1"}
-  $0)
+(def $0)

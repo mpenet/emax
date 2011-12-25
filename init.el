@@ -78,9 +78,11 @@
 (add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
 (eval-after-load 'clojure-mode
   '(progn
-     (global-set-key (kbd "<f9>") 'slime-connect)
-     (require 'elein)))
+     (global-set-key (kbd "<f9>") 'slime-connect)))
 
+
+(autoload 'elein "elein" nil t)
+(add-hook 'clojure-mode-hook 'elein)
 ;; leiningen
 (eval-after-load 'elein
   '(progn
@@ -116,24 +118,23 @@
 
 
 ;; slime + swank-clojure
-(require 'slime)
+(autoload 'slime "slime" nil t)
+(autoload 'slime-mode "slime" nil t)
+(autoload 'slime-connect "slime" nil t)
+(autoload 'slime-set-inferior-process "slime" nil t)
 (eval-after-load "slime"
-  '(progn (slime-setup '(slime-repl slime-fancy))
-          (setq slime-protocol-version 'ignore)
-          (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-          (add-hook 'slime-connected-hook 'slime-redirect-inferior-output)))
+  '(progn
+     (slime-setup '(slime-repl slime-fancy))
+     (setq slime-protocol-version 'ignore)
+     (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
+     (add-hook 'slime-connected-hook 'slime-redirect-inferior-output)))
+
 
 ;; haskell
 (autoload 'haskell-mode "haskell-mode"  nil t)
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (eval-after-load 'haskell-mode
   '(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file"))
-
-
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
 
 
 ;; tramp
@@ -178,24 +179,22 @@
 
 ;; org-mode
 (autoload 'org-mode "org-install" nil t)
-
 (eval-after-load 'org-mode
     '(progn
-       (require 'htmlize)
        ;; overide org-mode tab behavior
        (defun yas/org-very-safe-expand ()
          (let ((yas/fallback-behavior 'return-nil))
            (yas/expand)))
-
        (add-hook 'org-mode-hook
                  (lambda ()
                    (make-variable-buffer-local 'yas/trigger-key)
                    (setq yas/trigger-key [tab])
                    (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-                   (define-key yas/keymap [tab] 'yas/next-field)))
+                   (define-key yas/keymap [tab] 'yas/next-field)))))
 
-       (setq org-export-htmlize-output-type 'css)))
-
+(autoload 'htmlize-region "htmlize" nil t)
+(autoload 'htmlize-buffer "htmlize" nil t)
+(eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
 ;; buffers, project, files navigation
 (ido-mode t)
