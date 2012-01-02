@@ -83,6 +83,7 @@
      (global-set-key (kbd "<f11>") 'elein-kill-swank)))
 
 (autoload 'elein-swank "elein" nil t)
+(autoload 'elein-deps "elein" nil t)
 
 ;; paredit
 (autoload 'paredit-mode "paredit" nil t)
