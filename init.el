@@ -238,7 +238,7 @@ directory, select directory. Lastly the file is opened."
 
      (setq file-cache-ignore-patterns (list "/[.]git" "/[.]svn" "\\.svn-base$"
                                             "\\.jar$" "\\.gif$" "\\.jpg$" "\\.png$"
-                                            "\\.log$"))
+                                            "\\.log$" "\\.css$"))
      (loop for pattern in file-cache-ignore-patterns
            do (add-to-list 'file-cache-filter-regexps pattern))
 
