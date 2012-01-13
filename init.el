@@ -44,13 +44,13 @@
 
 (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
                 sass-mode yaml-mode csv-mode espresso-mode haskell-mode
-                html-mode nxml-mode sh-mode smarty-mode clojure-mode
+                html-mode nxml-mode sh-mode smarty-mode clojure-mode slime-repl-mode
                 lisp-mode textile-mode markdown-mode tuareg-mode))
   (add-to-list 'ac-modes mode))
 
 (autoload 'set-up-slime-ac "ac-slime" nil t)
-(eval-after-load 'ac-slime
-  '(add-hook 'slime-mode-hook 'set-up-slime-ac))
+(autoload 'ac-slime "ac-slime" nil t)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
 
 (define-globalized-minor-mode real-global-auto-complete-mode
   auto-complete-mode (lambda ()
@@ -123,6 +123,7 @@
      (slime-setup '(slime-repl slime-fancy))
      (setq slime-protocol-version 'ignore)
      (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
+     (add-hook 'slime-repl-mode-hook 'clojure-mode)
      (add-hook 'slime-connected-hook 'slime-redirect-inferior-output)))
 
 
