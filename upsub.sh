@@ -1,4 +1,1 @@
-for file in elisp/*
-do
-    cd $file && git pull origin master && cd -;
-done
+git submodule foreach git pull
