@@ -135,7 +135,7 @@
 
 
 ;; outlet
-(add-to-list 'auto-mode-alist '("\\.ol$" . scheme-mode))
+(add-to-list 'auto-mode-alist '("\\.ol$" . common-lisp-mode))
 
 
 ;; tramp
