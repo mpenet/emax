@@ -123,7 +123,7 @@
      (slime-setup '(slime-repl slime-fancy))
      (setq slime-protocol-version 'ignore)
      (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-     (add-hook 'slime-repl-mode-hook 'clojure-mode)
+     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
      (add-hook 'slime-connected-hook 'slime-redirect-inferior-output)))
 
 
