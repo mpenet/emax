@@ -113,7 +113,7 @@
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
 
-;; slime + swank-clojure
+;; slime
 (autoload 'slime "slime" nil t)
 (autoload 'slime-mode "slime" nil t)
 (autoload 'slime-connect "slime" nil t)
@@ -132,6 +132,10 @@
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (eval-after-load 'haskell-mode
   '(load "~/.emacs.d/elisp/haskell-mode/haskell-site-file"))
+
+
+;; outlet
+(add-to-list 'auto-mode-alist '("\\.ol$" . scheme-mode))
 
 
 ;; tramp
