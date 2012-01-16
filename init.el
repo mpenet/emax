@@ -1,3 +1,4 @@
+
 ;; C-u 0 M-x byte-recompile-directory
 
 ;; add base plugin dir + subdirs to load-path
@@ -160,7 +161,8 @@
                               (file-name-directory file-name) "../css/"
                               (file-name-sans-extension (file-name-nondirectory
                                                          file-name))
-                              ".css") nil nil))))))
+                              ".css") nil nil))))
+            nil t))
 (add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
 (add-hook 'css-mode-hook 'rainbow-mode)
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
