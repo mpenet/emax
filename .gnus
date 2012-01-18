@@ -16,7 +16,7 @@
 
 
 ;; got this line from one of the tutorials. Seemed interesting enough
-(setq gnus-invalid-group-regexp "[:`'\"]\\|^$")
+;;(setq gnus-invalid-group-regexp "[:`'\"]\\|^$")
 
 ;; standard way of getting imap going
 (setq gnus-select-method
