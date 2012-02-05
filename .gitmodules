@@ -40,3 +40,6 @@
 [submodule "elisp/rainbow-mode"]
 	path = elisp/rainbow-mode
 	url = git://github.com/emacsmirror/rainbow-mode.git
+[submodule "elisp/smex"]
+	path = elisp/smex
+	url = https://github.com/nonsequitur/smex.git
