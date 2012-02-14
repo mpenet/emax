@@ -43,3 +43,6 @@
 [submodule "elisp/smex"]
 	path = elisp/smex
 	url = https://github.com/nonsequitur/smex.git
+[submodule "elisp/yaml-mode"]
+	path = elisp/yaml-mode
+	url = https://github.com/yoshiki/yaml-mode.git
