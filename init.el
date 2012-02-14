@@ -290,6 +290,15 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "C-x m") 'smex)
 
 
+;; winner-mode
+(winner-mode 1)
+(setq winner-dont-bind-my-keys t)
+(global-set-key "\C-x\C-u" 'winner-undo)
+(global-set-key (kbd "C-x u") 'winner-undo)
+(global-set-key "\C-x\C-j" 'winner-redo)
+(global-set-key (kbd "C-x j") 'winner-redo)
+
+
 ;; kb shortcuts
 (global-set-key (kbd "C-z")   'undo)
 (global-set-key (kbd "<f4>") 'start-or-end-kbd-macro)
@@ -399,7 +408,6 @@ directory, select directory. Lastly the file is opened."
   (if defining-kbd-macro
       (end-kbd-macro)
     (start-kbd-macro nil)))
-
 
 ;; Turn off unncessary ui stuff
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
