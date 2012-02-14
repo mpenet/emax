@@ -168,7 +168,7 @@
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 (autoload 'yaml-mode "yaml-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
 
 ;; font
 (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
