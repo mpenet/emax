@@ -179,8 +179,8 @@
 
 ;; theme
 (autoload 'color-theme-zenburn "color-theme-zenburn" nil t)
-;; (eval-after-load 'color-theme-zenburn
-;;   '(set-face-background 'region "dark slate blue"))
+(eval-after-load 'color-theme-zenburn
+  '(set-face-background 'region "#6f6f6f"))
 (color-theme-zenburn)
 
 
