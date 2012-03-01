@@ -16,7 +16,6 @@
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key "\C-c\C-g" 'magit-status)
 
-
 ;; yasnippet
 (require 'yasnippet)
 (require 'dropdown-list)
@@ -302,6 +301,9 @@ directory, select directory. Lastly the file is opened."
 
 
 ;; kb shortcuts
+(global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "<C-return>") 'newline)
+
 (global-set-key (kbd "C-z")   'undo)
 (global-set-key (kbd "<f4>") 'start-or-end-kbd-macro)
 (global-set-key (kbd "<f5>") 'call-last-kbd-macro)
