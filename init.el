@@ -219,6 +219,7 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 (autoload 'file-cache-ido-find-file "filecache")
+(autoload 'project-path-prompt "filecache")
 (eval-after-load 'filecache
   '(progn
      (defun file-cache-ido-find-file (file)
@@ -261,7 +262,7 @@ directory, select directory. Lastly the file is opened."
                      (ido-read-directory-name
                       "Project root: ")))
        (set-project path))
-     (global-set-key (kbd "<f12>") 'project-path-prompt)
+
 
      (defun set-project (path)
        (save-project-history path)
@@ -282,7 +283,7 @@ directory, select directory. Lastly the file is opened."
      (load-project-from-history)))
 
 (global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
-
+(global-set-key (kbd "<f12>") 'project-path-prompt)
 
 ;; smex
 (autoload 'smex "smex" nil t)
