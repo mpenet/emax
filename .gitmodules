@@ -46,3 +46,6 @@
 [submodule "elisp/yaml-mode"]
 	path = elisp/yaml-mode
 	url = https://github.com/yoshiki/yaml-mode.git
+[submodule "extras/yasnippet/snippets/clojure-mode"]
+	path = extras/yasnippet/snippets/clojure-mode
+	url = git://github.com/mpenet/clojure-snippets.git
