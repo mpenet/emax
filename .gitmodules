@@ -49,3 +49,6 @@
 [submodule "extras/yasnippet/snippets/clojure-mode"]
 	path = extras/yasnippet/snippets/clojure-mode
 	url = git://github.com/mpenet/clojure-snippets.git
+[submodule "elisp/popup"]
+	path = elisp/popup
+	url = https://github.com/m2ym/popup-el.git
