@@ -75,7 +75,7 @@
 
 ;; clojure
 (autoload 'clojure-mode "clojure-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(add-to-list 'auto-mode-alist '("\\.cljs?$" . clojure-mode))
 (eval-after-load 'clojure-mode
   '(progn
      (global-set-key (kbd "<f9>") 'slime-connect)
