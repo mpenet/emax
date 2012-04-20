@@ -339,12 +339,8 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 
-(defun open-term ()
-  (interactive)
-  (ansi-term "bash"))
-
-(global-set-key (kbd "C-x t") 'open-term)
-(global-set-key "\C-x\C-t" 'open-term)
+(global-set-key (kbd "C-x t") 'eshell)
+(global-set-key "\C-x\C-t" 'eshell)
 
 
 ;; hippie expand + dabbrev-expand
