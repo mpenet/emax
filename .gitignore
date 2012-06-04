@@ -5,3 +5,4 @@ session.*
 /ac-comphist.dat
 /.org-id-locations
 /tramp
+/history
