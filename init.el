@@ -391,8 +391,21 @@ directory, select directory. Lastly the file is opened."
   (erc-tls :server "shore.irc.grove.io" :port 6697
            :nick "mpenet" :password grove-connect-password))
 
+(defun erc-connect/quakenet ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (erc :server "irc.quakenet.org"
+       :port 6667
+       :nick "mpenet"
+       :full-name "mpenet"))
+
+(setq erc-autojoin-channels-alist
+      '(("freenode.net" "#clojure" "#haskell")
+        ("quakenet.org" "#ratatouil")))
+
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
 (global-set-key (kbd "C-c e g") 'erc-connect/groveio)
+(global-set-key (kbd "C-c e q") 'erc-connect/quakenet)
 
 
 ;; look 'Ma no arrows
