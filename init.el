@@ -356,13 +356,9 @@ directory, select directory. Lastly the file is opened."
 
 
 ;; ERC
-(defun djcb-erc-start-or-switch ()
-  "Connect to ERC, or switch to last active buffer"
-  (interactive)
-  (if (get-buffer "irc.freenode.net:6667") ;; ERC already active?
-      (erc-track-switch-buffer 1) ;; yes: switch to last active
-    (erc :server "irc.freenode.net" :port 6667 :nick "mpenet" :full-name "mpenet")))
-
+(load "~/.erc")
+(require 'erc-services)
+(erc-services-mode 1)
 (erc-track-mode t)
 
 (setq erc-modules '(netsplit fill track completion ring button autojoin
@@ -376,7 +372,27 @@ directory, select directory. Lastly the file is opened."
       erc-insert-timestamp-function 'erc-insert-timestamp-left
       erc-prompt-for-nickserv-password nil)
 
-(global-set-key (kbd "C-c e") 'djcb-erc-start-or-switch)
+(defun erc-connect/freenode ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (erc :server "irc.freenode.net"
+       :port 6667
+       :nick "mpenet"
+       :full-name "mpenet"))
+
+(defun erc-connect/groveio ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (add-to-list 'erc-networks-alist '(grove "irc.grove.io"))
+  (add-to-list 'erc-nickserv-alist
+               '(grove "NickServ!NickServ@services."
+                       "This nickname is registered."
+                       "NickServ" "IDENTIFY" nil))
+  (erc-tls :server "shore.irc.grove.io" :port 6697
+           :nick "mpenet" :password grove-connect-password))
+
+(global-set-key (kbd "C-c e f") 'erc-connect/freenode)
+(global-set-key (kbd "C-c e g") 'erc-connect/groveio)
 
 
 ;; look 'Ma no arrows
