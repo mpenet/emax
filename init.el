@@ -356,7 +356,7 @@ directory, select directory. Lastly the file is opened."
 
 
 ;; ERC
-(load "~/.erc")
+(load "~/.erc" t)
 (require 'erc-services)
 (erc-services-mode 1)
 (erc-track-mode t)
