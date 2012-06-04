@@ -1,0 +1,25 @@
+alias be bundle exec $*
+alias gsu git submodule update --init --recursive
+alias glt git log -n 10
+alias gco git checkout $*
+alias gbv git branch -v $*
+alias gb git branch $*
+alias gst git status
+alias saptd sudo aptitude update $*
+alias saptr sudo aptitude remove $*
+alias sapti sudo aptitude install $*
+alias sapts apt-cache show $*
+alias saptc apt-cache search $*
+alias la ls -a $*
+alias ll ls -l $*
+alias lh ls -l -h $*
+alias emacs find-file $1
+alias top proced
+alias gerp grep $*
+alias c curl $*
+alias f find $*
+alias g git $*
+alias h heroku $*
+alias l lein $*
+alias r rgrep $*
+alias s ssh $*

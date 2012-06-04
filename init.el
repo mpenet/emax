@@ -1,11 +1,13 @@
-
 ;; C-u 0 M-x byte-recompile-directory
 
+(setq base-dir "~/.emacs.d/")
+(defalias 'concat-base (apply-partially 'concat base-dir))
+
 ;; add base plugin dir + subdirs to load-path
-(let ((base "~/.emacs.d/elisp"))
-  (add-to-list 'load-path base)
-  (dolist (f (directory-files base))
-    (let ((name (concat base "/" f)))
+(let ((modules-dir (concat-base "elisp")))
+  (add-to-list 'load-path modules-dir)
+  (dolist (f (directory-files modules-dir))
+    (let ((name (concat modules-dir "/" f)))
       (when (and (file-directory-p name)
                  (not (equal f ".."))
                  (not (equal f ".")))
@@ -19,14 +21,14 @@
 ;; yasnippet
 (require 'yasnippet)
 (require 'dropdown-list)
-(setq yas/snippet-dirs "~/.emacs.d/extras/yasnippet/snippets")
+(setq yas/snippet-dirs (concat-base "extras/yasnippet/snippets"))
 (setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
 (setq yas/indent-line nil)
 (yas/global-mode 1)
 
 ;; autocomplete mode
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+(add-to-list 'ac-dictionary-directories (concat-base "ac-dict"))
 (ac-config-default)
 (global-auto-complete-mode t)
 (auto-complete-mode t)
@@ -259,7 +261,7 @@ directory, select directory. Lastly the file is opened."
 
 
      ;; simple project management
-     (setq project-history-file "~/.emacs.d/project.hist")
+     (setq project-history-file (concat-base "project.hist"))
 
      (defun project-path-prompt (path)
        (interactive (list
@@ -339,9 +341,6 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 
-(global-set-key (kbd "C-x t") 'eshell)
-(global-set-key "\C-x\C-t" 'eshell)
-
 
 ;; hippie expand + dabbrev-expand
 (global-set-key "\M- " 'hippie-expand)
@@ -406,6 +405,12 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
 (global-set-key (kbd "C-c e g") 'erc-connect/groveio)
 (global-set-key (kbd "C-c e q") 'erc-connect/quakenet)
+
+
+;; eshell
+(setq eshell-directory-name (concat-base "eshell"))
+(global-set-key (kbd "C-x t") 'eshell)
+(global-set-key "\C-x\C-t" 'eshell)
 
 
 ;; look 'Ma no arrows

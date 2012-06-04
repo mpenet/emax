@@ -6,3 +6,4 @@ session.*
 /.org-id-locations
 /tramp
 /history
+/eshell/history
