@@ -32,13 +32,13 @@
 (ac-config-default)
 (global-auto-complete-mode t)
 (auto-complete-mode t)
-;; (setq ac-auto-start nil)
+ ;; (setq ac-auto-start nil)
 
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
 
 (set-default 'ac-sources
-             '(ac-source-yasnippet
+             '(;; ac-source-yasnippet ;;
                ac-source-dictionary
                ac-source-words-in-buffer
                ac-source-words-in-same-mode-buffers
@@ -413,30 +413,9 @@ directory, select directory. Lastly the file is opened."
 (global-set-key "\C-x\C-t" 'eshell)
 
 
-;; look 'Ma no arrows
-(defvar no-easy-keys-minor-mode-map (make-keymap)
-  "no-easy-keys-minor-mode keymap.")
-(let ((f (lambda (m)
-           `(lambda () (interactive)
-              (message (concat "No! use " ,m " instead."))))))
-  (dolist (l '(("<left>" . "C-b") ("<right>" . "C-f") ("<up>" . "C-p")
-               ("<down>" . "C-n")
-               ("<C-left>" . "M-f") ("<C-right>" . "M-b") ("<C-up>" . "M-{")
-               ("<C-down>" . "M-}")
-               ("<M-left>" . "M-f") ("<M-right>" . "M-b") ("<M-up>" . "M-{")
-               ("<M-down>" . "M-}")
-               ("<delete>" . "C-d") ("<C-delete>" . "M-d")
-               ("<M-delete>" . "M-d") ("<next>" . "C-v") ("<C-next>" . "M-x <")
-               ("<prior>" . "M-v") ("<C-prior>" . "M-x >")
-               ("<home>" . "C-a") ("<C-home>" . "M->")
-               ("<C-home>" . "M-<") ("<end>" . "C-e") ("<C-end>" . "M->")))
-    (define-key no-easy-keys-minor-mode-map
-      (read-kbd-macro (car l)) (funcall f (cdr l)))))
-(define-minor-mode no-easy-keys-minor-mode
-  "A minor mode that disables the arrow-keys, pg-up/down, delete
-  and backspace."  t " no-easy-keys"
-  'no-easy-keys-minor-mode-map :global t)
-(no-easy-keys-minor-mode 1)
+;; disable arrows & co
+(require 'guru-mode)
+(guru-mode)
 
 
 ;; macros
@@ -560,3 +539,4 @@ directory, select directory. Lastly the file is opened."
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 (set-exec-path-from-shell-PATH)
+(put 'downcase-region 'disabled nil)

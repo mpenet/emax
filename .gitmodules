@@ -55,3 +55,6 @@
 [submodule "elisp/fuzzy"]
 	path = elisp/fuzzy
 	url = https://github.com/m2ym/fuzzy-el.git
+[submodule "elisp/guru-mode"]
+	path = elisp/guru-mode
+	url = https://github.com/bbatsov/guru-mode.git

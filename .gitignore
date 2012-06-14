@@ -8,3 +8,4 @@ session.*
 /history
 /eshell/history
 /extras/eshell/history
+/extras/eshell/lastdir
