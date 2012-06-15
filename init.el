@@ -415,7 +415,7 @@ directory, select directory. Lastly the file is opened."
 
 ;; disable arrows & co
 (require 'guru-mode)
-(guru-mode)
+(guru-mode +1)
 
 
 ;; macros
