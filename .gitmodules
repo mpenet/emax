@@ -10,9 +10,6 @@
 [submodule "elisp/slime"]
 	path = elisp/slime
 	url = https://github.com/technomancy/slime.git
-[submodule "elisp/zenburn"]
-	path = elisp/zenburn
-	url = git://github.com/bbatsov/zenburn-emacs.git
 [submodule "elisp/zencoding"]
 	path = elisp/zencoding
 	url = git://github.com/rooney/zencoding.git
@@ -58,3 +55,6 @@
 [submodule "elisp/guru-mode"]
 	path = elisp/guru-mode
 	url = https://github.com/bbatsov/guru-mode.git
+[submodule "themes/zenburn"]
+	path = themes/zenburn
+	url = https://github.com/bbatsov/zenburn-emacs.git

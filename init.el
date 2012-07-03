@@ -3,15 +3,18 @@
 (setq base-dir "~/.emacs.d/")
 (defalias 'concat-base (apply-partially 'concat base-dir))
 
+(defun add-subdirs-to-list (list-var path)
+  (let ((modules-dir (concat-base path)))
+    (add-to-list list-var modules-dir)
+    (dolist (f (directory-files modules-dir))
+      (let ((name (concat modules-dir "/" f)))
+        (when (and (file-directory-p name)
+                   (not (equal f ".."))
+                   (not (equal f ".")))
+          (add-to-list list-var name))))))
+
 ;; add base plugin dir + subdirs to load-path
-(let ((modules-dir (concat-base "elisp")))
-  (add-to-list 'load-path modules-dir)
-  (dolist (f (directory-files modules-dir))
-    (let ((name (concat modules-dir "/" f)))
-      (when (and (file-directory-p name)
-                 (not (equal f ".."))
-                 (not (equal f ".")))
-        (add-to-list 'load-path name)))))
+(add-subdirs-to-list 'load-path "elisp" )
 
 ;; source control
 (autoload 'magit-status "magit" nil t)
@@ -21,9 +24,9 @@
 ;; yasnippet
 (require 'yasnippet)
 (require 'dropdown-list)
-(setq yas/snippet-dirs (concat-base "extras/yasnippet/snippets"))
-(setq yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt))
-(setq yas/indent-line nil)
+(setq yas/snippet-dirs (concat-base "extras/yasnippet/snippets")
+      yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt)
+      yas/indent-line nil)
 (yas/global-mode 1)
 
 ;; autocomplete mode
@@ -86,6 +89,7 @@
 
 (autoload 'elein-swank "elein" nil t)
 (autoload 'elein-deps "elein" nil t)
+
 
 ;; paredit
 (autoload 'paredit-mode "paredit" nil t)
@@ -177,16 +181,15 @@
 
 ;; font
 (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
-(setq ns-use-system-highlight-color nil)
-(setq ns-pop-up-frames nil)
+(setq ns-use-system-highlight-color nil
+      ns-pop-up-frames nil)
 (global-font-lock-mode 1)
 
 
-;; theme
-(autoload 'color-theme-zenburn "color-theme-zenburn" nil t)
-(eval-after-load 'color-theme-zenburn
-  '(set-face-background 'region "#6f6f6f"))
-(color-theme-zenburn)
+;; themes
+(add-subdirs-to-list 'custom-theme-load-path "themes")
+(load-theme 'zenburn t)
+(set-face-attribute 'region nil :background "#6f6f6f")
 
 
 ;; org-mode
@@ -518,12 +521,12 @@ directory, select directory. Lastly the file is opened."
       browse-url-generic-program "google-chrome")
 
 ;; disable backup
-(setq backup-inhibited t)
-(setq make-backup-files nil)
+(setq backup-inhibited t
+      make-backup-files nil)
 
 ;; disable auto save
-(setq auto-save-default nil)
-(setq auto-save-list-file-prefix nil)
+(setq auto-save-default nil
+      auto-save-list-file-prefix nil)
 
 ;; global save hooks
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -539,4 +542,5 @@ directory, select directory. Lastly the file is opened."
     (setenv "PATH" path-from-shell)
     (setq exec-path (split-string path-from-shell path-separator))))
 (set-exec-path-from-shell-PATH)
+
 (put 'downcase-region 'disabled nil)
