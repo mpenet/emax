@@ -534,6 +534,9 @@ directory, select directory. Lastly the file is opened."
 ;; don't save emacs session
 (setq save-place nil)
 
+;; disable unwanted horizontal split (annoying on vertical ext screen)
+(setq split-width-threshold nil)
+
 ;; apply the PATH environment variable to Emacs and set the exec-path
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell
