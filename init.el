@@ -417,9 +417,8 @@ directory, select directory. Lastly the file is opened."
 
 
 ;; disable arrows & co
-(require 'guru-mode)
-(guru-mode +1)
-
+(autoload 'guru-global-mode "guru-mode" nil t)
+(guru-global-mode)
 
 ;; macros
 (defun start-or-end-kbd-macro ()
