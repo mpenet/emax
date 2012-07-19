@@ -437,7 +437,9 @@ directory, select directory. Lastly the file is opened."
 (setq initial-scratch-message nil)
 (setq visible-bell t)
 (fset 'yes-or-no-p 'y-or-n-p)
-(set-fringe-mode 0)
+;; (set-fringe-mode 0)
+(setq-default left-fringe-width 3)
+(setq-default right-fringe-width 3)
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
