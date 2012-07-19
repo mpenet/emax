@@ -433,6 +433,11 @@ directory, select directory. Lastly the file is opened."
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(set-fringe-style -1)
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+(setq visible-bell t)
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -456,7 +461,6 @@ directory, select directory. Lastly the file is opened."
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 
-
 ;; add the current line number to the mode bar
 (line-number-mode t)
 
@@ -467,18 +471,6 @@ directory, select directory. Lastly the file is opened."
 (setq whitespace-style '(face trailing lines-tail)
       whitespace-line-column 80)
 (global-whitespace-mode 1)
-
-;; no splash screen
-(setq inhibit-startup-message t)
-
-;; empty scratch buffer
-(setq initial-scratch-message nil)
-
-;; shhhh! just flash minibuffer
-(setq visible-bell t)
-
-;; Don't make me type out 'yes', 'y' is good enough.
-(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; tabs are evil
 (setq-default indent-tabs-mode nil)
