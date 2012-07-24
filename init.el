@@ -1,6 +1,8 @@
 ;; C-u 0 M-x byte-recompile-directory
 
-(setq base-dir "~/.emacs.d/")
+(setq base-dir "~/.emacs.d/"
+      default-tab-size 4)
+
 (defalias 'concat-base (apply-partially 'concat base-dir))
 
 (defun add-subdirs-to-list (list-var path)
@@ -14,12 +16,14 @@
           (add-to-list list-var name))))))
 
 ;; add base plugin dir + subdirs to load-path
-(add-subdirs-to-list 'load-path "elisp" )
+(add-subdirs-to-list 'load-path "elisp")
+
 
 ;; source control
 (autoload 'magit-status "magit" nil t)
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key "\C-c\C-g" 'magit-status)
+
 
 ;; yasnippet
 (require 'yasnippet)
@@ -28,6 +32,7 @@
       yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt)
       yas/indent-line nil)
 (yas/global-mode 1)
+
 
 ;; autocomplete mode
 (require 'auto-complete-config)
@@ -68,8 +73,34 @@
 ;; js-mode
 (eval-after-load 'js-mode
   '(progn
-     (setq js-indent-level 4)
+     (setq js-indent-level default-tab-size)
      (add-hook 'js-mode-hook 'yas/minor-mode)))
+
+
+;; css
+(eval-after-load 'css-mode
+  '(setq css-indent-offset default-tab-size))
+
+(autoload 'rainbow-mode "rainbow-mode" nil t)
+
+
+;; less
+(defun compile-less-on-after-save-hook ()
+  (add-hook 'after-save-hook
+            '(lambda ()
+               (interactive)
+               (let ((file-name (buffer-file-name)))
+                 (if (string-match "\.less$" file-name)
+                     (async-shell-command
+                      (concat "lessc " file-name " "
+                              (file-name-directory file-name) "../css/"
+                              (file-name-sans-extension (file-name-nondirectory
+                                                         file-name))
+                              ".css") nil nil))))
+            nil t))
+(add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
+(add-hook 'css-mode-hook 'rainbow-mode)
+(setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 
 ;; web utilities
@@ -77,6 +108,23 @@
 (add-hook 'sgml-mode-hook 'zencoding-mode)
 (eval-after-load 'zencoding-mode '(setq zencoding-preview-default nil))
 
+
+;; org
+(eval-after-load 'org-mode
+    '(progn
+       ;; overide org-mode tab behavior
+       (defun yas/org-very-safe-expand ()
+         (let ((yas/fallback-behavior 'return-nil))
+           (yas/expand)))
+       (add-hook 'org-mode-hook
+                 (lambda ()
+                   (make-variable-buffer-local 'yas/trigger-key)
+                   (setq yas/trigger-key [tab])
+                   (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+                   (define-key yas/keymap [tab] 'yas/next-field)))))
+(autoload 'htmlize-region "htmlize" nil t)
+(autoload 'htmlize-buffer "htmlize" nil t)
+(eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
 ;; clojure
 (autoload 'clojure-mode "clojure-mode" nil t)
@@ -86,7 +134,6 @@
      (global-set-key (kbd "<f9>") 'slime-connect)
      (global-set-key (kbd "<f10>") 'elein-swank)
      (global-set-key (kbd "<f11>") 'elein-kill-swank)))
-
 (autoload 'elein-swank "elein" nil t)
 (autoload 'elein-deps "elein" nil t)
 
@@ -98,13 +145,6 @@
            scheme-mode-hook
            clojure-mode-hook)
       do (add-hook mode-hook (lambda () (paredit-mode +1))))
-
-;; dont insert space before a paren on js files
-(add-hook 'js-mode-hook
-          '(lambda ()
-             (add-to-list (make-local-variable
-                           'paredit-space-for-delimiter-predicates)
-                          (lambda (_ _) nil))))
 
 (eval-after-load 'paredit
   '(progn
@@ -119,7 +159,7 @@
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
 
-;; slime
+; slime
 (autoload 'slime "slime" nil t)
 (autoload 'slime-mode "slime" nil t)
 (autoload 'slime-connect "slime" nil t)
@@ -143,41 +183,9 @@
 	  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 	  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
-
-;; outlet
-(add-to-list 'auto-mode-alist '("\\.ol$" . common-lisp-mode))
-
-
-;; tramp
-(setq tramp-default-method "ssh")
-
-
-;; css
-(eval-after-load 'css-mode
-  '(setq css-indent-offset 4))
-
-(autoload 'rainbow-mode "rainbow-mode" nil t)
-
-;; less
-(defun compile-less-on-after-save-hook ()
-  (add-hook 'after-save-hook
-            '(lambda ()
-               (interactive)
-               (let ((file-name (buffer-file-name)))
-                 (if (string-match "\.less$" file-name)
-                     (async-shell-command
-                      (concat "lessc " file-name " "
-                              (file-name-directory file-name) "../css/"
-                              (file-name-sans-extension (file-name-nondirectory
-                                                         file-name))
-                              ".css") nil nil))))
-            nil t))
-(add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
-(add-hook 'css-mode-hook 'rainbow-mode)
-(setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
-
 (autoload 'yaml-mode "yaml-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+
 
 ;; font
 (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
@@ -191,25 +199,6 @@
 (load-theme 'zenburn t)
 (set-face-attribute 'region nil :background "#6f6f6f")
 
-
-;; org-mode
-(autoload 'org-mode "org-install" nil t)
-(eval-after-load 'org-mode
-    '(progn
-       ;; overide org-mode tab behavior
-       (defun yas/org-very-safe-expand ()
-         (let ((yas/fallback-behavior 'return-nil))
-           (yas/expand)))
-       (add-hook 'org-mode-hook
-                 (lambda ()
-                   (make-variable-buffer-local 'yas/trigger-key)
-                   (setq yas/trigger-key [tab])
-                   (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-                   (define-key yas/keymap [tab] 'yas/next-field)))))
-
-(autoload 'htmlize-region "htmlize" nil t)
-(autoload 'htmlize-buffer "htmlize" nil t)
-(eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
 ;; buffers, project, files navigation
 (ido-mode t)
@@ -293,6 +282,7 @@ directory, select directory. Lastly the file is opened."
 
 (global-set-key (kbd "\C-x f") 'file-cache-ido-find-file)
 (global-set-key (kbd "<f12>") 'project-path-prompt)
+
 
 ;; smex
 (autoload 'smex "smex" nil t)
@@ -420,6 +410,7 @@ directory, select directory. Lastly the file is opened."
 (autoload 'guru-global-mode "guru-mode" nil t)
 (guru-global-mode)
 
+
 ;; macros
 (defun start-or-end-kbd-macro ()
   "Starts recording a keyboard macro, or if already recording,
@@ -428,6 +419,7 @@ directory, select directory. Lastly the file is opened."
   (if defining-kbd-macro
       (end-kbd-macro)
     (start-kbd-macro nil)))
+
 
 ;; Turn off unncessary ui stuff
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -477,9 +469,9 @@ directory, select directory. Lastly the file is opened."
 (setq-default indent-tabs-mode nil)
 
 ;; TAB => 4*'\b'
-(setq-default tab-width 4)
-(setq-default c-basic-offset 4)
-(setq-default sgml-basic-offset 4)
+(setq-default tab-width default-tab-size)
+(setq-default c-basic-offset default-tab-size)
+(setq-default sgml-basic-offset default-tab-size)
 
 ;; hassle free indent
 (defun my-unindent ()
@@ -494,9 +486,6 @@ directory, select directory. Lastly the file is opened."
   (setq mark-active t deactivate-mark nil))
 (global-set-key (kbd "<C-tab>") 'my-indent)
 
-;; show me everything
-(setq truncate-partial-width-windows nil)
-
 ;; case insensitive searches
 (set-default 'case-fold-search t)
 
@@ -505,34 +494,29 @@ directory, select directory. Lastly the file is opened."
 
 ;; make emacs use the clipboard if running in X
 (when window-system
-  (setq x-select-enable-clipboard t)
-  (setq interprogram-paste-function 'x-cut-buffer-or-selection-value))
+  (setq x-select-enable-clipboard t
+        interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-;; force defaut browser to chrome
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
 
-;; disable backup
-(setq backup-inhibited t
-      make-backup-files nil)
+(setq tramp-default-method "ssh"
+      browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome"
+      ;; show me everything
+      truncate-partial-width-windows nil
+      ;; disable auto save & backups
+      backup-inhibited t
+      make-backup-files nil
+      auto-save-default nil
+      auto-save-list-file-prefix nil
+      ;; don't save emacs session
+      save-place nil)
 
-;; disable auto save
-(setq auto-save-default nil
-      auto-save-list-file-prefix nil)
+;; apply the PATH environment variable to Emacs and set the exec-path
+(let ((path-from-shell
+       (replace-regexp-in-string "[[:space:]\n]*$" ""
+                                 (shell-command-to-string "$SHELL -i -c 'echo $PATH'"))))
+  (setenv "PATH" path-from-shell)
+  (setq exec-path (split-string path-from-shell path-separator)))
 
 ;; global save hooks
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; don't save emacs session
-(setq save-place nil)
-
-;; apply the PATH environment variable to Emacs and set the exec-path
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell
-         (replace-regexp-in-string "[[:space:]\n]*$" ""
-                                   (shell-command-to-string "$SHELL -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(set-exec-path-from-shell-PATH)
-
-(put 'downcase-region 'disabled nil)
