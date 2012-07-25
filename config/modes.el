@@ -79,6 +79,10 @@
 (eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
 
+;; github markdown mode
+(autoload 'gfm-mode "markdown-mode")
+(add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode))
+
 ;; clojure
 (eval-after-load 'clojure-mode
   '(progn
