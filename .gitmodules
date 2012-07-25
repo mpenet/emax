@@ -1,57 +1,15 @@
-[submodule "elisp/magit"]
-	path = elisp/magit
-	url = https://github.com/magit/magit.git
-[submodule "elisp/clojure-mode"]
-	path = elisp/clojure-mode
-	url = https://github.com/technomancy/clojure-mode.git
-[submodule "elisp/elein"]
-	path = elisp/elein
-	url = https://github.com/remvee/elein.git
 [submodule "elisp/slime"]
 	path = elisp/slime
 	url = https://github.com/technomancy/slime.git
-[submodule "elisp/zencoding"]
-	path = elisp/zencoding
-	url = git://github.com/rooney/zencoding.git
-[submodule "elisp/ac-slime"]
-	path = elisp/ac-slime
-	url = https://github.com/purcell/ac-slime.git
-[submodule "elisp/auto-complete"]
-	path = elisp/auto-complete
-	url = https://github.com/m2ym/auto-complete.git
-[submodule "elisp/paredit"]
-	path = elisp/paredit
-	url = https://github.com/emacsmirror/paredit.git
-[submodule "elisp/haskell-mode"]
-	path = elisp/haskell-mode
-	url = https://github.com/haskell/haskell-mode.git
-[submodule "elisp/htmlize"]
-	path = elisp/htmlize
-	url = git://github.com/emacsmirror/htmlize.git
-[submodule "elisp/yasnippet"]
-	path = elisp/yasnippet
-	url = git://github.com/capitaomorte/yasnippet.git
 [submodule "elisp/rainbow-mode"]
 	path = elisp/rainbow-mode
 	url = git://github.com/emacsmirror/rainbow-mode.git
-[submodule "elisp/smex"]
-	path = elisp/smex
-	url = https://github.com/nonsequitur/smex.git
-[submodule "elisp/yaml-mode"]
-	path = elisp/yaml-mode
-	url = https://github.com/yoshiki/yaml-mode.git
 [submodule "extras/yasnippet/snippets/clojure-mode"]
 	path = extras/yasnippet/snippets/clojure-mode
 	url = git://github.com/mpenet/clojure-snippets.git
-[submodule "elisp/popup"]
-	path = elisp/popup
-	url = https://github.com/m2ym/popup-el.git
-[submodule "elisp/fuzzy"]
-	path = elisp/fuzzy
-	url = https://github.com/m2ym/fuzzy-el.git
-[submodule "elisp/guru-mode"]
-	path = elisp/guru-mode
-	url = https://github.com/bbatsov/guru-mode.git
-[submodule "themes/zenburn"]
-	path = themes/zenburn
-	url = https://github.com/bbatsov/zenburn-emacs.git
+[submodule "modules/rainbow-mode"]
+	path = modules/rainbow-mode
+	url = https://github.com/emacsmirror/rainbow-mode.git
+[submodule "modules/slime"]
+	path = modules/slime
+	url = https://github.com/technomancy/slime.git

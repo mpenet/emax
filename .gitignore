@@ -9,3 +9,4 @@ session.*
 /eshell/history
 /extras/eshell/history
 /extras/eshell/lastdir
+/elpa
