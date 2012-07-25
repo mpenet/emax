@@ -228,8 +228,7 @@ directory, select directory. Lastly the file is opened."
 
 
 ;; smex (it has no autoloads...)
-(autoload 'smex "smex" nil t)
-(eval-after-load 'smex '(smex-initialize))
+(smex-initialize)
 (global-set-key "\C-x\C-m" 'smex)
 (global-set-key (kbd "C-x m") 'smex)
 
