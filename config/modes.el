@@ -78,6 +78,7 @@
                    (define-key yas/keymap [tab] 'yas/next-field)))))
 (eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
+
 ;; clojure
 (eval-after-load 'clojure-mode
   '(progn

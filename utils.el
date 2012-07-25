@@ -12,7 +12,7 @@
 
 (defun list-filter (condp lst)
   "You guessed it, elisp doesn't have a list filter function, what a joke."
-  (let ((fn	'(lambda (x) (and (funcall condp x) x))))
+  (let ((fn '(lambda (x) (and (funcall condp x) x))))
     (delq nil (mapcar fn lst))))
 
 (defun load-files-in-dir (dir)
