@@ -2,11 +2,13 @@
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key "\C-c\C-g" 'magit-status)
 
+
 ;; yasnippet
 (setq yas/snippet-dirs (concat-base "extras/yasnippet/snippets")
       yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt)
       yas/indent-line nil)
 (yas/global-mode 1)
+
 
 ;; autocomplete mode
 (require 'auto-complete-config)
@@ -43,22 +45,23 @@
      (setq js-indent-level default-tab-size)
      (add-hook 'js-mode-hook 'yas/minor-mode)))
 
+
 ;; css
 (eval-after-load 'css-mode
   '(progn (add-hook 'css-mode-hook 'rainbow-mode)
           (setq css-indent-offset default-tab-size)))
+
 
 ;; less
 (eval-after-load 'less-css-mode
   '(progn (setq-default less-css-output-directory "../css/")
           (setq less-css-compile-at-save t)))
 
-;; (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
-
 
 ;; web utilities
 (eval-after-load 'zencoding-mode '(setq zencoding-preview-default nil))
 (add-hook 'sgml-mode-hook 'zencoding-mode)
+
 
 ;; org
 (eval-after-load 'org-mode
@@ -82,6 +85,7 @@
      (global-set-key (kbd "<f9>") 'slime-connect)
      (global-set-key (kbd "<f10>") 'elein-swank)
      (global-set-key (kbd "<f11>") 'elein-kill-swank)))
+
 
 ;; paredit
 (loop for mode-hook
