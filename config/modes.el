@@ -79,7 +79,6 @@
 (eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
 ;; clojure
-(add-to-list 'auto-mode-alist '("\\.cljs?$" . clojure-mode))
 (eval-after-load 'clojure-mode
   '(progn
      (global-set-key (kbd "<f9>") 'slime-connect)
@@ -123,7 +122,6 @@
 
 
 ;; haskell
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (eval-after-load 'haskell-mode
   '(progn
           ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
@@ -131,7 +129,10 @@
 	  (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
 	  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
+
+;; yaml mode
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+
 
 ;; buffers, project, files navigation (should refactor this into a mode)
 (ido-mode t)

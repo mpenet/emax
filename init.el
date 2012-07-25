@@ -13,6 +13,7 @@
                       ac-slime
                       auto-complete
                       clojure-mode
+                      clojurescript-mode
                       clojure-test-mode
                       elein
                       guru-mode
