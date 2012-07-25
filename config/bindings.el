@@ -28,7 +28,4 @@
 (global-set-key (kbd "C-c p") 'check-parens)
 (global-set-key "\C-c\C-p" 'check-parens)
 
-(global-set-key "\C-x n" 'rename-buffer)
-(global-set-key "\C-x\C-n" 'rename-buffer)
-
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
