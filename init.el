@@ -10,7 +10,8 @@
 (when (null package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(ac-slime
+(defvar my-packages '(melpa
+                      ac-slime
                       auto-complete
                       clojure-mode
                       clojure-test-mode
