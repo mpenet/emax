@@ -45,32 +45,20 @@
 
 ;; css
 (eval-after-load 'css-mode
-  '(setq css-indent-offset default-tab-size))
+  '(progn (add-hook 'css-mode-hook 'rainbow-mode)
+          (setq css-indent-offset default-tab-size)))
 
 ;; less
-(defun compile-less-on-after-save-hook ()
-  (add-hook 'after-save-hook
-            '(lambda ()
-               (interactive)
-               (let ((file-name (buffer-file-name)))
-                 (if (string-match "\.less$" file-name)
-                     (async-shell-command
-                      (concat "lessc " file-name " "
-                              (file-name-directory file-name) "../css/"
-                              (file-name-sans-extension (file-name-nondirectory
-                                                         file-name))
-                              ".css") nil nil))))
-            nil t))
-(add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
-(add-hook 'css-mode-hook 'rainbow-mode)
-(setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
+(eval-after-load 'less-css-mode
+  '(progn (setq-default less-css-output-directory "../css/")
+          (setq less-css-compile-at-save t)))
+
+;; (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 
 ;; web utilities
-(autoload 'zencoding-mode "zencoding-mode" nil t)
-(add-hook 'sgml-mode-hook 'zencoding-mode)
 (eval-after-load 'zencoding-mode '(setq zencoding-preview-default nil))
-
+(add-hook 'sgml-mode-hook 'zencoding-mode)
 
 ;; org
 (eval-after-load 'org-mode

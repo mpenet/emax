@@ -18,6 +18,7 @@
                       guru-mode
                       haskell-mode
                       htmlize
+                      less-css-mode
                       magit
                       markdown-mode
                       paredit
