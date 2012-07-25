@@ -227,7 +227,7 @@ directory, select directory. Lastly the file is opened."
 (global-set-key (kbd "<f12>") 'project-path-prompt)
 
 
-;; smex (it has no autoloads...)
+;; smex
 (smex-initialize)
 (global-set-key "\C-x\C-m" 'smex)
 (global-set-key (kbd "C-x m") 'smex)
