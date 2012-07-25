@@ -10,3 +10,4 @@ session.*
 /extras/eshell/history
 /extras/eshell/lastdir
 /elpa
+/update.sh
