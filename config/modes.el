@@ -47,8 +47,6 @@
 (eval-after-load 'css-mode
   '(setq css-indent-offset default-tab-size))
 
-(autoload 'rainbow-mode "rainbow-mode" nil t)
-
 ;; less
 (defun compile-less-on-after-save-hook ()
   (add-hook 'after-save-hook
@@ -64,7 +62,7 @@
                               ".css") nil nil))))
             nil t))
 (add-hook 'css-mode-hook 'compile-less-on-after-save-hook)
- (add-hook 'css-mode-hook 'rainbow-mode)
+(add-hook 'css-mode-hook 'rainbow-mode)
 (setq auto-mode-alist (cons '("\\.less$" . css-mode) auto-mode-alist))
 
 

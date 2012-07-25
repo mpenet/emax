@@ -22,6 +22,7 @@
                       magit
                       markdown-mode
                       paredit
+                      rainbow-mode
                       smex
                       yaml-mode
                       yasnippet
