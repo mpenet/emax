@@ -124,8 +124,7 @@
 (autoload 'slime-set-inferior-process "slime" nil t)
 (eval-after-load "slime"
   '(progn
-     (setq slime-use-autodoc-mode nil)
-     (slime-setup '(slime-repl))
+     (slime-setup '(slime-repl slime-fancy))
      (setq slime-protocol-version 'ignore)
      (add-hook 'slime-mode-hook 'set-up-slime-ac)
      (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
