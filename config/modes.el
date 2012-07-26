@@ -80,7 +80,6 @@
 
 
 ;; github markdown mode
-(autoload 'gfm-mode "markdown-mode")
 (add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode))
 
 ;; clojure
