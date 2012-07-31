@@ -23,7 +23,7 @@
                       less-css-mode
                       magit
                       markdown-mode
-                      nrepl
+                      ;; nrepl
                       paredit
                       rainbow-mode
                       smex

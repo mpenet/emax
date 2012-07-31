@@ -28,4 +28,7 @@
 (global-set-key (kbd "C-c p") 'check-parens)
 (global-set-key "\C-c\C-p" 'check-parens)
 
+(global-set-key (kbd "C-.") 'find-tag)
+(global-set-key (kbd "C-,") 'pop-tag-mark)
+
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
