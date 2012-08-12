@@ -17,12 +17,14 @@
                       clojure-test-mode
                       clojurescript-mode
                       elein
+                      erlang
                       guru-mode
                       haskell-mode
                       htmlize
                       less-css-mode
                       magit
                       markdown-mode
+                      nginx-mode
                       ;; nrepl
                       paredit
                       rainbow-mode

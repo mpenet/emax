@@ -90,7 +90,7 @@
 ;; (defclojureface clojure-parens       "DimGrey"   "Clojure parens")
 ;; (defclojureface clojure-braces       "yellow"   "Clojure braces")
 (defclojureface clojure-brackets     "orange" "Clojure brackets")
-;; (defclojureface clojure-keyword      "green"     "Clojure keywords")
+(defclojureface clojure-keyword       "#bfebbf"    "Clojure keywords")
 ;; (defclojureface clojure-java-call    "#4bcf68"   "Clojure Java calls")
 ;; (defclojureface clojure-special      "#b8bb00"   "Clojure special")
 ;; (defclojureface clojure-double-quote "#b8bb00"   "Clojure special" (:background "unspecified"))
