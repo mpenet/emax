@@ -28,6 +28,7 @@
                       ;; nrepl
                       paredit
                       rainbow-mode
+                      rust-mode
                       smex
                       yaml-mode
                       yasnippet
