@@ -4,10 +4,11 @@
 
 
 ;; yasnippet
-(setq yas/snippet-dirs (concat-base "extras/yasnippet/snippets")
-      yas/prompt-functions '(yas/dropdown-prompt yas/x-prompt)
-      yas/indent-line nil)
-(yas/global-mode 1)
+(setq yas-snippet-dirs (concat-base "extras/yasnippet/snippets")
+      yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
+      yas-indent-line nil)
+(yas-global-mode 1)
+
 
 
 ;; autocomplete mode
@@ -43,7 +44,7 @@
 (eval-after-load 'js-mode
   '(progn
      (setq js-indent-level default-tab-size)
-     (add-hook 'js-mode-hook 'yas/minor-mode)))
+     (add-hook 'js-mode-hook 'yas-minor-mode)))
 
 
 ;; css
@@ -67,15 +68,15 @@
 (eval-after-load 'org-mode
     '(progn
        ;; overide org-mode tab behavior
-       (defun yas/org-very-safe-expand ()
-         (let ((yas/fallback-behavior 'return-nil))
-           (yas/expand)))
+       (defun yas-org-very-safe-expand ()
+         (let ((yas-fallback-behavior 'return-nil))
+           (yas-expand)))
        (add-hook 'org-mode-hook
                  (lambda ()
-                   (make-variable-buffer-local 'yas/trigger-key)
-                   (setq yas/trigger-key [tab])
-                   (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-                   (define-key yas/keymap [tab] 'yas/next-field)))))
+                   (make-variable-buffer-local 'yas-trigger-key)
+                   (setq yas-trigger-key [tab])
+                   (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
+                   (define-key yas-keymap [tab] 'yas-next-field)))))
 (eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
 
