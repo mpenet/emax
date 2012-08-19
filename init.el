@@ -12,6 +12,7 @@
 
 (defvar my-packages '(melpa
                       ac-slime
+                      ;; ac-nrepl
                       auto-complete
                       clojure-mode
                       clojure-test-mode
@@ -26,6 +27,7 @@
                       markdown-mode
                       nginx-mode
                       ;; nrepl
+                      ;; nrepl-ritz
                       paredit
                       rainbow-mode
                       rust-mode
