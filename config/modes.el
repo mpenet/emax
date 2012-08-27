@@ -160,10 +160,6 @@
 	  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
 
-;; yaml mode
-(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
-
-
 ;; buffers, project, files navigation (should refactor this into a mode)
 (ido-mode t)
 (ido-everywhere t)

@@ -31,6 +31,7 @@
                       paredit
                       rainbow-mode
                       rust-mode
+                      scala-mode
                       smex
                       yaml-mode
                       yasnippet
