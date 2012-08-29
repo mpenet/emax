@@ -4,6 +4,7 @@
 
 
 ;; yasnippet
+(require 'dropdown-list)
 (setq yas-snippet-dirs (concat-base "extras/yasnippet/snippets")
       yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
       yas-indent-line nil)
