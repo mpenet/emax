@@ -38,8 +38,8 @@
   (interactive)
   (erc :server "irc.quakenet.org"
        :port 6667
-       :nick "mpenet"
-       :full-name "mpenet"))
+       :nick "zcam"
+       :full-name "zcam"))
 
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#clojure" "#haskell")
