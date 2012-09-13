@@ -19,6 +19,7 @@
                       clojurescript-mode
                       elein
                       erlang
+                      exec-path-from-shell
                       guru-mode
                       haskell-mode
                       htmlize
