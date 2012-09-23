@@ -15,6 +15,11 @@
       erc-current-nick-highlight-type 'nick
       erc-prompt-for-nickserv-password nil)
 
+(eval-after-load 'erc
+  '(progn
+     (require 'erc-hl-nicks)
+     (add-to-list 'erc-modules 'hl-nicks)))
+
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
