@@ -15,8 +15,6 @@
 
 (eval-after-load 'erc
   '(progn
-     (require 'erc-services)
-     (require 'erc-hl-nicks)
      (erc-services-mode 1)
      (erc-track-mode t)))
 
