@@ -18,8 +18,7 @@
      (require 'erc-services)
      (require 'erc-hl-nicks)
      (erc-services-mode 1)
-     (erc-track-mode t)
-     (set-face-foreground 'erc-input-face "dim gray")))
+     (erc-track-mode t)))
 
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
