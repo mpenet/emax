@@ -5,13 +5,14 @@
 
 (setq erc-modules '(netsplit fill track completion ring button autojoin
                              services match stamp track page scrolltobottom)
-      erc-hide-list '("JOIN" "PART" "QUIT")
+      erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
       erc-autojoin-mode t
       erc-timestamp-format "%H:%M "
       erc-interpret-mirc-color t
       erc-input-line-position -2
-      erc-prompt ">>"
+      erc-prompt ">"
       erc-insert-timestamp-function 'erc-insert-timestamp-left
+      erc-current-nick-highlight-type 'nick
       erc-prompt-for-nickserv-password nil)
 
 (defun erc-connect/freenode ()

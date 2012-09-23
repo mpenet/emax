@@ -18,6 +18,7 @@
                       clojure-test-mode
                       clojurescript-mode
                       elein
+                      erc-hl-nicks
                       erlang
                       exec-path-from-shell
                       guru-mode

@@ -222,7 +222,6 @@ directory, select directory. Lastly the file is opened."
                       "Project root: ")))
        (set-project path))
 
-
      (defun set-project (path)
        (save-project-history path)
        (file-cache-clear-cache)
