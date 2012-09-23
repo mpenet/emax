@@ -49,6 +49,7 @@
 
 ;; highlight long lines tails
 (setq whitespace-style '(face trailing lines-tail)
+      whitespace-global-modes '(not erc-mode)
       whitespace-line-column 80)
 (global-whitespace-mode 1)
 

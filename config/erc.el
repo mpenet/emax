@@ -1,10 +1,8 @@
 (load "~/.erc" t)
-(require 'erc-services)
-(erc-services-mode 1)
-(erc-track-mode t)
 
 (setq erc-modules '(netsplit fill track completion ring button autojoin
-                             services match stamp track page scrolltobottom)
+                             services match stamp track page scrolltobottom
+                             hl-nicks)
       erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
       erc-autojoin-mode t
       erc-timestamp-format "%H:%M "
@@ -12,13 +10,16 @@
       erc-input-line-position -2
       erc-prompt ">"
       erc-insert-timestamp-function 'erc-insert-timestamp-left
-      erc-current-nick-highlight-type 'nick
+      ;; erc-current-nick-highlight-type 'nick
       erc-prompt-for-nickserv-password nil)
 
 (eval-after-load 'erc
   '(progn
+     (require 'erc-services)
      (require 'erc-hl-nicks)
-     (add-to-list 'erc-modules 'hl-nicks)))
+     (erc-services-mode 1)
+     (erc-track-mode t)
+     (set-face-foreground 'erc-input-face "dim gray")))
 
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
