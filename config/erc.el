@@ -18,6 +18,8 @@
      (erc-services-mode 1)
      (erc-track-mode t)))
 
+(require 'erc-services)
+
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
