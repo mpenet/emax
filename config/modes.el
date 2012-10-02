@@ -57,7 +57,9 @@
 ;; less
 (eval-after-load 'less-css-mode
   '(progn (setq-default less-css-output-directory "../css/")
-          (setq less-css-compile-at-save t)))
+          ()
+          (setq less-css-compile-at-save t
+                less-css-lessc-options "-x")))
 
 
 ;; web utilities
