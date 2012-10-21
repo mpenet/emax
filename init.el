@@ -21,6 +21,7 @@
                       erc-hl-nicks
                       erlang
                       exec-path-from-shell
+                      find-file-in-project
                       guru-mode
                       haskell-mode
                       htmlize
