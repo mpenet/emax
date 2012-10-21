@@ -33,6 +33,7 @@
                       ;; nrepl-ritz
                       paredit
                       rainbow-mode
+                      ;; roy-mode
                       rust-mode
                       scala-mode
                       smex
