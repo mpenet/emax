@@ -17,6 +17,7 @@
                       clojure-mode
                       clojure-test-mode
                       clojurescript-mode
+                      dash
                       elein
                       erc-hl-nicks
                       erlang
