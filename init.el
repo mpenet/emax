@@ -20,7 +20,6 @@
                       dash
                       elein
                       erc-hl-nicks
-                      erlang
                       exec-path-from-shell
                       find-file-in-project
                       guru-mode
@@ -36,7 +35,7 @@
                       rainbow-mode
                       ;; roy-mode
                       rust-mode
-                      scala-mode
+                      ;; slime-ritz
                       smex
                       yaml-mode
                       yasnippet
