@@ -14,7 +14,7 @@ $1 = Backbone.View.extend({$>
     , initialize: function(options){$>
         this.options = _.extend({}, this.defaults, options)$>
         $6$>
-    }
+    }$>
 
     , render: function(){$>
        $7$>
