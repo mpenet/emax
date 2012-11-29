@@ -1,22 +1,22 @@
 # name: bview
 # key: bview
 # --
-$1 = Backbone.View.extend({
+$1 = Backbone.View.extend({$>
 
-    defaults: {$2}
+    defaults: {$2}$>
 
-    , events: {$3}
+    , events: {$3}$>
 
-    , tagName: '$4'
-    , className: '$5'
+    , tagName: '$4'$>
+    , className: '$5'$>
 
 
-    , initialize: function(options){
-        this.options = _.extend({}, this.defaults, options)
-        $6
+    , initialize: function(options){$>
+        this.options = _.extend({}, this.defaults, options)$>
+        $6$>
     }
 
-    , render: function(){
-       $7
-    }
-})
+    , render: function(){$>
+       $7$>
+    }$>
+})$>

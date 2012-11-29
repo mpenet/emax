@@ -1,12 +1,12 @@
 # name: brout
 # key: brout
 # --
-$1 = Backbone.Router.extend({
+$1 = Backbone.Router.extend({$>
 
-    routes: {
-        $2: $3
-    }
+    routes: {$>
+        $2: $3$>
+    }$>
 
-    $4
+    $4$>
 
-})
+})$>

@@ -1,6 +1,6 @@
 # name: scope
 # key: scope
 # --
-;(function($2){
-  $0
-})($1);
+;(function($2){$>
+  $0$>
+})($1);$>

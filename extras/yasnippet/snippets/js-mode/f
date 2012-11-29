@@ -1,6 +1,6 @@
 # name : f
 # key : f
 # --
-function($1) {
-  $0
-}
+function($1) {$>
+  $0$>
+}$>

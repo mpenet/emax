@@ -1,6 +1,6 @@
 # name: bind
 # key: bind
 # --
-bind('${1: event}', function(e){
-  $0
-})
+bind('${1: event}', function(e){$>
+  $0$>
+})$>
