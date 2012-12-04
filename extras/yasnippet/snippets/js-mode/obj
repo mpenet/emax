@@ -7,7 +7,7 @@ var $1 = $2.$1 = function(options) {$>
 }$>
 
 $.extend($1.prototype, {$>
-  defaults: {}
+  defaults: {}$>
 })$>
 
 $.extend($1, {$3})$>
