@@ -3,18 +3,20 @@
 # --
 $1 = Backbone.View.extend({$>
 
-    defaults: {$2}$>
+    defaults: function(){$>
+      return {}$>
+    }$>
 
     , events: {$3}$>
 
     , tagName: '$4'$>
     , className: '$5'$>
 
-
-    , initialize: function(options){$>
-        this.options = _.extend({}, this.defaults, options)$>
-        $6$>
+    , initialize: function(models, options){$>
+        this.options = _.extend(this.defaults(), options)$>
+        $3$>
     }$>
+
 
     , render: function(){$>
        $7$>

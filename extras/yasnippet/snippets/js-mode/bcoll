@@ -3,10 +3,12 @@
 # --
 $1 = Backbone.Collection.extend({$>
 
-    defaults: {$2}$>
+    defaults: function(){$>
+      return {}$>
+    }$>
 
     , initialize: function(models, options){$>
-        this.options = _.extend({}, this.defaults, options)$>
+        this.options = _.extend(this.defaults(), options)$>
         $3$>
     }$>
 })$>
