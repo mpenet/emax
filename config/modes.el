@@ -29,7 +29,7 @@
 
 (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
                 sass-mode yaml-mode csv-mode espresso-mode haskell-mode
-                html-mode nxml-mode sh-mode smarty-mode clojure-mode slime-repl-mode
+                html-mode nxml-mode sh-mode smarty-mode clojure-mode nrepl-mode
                 lisp-mode textile-mode markdown-mode tuareg-mode))
   (add-to-list 'ac-modes mode))
 
@@ -113,16 +113,18 @@
 
 (eval-after-load 'clojure-mode
   '(progn
-     (global-set-key (kbd "<f9>") 'slime-connect)
-     (global-set-key (kbd "<f10>") 'elein-swank)
-     (global-set-key (kbd "<f11>") 'elein-kill-swank)))
+     ;; (global-set-key (kbd "<f9>") 'slime-connect)
+     ;; (global-set-key (kbd "<f10>") 'elein-swank)
+     ;; (global-set-key (kbd "<f11>") 'elein-kill-swank)
+     ))
 
 
 ;; paredit
 (loop for mode-hook
       in '(emacs-lisp-mode-hook
            scheme-mode-hook
-           clojure-mode-hook)
+           clojure-mode-hook
+           nrepl-mode-hook)
       do (add-hook mode-hook (lambda () (paredit-mode +1))))
 
 (eval-after-load 'paredit
@@ -138,19 +140,17 @@
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
 
-; slime
-(autoload 'slime "slime" nil t)
-(autoload 'slime-mode "slime" nil t)
-(autoload 'slime-connect "slime" nil t)
-(autoload 'slime-set-inferior-process "slime" nil t)
-(eval-after-load "slime"
-  '(progn
-     (slime-setup '(slime-repl slime-fancy))
-     (setq slime-protocol-version 'ignore)
-     (add-hook 'slime-mode-hook 'set-up-slime-ac)
-     (add-hook 'slime-repl-mode-hook 'clojure-mode-font-lock-setup)
-     (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-     (add-hook 'slime-connected-hook 'slime-redirect-inferior-output)))
+(autoload 'ac-nrepl "ac-nrepl-setup")
+(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
+(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
+;; (setq nrepl-popup-stacktraces nil)
+(add-hook 'nrepl-mode-hook 'subword-mode)
+;; (defun set-auto-complete-as-completion-at-point-function ()
+;;   (setq completion-at-point-functions '(auto-complete)))
+;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+
+;; (add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
+;; (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
 
 
 ;; haskell

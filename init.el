@@ -11,8 +11,8 @@
   (package-refresh-contents))
 
 (defvar my-packages '(melpa
-                      ac-slime
-                      ;; ac-nrepl
+                      ;; ac-slime
+                      ac-nrepl
                       auto-complete
                       clojure-mode
                       clojure-test-mode
@@ -29,7 +29,7 @@
                       magit
                       markdown-mode
                       nginx-mode
-                      ;; nrepl
+                      nrepl
                       ;; nrepl-ritz
                       paredit
                       rainbow-mode
