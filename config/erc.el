@@ -48,7 +48,8 @@
        :full-name "zcam"))
 
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure" "#haskell" "#cassandra" "#altjs")
+      '(("freenode.net" "#clojure" ;; "#haskell" "#cassandra" "#altjs"
+         )
         ("quakenet.org" "#ratatouil")))
 
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
