@@ -142,7 +142,7 @@
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 ;; (setq nrepl-popup-stacktraces nil)
-(add-hook 'nrepl-mode-hook 'subword-mode)
+;; (add-hook 'nrepl-mode-hook 'subword-mode)
 
 ;; (defun set-auto-complete-as-completion-at-point-function ()
 ;;   (setq completion-at-point-functions '(auto-complete)))
