@@ -53,8 +53,5 @@
 (require 'utils)
 (defalias 'concat-base (apply-partially 'concat base-dir))
 
-;; load stuff that was missing from melpa
-(add-subdirs-to-list 'load-path (concat-base "modules"))
-
 ;; my mode/bindings etc
 (load-files-in-dir (concat-base "config"))
