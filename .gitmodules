@@ -1,3 +1,0 @@
-[submodule "modules/slime"]
-	path = modules/slime
-	url = git://github.com/technomancy/slime.git
