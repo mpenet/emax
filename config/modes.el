@@ -2,15 +2,12 @@
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key "\C-c\C-g" 'magit-status)
 
-
 ;; yasnippet
 (require 'dropdown-list)
-(setq yas-snippet-dirs (concat-base "extras/yasnippet/snippets")
-      yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
+(setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
       yas-indent-line nil)
+
 (yas-global-mode 1)
-
-
 
 ;; autocomplete mode
 (require 'auto-complete-config)

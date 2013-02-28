@@ -15,8 +15,8 @@
                       ac-nrepl
                       auto-complete
                       clojure-mode
+                      clojure-snippets
                       clojure-test-mode
-                      clojurescript-mode
                       dash
                       elein
                       elixir-mode

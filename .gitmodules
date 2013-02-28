@@ -1,6 +1,3 @@
-[submodule "extras/yasnippet/snippets/clojure-mode"]
-	path = extras/yasnippet/snippets/clojure-mode
-	url = git://github.com/mpenet/clojure-snippets.git
 [submodule "modules/slime"]
 	path = modules/slime
 	url = git://github.com/technomancy/slime.git
