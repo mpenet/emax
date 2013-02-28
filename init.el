@@ -15,7 +15,7 @@
                       ;; ac-nrepl
                       auto-complete
                       clojure-mode
-
+                      clojure-snippets
                       clojure-test-mode
                       dash
                       elein
@@ -41,7 +41,6 @@
                       smex
                       yaml-mode
                       yasnippet
-                      ;;clojure-snippets
                       zenburn-theme
                       zencoding-mode))
 
