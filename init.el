@@ -11,17 +11,15 @@
   (package-refresh-contents))
 
 (defvar my-packages '(melpa
-                      ;; ac-slime
                       ac-nrepl
                       auto-complete
                       clojure-mode
                       clojure-snippets
                       clojure-test-mode
                       dash
-                      elein
-                      elixir-mode
+                      ;; elixir-mode
                       erc-hl-nicks
-                      erlang
+                      ;; erlang
                       exec-path-from-shell
                       find-file-in-project
                       guru-mode
@@ -37,7 +35,6 @@
                       rainbow-mode
                       ;; roy-mode
                       rust-mode
-                      ;; slime-ritz
                       smex
                       yaml-mode
                       yasnippet
