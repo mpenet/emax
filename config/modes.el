@@ -108,14 +108,6 @@
 
 (add-hook 'clojure-mode-hook 'tweak-clojure-syntax)
 
-(eval-after-load 'clojure-mode
-  '(progn
-     ;; (global-set-key (kbd "<f9>") 'slime-connect)
-     ;; (global-set-key (kbd "<f10>") 'elein-swank)
-     ;; (global-set-key (kbd "<f11>") 'elein-kill-swank)
-     ))
-
-
 ;; paredit
 (loop for mode-hook
       in '(emacs-lisp-mode-hook
@@ -141,6 +133,8 @@
 (add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
+(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)
+
 ;; (setq nrepl-popup-stacktraces nil)
 ;; (add-hook 'nrepl-mode-hook 'subword-mode)
 
