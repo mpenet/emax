@@ -2,5 +2,5 @@
 # Install
 
 ```bash
-git clone git://github.com/mpenet/emax.git --recursive .emacs.d
+git clone git://github.com/mpenet/emax.git .emacs.d
 ```
