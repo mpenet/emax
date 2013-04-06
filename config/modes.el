@@ -6,6 +6,8 @@
 (require 'dropdown-list)
 (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
       yas-indent-line nil)
+(eval-after-load 'yasnippet
+  '(add-to-list 'yas-snippet-dirs (concat-base "snippets") t))
 
 (yas-global-mode 1)
 
@@ -134,10 +136,11 @@
 (add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
 (add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
 (eval-after-load 'nrepl
-  '(define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc))
+  '(progn
+     ;; (setq nrepl-popup-stacktraces nil)
+     (setq nrepl-popup-stacktraces-in-repl t)
+     (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)))
 
-
-;; (setq nrepl-popup-stacktraces nil)
 ;; (add-hook 'nrepl-mode-hook 'subword-mode)
 
 ;; (defun set-auto-complete-as-completion-at-point-function ()
@@ -229,6 +232,7 @@
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
 
+;; (global-hl-line-mode +1)
 
 ;; apply the PATH environment variable to Emacs and set the exec-path
 (exec-path-from-shell-initialize)
