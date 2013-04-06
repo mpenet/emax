@@ -26,6 +26,7 @@
                       haskell-mode
                       htmlize
                       less-css-mode
+                      lein
                       magit
                       markdown-mode
                       nginx-mode
