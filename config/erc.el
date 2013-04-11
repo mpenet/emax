@@ -48,7 +48,7 @@
        :full-name "zcam"))
 
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers";; "#haskell"
+      '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#emacs";; "#haskell"
          )
         ("quakenet.org" "#ratatouil")))
 
