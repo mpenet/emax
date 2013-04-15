@@ -217,8 +217,6 @@
 
 ;; eshell
 (setq eshell-directory-name (concat-base "extras/eshell"))
-(global-set-key (kbd "C-x t") 'eshell)
-(global-set-key "\C-x\C-t" 'eshell)
 
 
 ;; disable arrows & co
