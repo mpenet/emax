@@ -46,13 +46,10 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
-;; globals
-(setq base-dir "~/.emacs.d/"
-      default-tab-size 4)
-(add-to-list 'load-path base-dir)
+(add-to-list 'load-path user-emacs-directory)
 
 (require 'utils)
-(defalias 'concat-base (apply-partially 'concat base-dir))
+(defalias 'concat-base (apply-partially 'concat user-emacs-directory))
 
 ;; my mode/bindings etc
 (load-files-in-dir (concat-base "config"))

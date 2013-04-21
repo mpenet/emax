@@ -1,13 +1,13 @@
 ;; hassle free indent
 (defun my-unindent ()
   (interactive)
-  (indent-rigidly (region-beginning) (region-end) (- default-tab-size))
+  (indent-rigidly (region-beginning) (region-end) (- tab-width))
   (setq mark-active t deactivate-mark nil))
 (global-set-key (kbd "<C-M-tab>") 'my-unindent)
 
 (defun my-indent ()
   (interactive)
-  (indent-rigidly (region-beginning) (region-end) default-tab-size)
+  (indent-rigidly (region-beginning) (region-end) tab-width)
   (setq mark-active t deactivate-mark nil))
 (global-set-key (kbd "<C-tab>") 'my-indent)
 

@@ -20,9 +20,9 @@
 (setq-default indent-tabs-mode nil)
 
 ;; TAB => 4*'\b'
-(setq-default tab-width default-tab-size)
-(setq-default c-basic-offset default-tab-size)
-(setq-default sgml-basic-offset default-tab-size)
+(setq-default tab-width 4)
+(setq-default c-basic-offset tab-width)
+(setq-default sgml-basic-offset tab-width)
 
 ;; ui
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))

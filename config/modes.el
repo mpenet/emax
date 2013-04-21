@@ -43,14 +43,14 @@
 ;; js-mode
 (eval-after-load 'js-mode
   '(progn
-     (setq js-indent-level default-tab-size)
+     (setq js-indent-level tab-width)
      (add-hook 'js-mode-hook 'yas-minor-mode)))
 
 
 ;; css
 (eval-after-load 'css-mode
   '(progn (add-hook 'css-mode-hook 'rainbow-mode)
-          (setq css-indent-offset default-tab-size)))
+          (setq css-indent-offset tab-width)))
 
 
 ;; less
