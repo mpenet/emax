@@ -76,7 +76,8 @@
       auto-save-default nil
       auto-save-list-file-prefix nil
       ;; don't save emacs session
-      save-place nil)
+      save-place nil
+      vc-follow-symlinks nil)
 
 ;; global save hooks
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
