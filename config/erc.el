@@ -9,6 +9,7 @@
       erc-interpret-mirc-color t
       erc-input-line-position -2
       erc-prompt ">"
+      erc-keywords '("\\bcassandra\\b" "\\balia\\b" "\\bhayt\\b")
       erc-insert-timestamp-function 'erc-insert-timestamp-left
       ;; erc-current-nick-highlight-type 'nick
       erc-prompt-for-nickserv-password nil)
