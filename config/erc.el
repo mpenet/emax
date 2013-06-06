@@ -1,5 +1,3 @@
-(load "~/.erc" t)
-
 (setq erc-modules '(netsplit fill track completion ring button autojoin
                              services match stamp track page scrolltobottom
                              hl-nicks)
@@ -24,7 +22,7 @@
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
-  (erc :server "irc.freenode.net"
+  (erc :server "barjavel.freenode.net"
        :port 6667
        :nick "mpenet"
        :full-name "mpenet"))

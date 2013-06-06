@@ -51,5 +51,8 @@
 (require 'utils)
 (defalias 'concat-base (apply-partially 'concat user-emacs-directory))
 
+;; load pwds and other sensitive stuff
+(load "~/.emacs-secrets" t)
+
 ;; my mode/bindings etc
 (load-files-in-dir (concat-base "config"))
