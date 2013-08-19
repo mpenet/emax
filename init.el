@@ -17,6 +17,7 @@
                       clojure-snippets
                       clojure-test-mode
                       dash
+                      dropdown-list
                       ;; elixir-mode
                       erc-hl-nicks
                       ;; erlang
