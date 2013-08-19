@@ -22,7 +22,7 @@
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
-  (erc :server "barjavel.freenode.net"
+  (erc :server "kornbluth.freenode.net"
        :port 6667
        :nick "mpenet"
        :full-name "mpenet"))
@@ -47,7 +47,7 @@
        :full-name "zcam"))
 
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#leiningen" "#emacs"
+      '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#leiningen"
          ;; "#haskell"
          )
         ("quakenet.org" "#ratatouil")))
