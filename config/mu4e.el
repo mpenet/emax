@@ -1,9 +1,5 @@
 (autoload 'mu4e "mu4e" "" t)
 
-;; general
-(setq mu4e-view-show-images t
-      mu4e-view-image-max-width 800)
-
 ;; incoming
 (setq mu4e-drafts-folder "/[Gmail].Drafts"
       mu4e-sent-folder   "/[Gmail].Sent Mail"
@@ -25,9 +21,12 @@
       mu4e-get-mail-command "offlineimap"
       mu4e-headers-leave-behavior 'apply
       mu4e-show-images t
+      mu4e-view-show-images t
+      mu4e-view-image-max-width 400
       mu4e-maildir (expand-file-name "~/mail")
       mu4e-update-interval 300
-      mu4e-html2text-command "html2text -utf8 -width 72")
+      mu4e-html2text-command "html2text -utf8 -width 72"
+      mu4e-attachment-dir  "~/Downloads")
 
 ;; outgoing
 (setq message-send-mail-function 'smtpmail-send-it
