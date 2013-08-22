@@ -36,6 +36,11 @@
       smtpmail-smtp-service 587
       user-mail-address "m@qbits.cc"
       user-full-name  "Max Penet"
+      message-signature (concat "Max Penet\n"
+                                "----------------------------------\n"
+                                "twitter: http://twitter.com/mpenet\n"
+                                "github: https://github.com/mpenet\n")
+      message-signature-insert-empty-line t
       message-kill-buffer-on-exit t)
 
 (eval-after-load 'mu4e-headers
