@@ -32,13 +32,13 @@
                       markdown-mode
                       nginx-mode
                       nrepl
-                      ;; nrepl-ritz
                       paredit
                       rainbow-mode
                       ;; roy-mode
                       rust-mode
                       smex
                       yaml-mode
+                      window-numbering
                       yasnippet
                       zenburn-theme
                       zencoding-mode))
