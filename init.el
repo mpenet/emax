@@ -18,9 +18,7 @@
                       clojure-test-mode
                       dash
                       dropdown-list
-                      ;; elixir-mode
                       erc-hl-nicks
-                      ;; erlang
                       exec-path-from-shell
                       find-file-in-project
                       guru-mode
@@ -34,11 +32,9 @@
                       nrepl
                       paredit
                       rainbow-mode
-                      ;; roy-mode
                       rust-mode
                       smex
                       yaml-mode
-                      window-numbering
                       yasnippet
                       zenburn-theme
                       zencoding-mode))

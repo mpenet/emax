@@ -59,9 +59,6 @@
 ;; typed text replaces the selection if the selection is active
 (delete-selection-mode t)
 
-;; numbered windows/nav
-(window-numbering-mode 1)
-
 ;; make emacs use the clipboard if running in X
 (when window-system
   (setq x-select-enable-clipboard t
