@@ -2,6 +2,7 @@
                              services match stamp track page scrolltobottom
                              hl-nicks)
       erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
+      erc-ignore-list '("chord")
       erc-autojoin-mode t
       erc-timestamp-format "%H:%M "
       erc-interpret-mirc-color t
