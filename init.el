@@ -10,8 +10,7 @@
 (when (null package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(melpa
-                      ac-nrepl
+(defvar my-packages '(ac-nrepl
                       auto-complete
                       clojure-mode
                       clojure-snippets
@@ -25,11 +24,10 @@
                       haskell-mode
                       htmlize
                       less-css-mode
-                      lein
                       magit
                       markdown-mode
                       nginx-mode
-                      nrepl
+                      cider
                       paredit
                       rainbow-mode
                       rust-mode

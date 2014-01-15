@@ -28,7 +28,7 @@
 
 (dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
                 sass-mode yaml-mode csv-mode espresso-mode haskell-mode
-                html-mode nxml-mode sh-mode smarty-mode clojure-mode nrepl-mode
+                html-mode nxml-mode sh-mode smarty-mode clojure-mode cider-mode
                 lisp-mode textile-mode markdown-mode tuareg-mode))
   (add-to-list 'ac-modes mode))
 
@@ -115,7 +115,8 @@
       in '(emacs-lisp-mode-hook
            scheme-mode-hook
            clojure-mode-hook
-           nrepl-mode-hook)
+           cider-mode-hook
+           cider-repl-mode-hook)
       do (add-hook mode-hook (lambda () (paredit-mode +1))))
 
 (eval-after-load 'paredit
@@ -132,23 +133,14 @@
 
 
 (autoload 'ac-nrepl "ac-nrepl-setup")
-(add-hook 'nrepl-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'ac-nrepl-setup)
-(add-hook 'nrepl-interaction-mode-hook 'nrepl-turn-on-eldoc-mode)
-(eval-after-load 'nrepl
+(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(eval-after-load 'cider
   '(progn
      ;; (setq nrepl-popup-stacktraces nil)
-     (setq nrepl-popup-stacktraces-in-repl t)
-     (define-key nrepl-interaction-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)))
-
-;; (add-hook 'nrepl-mode-hook 'subword-mode)
-
-;; (defun set-auto-complete-as-completion-at-point-function ()
-;;   (setq completion-at-point-functions '(auto-complete)))
-;; (add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
-
-;; (add-hook 'nrepl-mode-hook 'set-auto-complete-as-completion-at-point-function)
-;; (add-hook 'nrepl-interaction-mode-hook 'set-auto-complete-as-completion-at-point-function)
+     (setq cider-popup-stacktraces-in-repl t)
+     (define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)))
 
 
 ;; haskell
