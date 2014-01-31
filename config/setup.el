@@ -1,5 +1,5 @@
 ;; font
-(set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")
+(set-frame-font "-xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-*-1")
 (setq ns-use-system-highlight-color nil
       ns-pop-up-frames nil)
 (global-font-lock-mode 1)
