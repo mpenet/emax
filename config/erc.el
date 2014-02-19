@@ -39,6 +39,17 @@
   (erc-tls :server "shore.irc.grove.io" :port 6697
            :nick "mpenet" :password grove-connect-password))
 
+(defun erc-connect/slack ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (add-to-list 'erc-networks-alist '(slack "irc.slack.com"))
+  (add-to-list 'erc-nickserv-alist
+               '(slack "NickServ!NickServ@services."
+                       "This nickname is registered."
+                       "NickServ" "IDENTIFY" nil))
+  (erc-tls :server "shoreware.irc.slack.com" :port 6667
+           :nick "mpenet" :password slack-connect-password))
+
 (defun erc-connect/quakenet ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
@@ -56,3 +67,4 @@
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
 (global-set-key (kbd "C-c e g") 'erc-connect/groveio)
 (global-set-key (kbd "C-c e q") 'erc-connect/quakenet)
+(global-set-key (kbd "C-c e s") 'erc-connect/slack)
