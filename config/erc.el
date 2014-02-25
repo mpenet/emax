@@ -28,17 +28,6 @@
        :nick "mpenet"
        :full-name "mpenet"))
 
-(defun erc-connect/groveio ()
-  "Connect to ERC, or switch to last active buffer"
-  (interactive)
-  (add-to-list 'erc-networks-alist '(grove "irc.grove.io"))
-  (add-to-list 'erc-nickserv-alist
-               '(grove "NickServ!NickServ@services."
-                       "This nickname is registered."
-                       "NickServ" "IDENTIFY" nil))
-  (erc-tls :server "shore.irc.grove.io" :port 6697
-           :nick "mpenet" :password grove-connect-password))
-
 (defun erc-connect/slack ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
@@ -65,6 +54,5 @@
         ("quakenet.org" "#ratatouil")))
 
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
-(global-set-key (kbd "C-c e g") 'erc-connect/groveio)
 (global-set-key (kbd "C-c e q") 'erc-connect/quakenet)
 (global-set-key (kbd "C-c e s") 'erc-connect/slack)
