@@ -20,7 +20,11 @@
                       erc-hl-nicks
                       exec-path-from-shell
                       find-file-in-project
+                      flymake-haskell-multi
+                      flycheck-hdevtools
                       guru-mode
+                      ghc
+                      ghci-completion
                       haskell-mode
                       htmlize
                       less-css-mode
@@ -31,6 +35,7 @@
                       paredit
                       rainbow-mode
                       rust-mode
+                      shm
                       smex
                       yaml-mode
                       yasnippet
