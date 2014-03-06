@@ -116,9 +116,7 @@
            scheme-mode-hook
            clojure-mode-hook
            cider-mode-hook
-           cider-repl-mode-hook
-           haskell-mode-hook
-           inferior-haskell-mode-hook)
+           cider-repl-mode-hook)
       do (add-hook mode-hook (lambda () (paredit-mode +1))))
 
 (eval-after-load 'paredit
