@@ -10,11 +10,11 @@
 (when (null package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(ac-nrepl
+(defvar my-packages '(ac-cider
                       auto-complete
+                      cider
                       clojure-mode
                       clojure-snippets
-                      clojure-test-mode
                       dash
                       dropdown-list
                       erc-hl-nicks
@@ -31,7 +31,6 @@
                       magit
                       markdown-mode
                       nginx-mode
-                      cider
                       paredit
                       rainbow-mode
                       rust-mode

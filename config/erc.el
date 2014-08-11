@@ -47,12 +47,22 @@
        :nick "zcam"
        :full-name "zcam"))
 
+(defun erc-connect/mozilla ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (erc :server "irc.mozilla.org"
+       :port 6667
+       :nick "mpenet"
+       :full-name "mpenet"))
+
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#leiningen"
          ;; "#haskell"
          )
+        ("irc.mozilla.org" "#rust")
         ("quakenet.org" "#ratatouil")))
 
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
 (global-set-key (kbd "C-c e q") 'erc-connect/quakenet)
 (global-set-key (kbd "C-c e s") 'erc-connect/slack)
+(global-set-key (kbd "C-c e m") 'erc-connect/mozilla)
