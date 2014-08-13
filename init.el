@@ -21,6 +21,7 @@
                       exec-path-from-shell
                       find-file-in-project
                       flymake-haskell-multi
+                      flymake-rust
                       flycheck-hdevtools
                       guru-mode
                       ghc

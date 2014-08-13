@@ -151,6 +151,12 @@
      (define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)))
 
 
+;; rust
+(eval-after-load 'rust-mode
+    '(progn
+       (require 'flymake-rust)
+       (add-hook 'rust-mode-hook 'flymake-rust-load)))
+
 ;; haskell
 (eval-after-load 'haskell-mode
   '(progn
