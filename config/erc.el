@@ -57,6 +57,7 @@
 
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#leiningen"
+         "#pixie-lang"
          ;; "#haskell"
          )
         ("irc.mozilla.org" "#rust")
