@@ -28,6 +28,7 @@
                       ghci-completion
                       haskell-mode
                       htmlize
+                      hy-mode
                       less-css-mode
                       magit
                       markdown-mode
