@@ -55,11 +55,17 @@
        :nick "mpenet"
        :full-name "mpenet"))
 
+(defun erc-connect/gitter ()
+  "Connect to ERC, or switch to last active buffer"
+  (interactive)
+  (add-to-list 'erc-networks-alist '(gitter "irc.gitter.im"))
+  (erc-tls :server "irc.gitter.im" :port 6667
+           :nick "mpenet" :password gitter-connect-password))
+
 (setq erc-autojoin-channels-alist
       '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#leiningen"
-         "#pixie-lang"
-         ;; "#haskell"
-         )
+         "#pixie-lang")
+        ("irc.gitter.im" "#mpenet/alia" "#mpenet/jet" "#mpenet/hayt" "#MichaelDrogalis/onyx")
         ("irc.mozilla.org" "#rust")
         ("quakenet.org" "#ratatouil")))
 
@@ -67,3 +73,4 @@
 (global-set-key (kbd "C-c e q") 'erc-connect/quakenet)
 (global-set-key (kbd "C-c e s") 'erc-connect/slack)
 (global-set-key (kbd "C-c e m") 'erc-connect/mozilla)
+(global-set-key (kbd "C-c e g") 'erc-connect/gitter)

@@ -57,7 +57,7 @@
 (eval-after-load 'less-css-mode
   '(progn (setq-default less-css-output-directory "../css/")
           (setq less-css-compile-at-save t
-                less-css-lessc-options '("--yui-compress"))))
+                less-css-lessc-options '("--compress"))))
 
 
 ;; web utilities

@@ -34,6 +34,7 @@
                       markdown-mode
                       nginx-mode
                       paredit
+                      pixie-mode
                       rainbow-mode
                       rust-mode
                       shm
@@ -47,13 +48,26 @@
   (when (not (package-installed-p p))
     (package-install p)))
 
-(add-to-list 'load-path user-emacs-directory)
+(require 'dash)
+(defun add-subdirs-to-list (list-var path)
+  (let ((modules-dir path))
+    (add-to-list list-var modules-dir)
+    (dolist (f (directory-files modules-dir))
+      (let ((name (concat modules-dir "/" f)))
+        (when (and (file-directory-p name)
+                   (not (equal f ".."))
+                   (not (equal f ".")))
+          (add-to-list list-var name))))))
 
-(require 'utils)
+(defun load-files-in-dir (dir)
+  (let ((file-in-dir-p '(lambda (x) (file-regular-p (format "%s/%s" dir x)))))
+    (dolist (f (-filter file-in-dir-p (directory-files dir)))
+      (load-file (format "%s/%s" dir f)))))
+
 (defalias 'concat-base (apply-partially 'concat user-emacs-directory))
 
 ;; load pwds and other sensitive stuff
 (load "~/.emacs-secrets" t)
 
 ;; my mode/bindings etc
-(load-files-in-dir (concat-base "config"))
+(load-files-in-dir (concat-base "elisp"))
