@@ -33,10 +33,13 @@
 	    company-echo-metadata-frontend))
     (company-quickhelp-mode 1)
 
+    ;; meh
+    (setq pos-tip-foreground-color "black")
+    (setq pos-tip-background-color "khaki1")
+
     (custom-set-faces
-     `(company-preview ((t (:background "#2B2B2B" :underline t))))
-     ;; `(company-preview-common ((t (:foreground ,zenburn-green+2 :background ,zenburn-bg-1)))))
-     )))
+     `(company-preview ((t (:background "#3F3F3F" :foreground "darkgray" :underline t))))
+     `(company-preview-common ((t (:inherit company-preview)))))))
 
 
 ;; js-mode
