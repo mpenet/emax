@@ -11,33 +11,32 @@
 
 (yas-global-mode 1)
 
-;; autocomplete mode
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories (concat-base "ac-dict"))
-(ac-config-default)
-(global-auto-complete-mode t)
-(auto-complete-mode t)
-(define-key ac-completing-map (kbd "C-n") 'ac-next)
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+;; company
+(global-company-mode)
+(eval-after-load 'company
+  (progn
+    (define-key company-active-map (kbd "M-n") nil)
+    (define-key company-active-map (kbd "M-p") nil)
+    (define-key company-active-map (kbd "\C-n") 'company-select-next)
+    (define-key company-active-map (kbd "\C-p") 'company-select-previous)
+    (define-key company-active-map (kbd "\C-d") 'company-show-doc-buffer)
+    (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+    (define-key company-active-map [tab] 'company-complete-selection)
 
-(set-default 'ac-sources
-             '(ac-source-dictionary
-               ac-source-words-in-buffer
-               ac-source-words-in-same-mode-buffers
-               ac-source-words-in-all-buffer))
+    (setq company-tooltip-align-annotations t)
+    (setq company-minimum-prefix-length 2)
+    (setq company-require-match nil)
 
-(dolist (mode '(magit-log-edit-mode log-edit-mode org-mode text-mode haml-mode
-                sass-mode yaml-mode csv-mode espresso-mode haskell-mode
-                html-mode nxml-mode sh-mode smarty-mode clojure-mode cider-mode
-                lisp-mode textile-mode markdown-mode tuareg-mode))
-  (add-to-list 'ac-modes mode))
+    (setq company-frontends
+	  '(company-pseudo-tooltip-unless-just-one-frontend
+	    company-preview-frontend
+	    company-echo-metadata-frontend))
+    (company-quickhelp-mode 1)
 
-(define-globalized-minor-mode real-global-auto-complete-mode
-  auto-complete-mode (lambda ()
-                       (if (and (not (minibufferp (current-buffer)))
-                                (not (eq 'erc-mode major-mode)))
-                           (auto-complete-mode 1))))
-(real-global-auto-complete-mode t)
+    (custom-set-faces
+     `(company-preview ((t (:background "#2B2B2B" :underline t))))
+     ;; `(company-preview-common ((t (:foreground ,zenburn-green+2 :background ,zenburn-bg-1)))))
+     )))
 
 
 ;; js-mode
@@ -132,24 +131,11 @@
      (define-key paredit-mode-map (kbd "<delete>") 'my-paredit-delete)
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
-
-;; (autoload 'ac-nrepl "ac-nrepl-setup")
-;; (add-hook 'cider-mode-hook 'ac-nrepl-setup)
-;; (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-
-(autoload 'ac-cider "ac-cider-setup")
-(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
-(add-hook 'cider-mode-hook 'ac-cider-setup)
-(add-hook 'cider-repl-mode-hook 'ac-cider-setup)
-(eval-after-load "auto-complete"
-  '(add-to-list 'ac-modes 'cider-mode))
-
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 (eval-after-load 'cider
   '(progn
      ;; (setq nrepl-popup-stacktraces nil)
-     (setq cider-popup-stacktraces-in-repl t)
-     (define-key cider-mode-map (kbd "C-c C-d") 'ac-nrepl-popup-doc)))
+     (setq cider-popup-stacktraces-in-repl t)))
 
 
 ;; rust
@@ -222,6 +208,7 @@
                                try-complete-lisp-symbol
                                try-complete-file-name-partially
                                try-complete-file-name))
+
 
 ;; eshell
 (setq eshell-directory-name (concat-base "extras/eshell"))

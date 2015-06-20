@@ -10,11 +10,11 @@
 (when (null package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(ac-cider
-                      auto-complete
-                      cider
+(defvar my-packages '(cider
                       clojure-mode
                       clojure-snippets
+                      company
+                      company-quickhelp
                       dash
                       dropdown-list
                       erc-hl-nicks
