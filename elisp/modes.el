@@ -38,8 +38,10 @@
     (setq pos-tip-background-color "khaki1")
 
     (custom-set-faces
-     `(company-preview ((t (:background "#3F3F3F" :foreground "darkgray" :underline t))))
-     `(company-preview-common ((t (:inherit company-preview)))))))
+     `(company-preview
+       ((t (:background "#3F3F3F" :foreground "darkgray" :underline t))))
+     `(company-preview-common
+       ((t (:background "#3F3F3F" :foreground "darkgray" :underline t)))))))
 
 
 ;; js-mode
