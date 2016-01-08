@@ -63,7 +63,7 @@
            :nick "mpenet" :password gitter-connect-password))
 
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure" "#cassandra" "#datastax-drivers" "#leiningen"
+      '(("freenode.net" "#clojure" "#datastax-drivers"
          "#pixie-lang")
         ("irc.gitter.im" "#mpenet/alia" "#mpenet/jet" "#mpenet/hayt" "#MichaelDrogalis/onyx")
         ("irc.mozilla.org" "#rust")
