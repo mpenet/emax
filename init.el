@@ -38,6 +38,8 @@
                       rainbow-mode
                       rust-mode
                       shm
+                      slime
+                      slime-company
                       smex
                       yaml-mode
                       yasnippet
