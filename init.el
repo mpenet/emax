@@ -36,6 +36,7 @@
                       paredit
                       pixie-mode
                       rainbow-mode
+                      restclient
                       rust-mode
                       shm
                       slime
