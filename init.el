@@ -16,8 +16,11 @@
                       company
                       company-quickhelp
                       dash
+                      flycheck
+                      flycheck-pos-tip
                       dropdown-list
                       erc-hl-nicks
+                      erlang
                       exec-path-from-shell
                       find-file-in-project
                       flymake-haskell-multi

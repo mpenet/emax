@@ -96,6 +96,7 @@
            clojure-mode-hook
            cider-mode-hook
            cider-repl-mode-hook
+           erlang-mode-hook
            hy-mode-hook)
       do (add-hook mode-hook (lambda () (paredit-mode +1))))
 
@@ -123,6 +124,22 @@
     '(progn
        (require 'flymake-rust)
        (add-hook 'rust-mode-hook 'flymake-rust-load)))
+
+
+(eval-after-load 'flycheck
+  '(progn
+    (flycheck-pos-tip-mode)))
+
+(eval-after-load 'erlang
+  '(progn
+     (require 'distel)
+     (distel-setup)
+     (add-hook 'erlang-mode-hook 'flycheck-mode)
+
+     ;; (require 'company-distel)
+     ;; (add-to-list 'company-backends 'company-distel)
+     ;; (setq erl-company-popup-help t)
+     ))
 
 ;; haskell
 (eval-after-load 'haskell-mode
