@@ -134,8 +134,17 @@
   '(progn
      ;; (require 'flycheck-dialyzer)
      ;; (flycheck-add-next-checker 'erlang 'erlang-dialyzer)
-     (add-hook 'erlang-mode-hook 'flycheck-mode)))
-
+     (add-hook 'erlang-mode-hook 'flycheck-mode)
+     (add-hook 'erlang-mode-hook 'mpenet/disable-paredit-spaces-before-paren)
+     (defun mpenet/disable-paredit-spaces-before-paren ()
+       ;; Function which always returns nil -> never insert a space
+       ;; when insert a parentheses.
+       (defun mpenet/erlang-paredit-space-for-delimiter-p (endp delimiter) nil)
+       ;; Set this function locally as only predicate to check when
+       ;; determining if a space should be inserted before a newly
+       ;; created pair of parentheses.
+       (setq-local paredit-space-for-delimiter-predicates
+                   '(mpenet/erlang-paredit-space-for-delimiter-p)))))
 ;; haskell
 (eval-after-load 'haskell-mode
   '(progn
@@ -213,6 +222,7 @@
 ;; poor mans paredit
 (show-paren-mode t)
 (setq skeleton-pair t)
+
 (global-set-key "(" 'skeleton-pair-insert-maybe)
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
