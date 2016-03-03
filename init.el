@@ -17,6 +17,7 @@
                       company-quickhelp
                       dash
                       flycheck
+                      ;; flycheck-dialyzer
                       flycheck-pos-tip
                       dropdown-list
                       erc-hl-nicks

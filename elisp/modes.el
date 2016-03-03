@@ -132,14 +132,9 @@
 
 (eval-after-load 'erlang
   '(progn
-     (require 'distel)
-     (distel-setup)
-     (add-hook 'erlang-mode-hook 'flycheck-mode)
-
-     ;; (require 'company-distel)
-     ;; (add-to-list 'company-backends 'company-distel)
-     ;; (setq erl-company-popup-help t)
-     ))
+     ;; (require 'flycheck-dialyzer)
+     ;; (flycheck-add-next-checker 'erlang 'erlang-dialyzer)
+     (add-hook 'erlang-mode-hook 'flycheck-mode)))
 
 ;; haskell
 (eval-after-load 'haskell-mode
