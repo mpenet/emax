@@ -27,6 +27,7 @@
                       flymake-haskell-multi
                       flymake-rust
                       flycheck-hdevtools
+                      ;; flycheck-ocaml
                       guru-mode
                       ghc
                       ghci-completion
@@ -36,7 +37,9 @@
                       less-css-mode
                       magit
                       markdown-mode
+                      merlin
                       nginx-mode
+                      ocp-indent
                       paredit
                       pixie-mode
                       rainbow-mode
@@ -46,6 +49,7 @@
                       slime
                       slime-company
                       smex
+                      tuareg
                       yaml-mode
                       yasnippet
                       zenburn-theme

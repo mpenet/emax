@@ -155,6 +155,15 @@
      (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
 
+;; ocaml
+
+(eval-after-load 'tuareg
+  '(progn
+     (add-hook 'tuareg-mode-hook #'merlin-mode)))
+
+(eval-after-load 'merlin
+  '(progn (setq merlin-command 'opam)))
+
 ;; buffers, project, files navigation (should refactor this into a mode)
 (ido-mode t)
 (ido-everywhere t)
