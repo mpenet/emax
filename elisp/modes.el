@@ -123,8 +123,15 @@
 (eval-after-load 'rust-mode
     '(progn
        (require 'flymake-rust)
-       (add-hook 'rust-mode-hook 'flymake-rust-load)))
+       (add-hook 'rust-mode-hook 'flymake-rust-load)
 
+       (setq racer-rust-src-path "~/rust-src/src")
+       (setq racer-cmd "~/.cargo/bin/racer")
+       (setq racer-cargo-home "~/.cargo")
+
+       (add-hook 'rust-mode-hook #'racer-mode)
+       (add-hook 'racer-mode-hook #'company-mode)
+       (add-hook 'racer-mode-hook #'eldoc-mode)))
 
 (eval-after-load 'flycheck
   '(progn
@@ -239,4 +246,5 @@
 ;; (global-hl-line-mode +1)
 
 ;; apply the PATH environment variable to Emacs and set the exec-path
+(exec-path-from-shell-copy-env "PATH")
 (exec-path-from-shell-initialize)

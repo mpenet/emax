@@ -10,11 +10,13 @@
 (when (null package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(cider
+(defvar my-packages '(cargo
+                      cider
                       clojure-mode
                       clojure-snippets
                       company
                       company-quickhelp
+                      company-ghc
                       dash
                       flycheck
                       ;; flycheck-dialyzer
@@ -26,12 +28,14 @@
                       find-file-in-project
                       flymake-haskell-multi
                       flymake-rust
+                      flycheck-haskell
                       flycheck-hdevtools
                       ;; flycheck-ocaml
                       guru-mode
                       ghc
                       ghci-completion
                       haskell-mode
+                      haskell-snippets
                       htmlize
                       hy-mode
                       less-css-mode
@@ -41,7 +45,7 @@
                       nginx-mode
                       ocp-indent
                       paredit
-                      pixie-mode
+                      racer
                       rainbow-mode
                       restclient
                       rust-mode
