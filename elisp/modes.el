@@ -113,6 +113,7 @@
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
 (add-hook 'cider-mode-hook 'eldoc-mode)
+(add-hook 'cider-repl-mode-hook 'eldoc-mode)
 (eval-after-load 'cider
   '(progn
      ;; (setq nrepl-popup-stacktraces nil)
