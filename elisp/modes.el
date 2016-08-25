@@ -140,9 +140,9 @@
 
 (eval-after-load 'erlang
   '(progn
-     ;; (require 'flycheck-dialyzer)
-     ;; (flycheck-add-next-checker 'erlang 'erlang-dialyzer)
+     (require 'flycheck-dialyzer)
      (add-hook 'erlang-mode-hook 'flycheck-mode)
+     (flycheck-add-next-checker 'erlang 'erlang-dialyzer)
      (add-hook 'erlang-mode-hook 'mpenet/disable-paredit-spaces-before-paren)
      (defun mpenet/disable-paredit-spaces-before-paren ()
        ;; Function which always returns nil -> never insert a space
@@ -164,13 +164,15 @@
 
 
 ;; ocaml
-
 (eval-after-load 'tuareg
   '(progn
      (add-hook 'tuareg-mode-hook #'merlin-mode)))
 
 (eval-after-load 'merlin
-  '(progn (setq merlin-command 'opam)))
+  '(progn
+     (setq merlin-use-auto-complete-mode 'easy)
+     (setq merlin-command 'opam)))
+(add-hook 'caml-mode-hook 'merlin-mode t)
 
 ;; buffers, project, files navigation (should refactor this into a mode)
 (ido-mode t)
