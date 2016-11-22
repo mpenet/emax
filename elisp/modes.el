@@ -93,6 +93,7 @@
 (loop for mode-hook
       in '(emacs-lisp-mode-hook
            scheme-mode-hook
+           tuareg-mode-hook
            clojure-mode-hook
            cider-mode-hook
            cider-repl-mode-hook

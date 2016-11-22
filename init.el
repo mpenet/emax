@@ -19,7 +19,8 @@
                       company-ghc
                       dash
                       flycheck
-                      ;; flycheck-dialyzer
+                      flycheck-dialyzer
+                      ;; flycheck-rebar3
                       flycheck-pos-tip
                       dropdown-list
                       erc-hl-nicks
@@ -44,6 +45,7 @@
                       merlin
                       nginx-mode
                       ocp-indent
+                      ox-reveal
                       paredit
                       racer
                       rainbow-mode
@@ -86,3 +88,6 @@
 
 ;; my mode/bindings etc
 (load-files-in-dir (concat-base "elisp"))
+
+(put 'downcase-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)

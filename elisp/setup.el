@@ -12,7 +12,7 @@
 ;; themes
 (load-theme 'zenburn t)
 (set-face-attribute 'region nil :background "#6f6f6f")
-(set-face-foreground 'show-paren-match-face "red")
+(set-face-foreground 'show-paren-match "red")
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
