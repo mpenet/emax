@@ -22,6 +22,8 @@
                       flycheck-dialyzer
                       ;; flycheck-rebar3
                       flycheck-pos-tip
+                      docker
+                      docker-tramp
                       dropdown-list
                       erc-hl-nicks
                       erlang
