@@ -88,6 +88,9 @@
 ;; github markdown mode
 (add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode))
 
+;; rest-client mode
+(add-to-list 'auto-mode-alist '("\\.http$" . restclient-mode))
+
 
 ;; paredit
 (loop for mode-hook
