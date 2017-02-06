@@ -23,7 +23,7 @@
 (defun erc-connect/freenode ()
   "Connect to ERC, or switch to last active buffer"
   (interactive)
-  (erc :server "kornbluth.freenode.net"
+  (erc :server "irc.freenode.net"
        :port 6667
        :nick "mpenet"
        :full-name "mpenet"))
