@@ -43,6 +43,16 @@
      `(company-preview-common
        ((t (:background "#3F3F3F" :foreground "darkgray" :underline t)))))))
 
+(eval-after-load 'go-mode
+  '(progn
+     (require 'go-autocomplete)
+     (require 'go-gopath)
+     (add-hook 'go-mode-hook (lambda ()
+                               (define-key go-mode-map (kbd "C-c C-e") #'go-gopath-set-gopath)
+                               (set (make-local-variable 'company-backends) '(company-go))
+                               (company-mode)))
+     (add-hook 'before-save-hook 'gofmt-before-save)))
+
 
 ;; js-mode
 (eval-after-load 'js-mode

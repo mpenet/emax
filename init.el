@@ -34,6 +34,13 @@
                       flycheck-haskell
                       flycheck-hdevtools
                       ;; flycheck-ocaml
+                      gist
+                      go-mode
+                      go-autocomplete
+                      go-eldoc
+                      go-gopath
+                      go-snippets
+                      company-go
                       guru-mode
                       ghc
                       ghci-completion
