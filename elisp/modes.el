@@ -2,6 +2,8 @@
 (global-set-key (kbd "C-c g") 'magit-status)
 (global-set-key "\C-c\C-g" 'magit-status)
 
+(require 'cl)
+
 ;; yasnippet
 (require 'dropdown-list)
 (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
@@ -47,12 +49,17 @@
   '(progn
      (require 'go-autocomplete)
      (require 'go-gopath)
-     (add-hook 'go-mode-hook (lambda ()
-                               (define-key go-mode-map (kbd "C-c C-e") #'go-gopath-set-gopath)
-                               (set (make-local-variable 'company-backends) '(company-go))
-                               (company-mode)))
-     (add-hook 'before-save-hook 'gofmt-before-save)))
 
+     (add-hook 'go-mode-hook (lambda ()
+                               (flycheck-mode)
+                               ;; (setq company-tooltip-limit 20)                      ; bigger popup window
+                               ;; (setq company-idle-delay .3)                         ; decrease delay before autocompletion popup shows
+                               ;; (setq company-echo-delay 0)                          ; remove annoying blinking
+                               ;; (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
+                               (define-key go-mode-map (kbd "C-c C-e") #'go-gopath-set-gopath)
+                               (set (make-local-variable 'company-backends)
+                                    '(company-go))))
+     (add-hook 'before-save-hook 'gofmt-before-save)))
 
 ;; js-mode
 (eval-after-load 'js-mode
@@ -264,4 +271,28 @@
 
 ;; apply the PATH environment variable to Emacs and set the exec-path
 (exec-path-from-shell-copy-env "PATH")
+(exec-path-from-shell-copy-env "GOPATH")
+(exec-path-from-shell-copy-env "GOROOT")
+(exec-path-from-shell-copy-env "LGOBIN")
+(setq shell-command-switch "-ic")
 (exec-path-from-shell-initialize)
+
+
+
+
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+    (setenv "PATH" path-from-shell)
+    (setq eshell-path-env path-from-shell) ; for eshell users
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
+
+
+(message (replace-regexp-in-string
+                          "[ \t\n]*$"
+                          ""
+                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'")))

@@ -7,7 +7,7 @@
 
 (package-initialize)
 
-(when (null package-archive-contents)
+(when (not package-archive-contents)
   (package-refresh-contents))
 
 (defvar my-packages '(cargo
@@ -29,10 +29,7 @@
                       erlang
                       exec-path-from-shell
                       find-file-in-project
-                      flymake-haskell-multi
                       flymake-rust
-                      flycheck-haskell
-                      flycheck-hdevtools
                       ;; flycheck-ocaml
                       gist
                       go-mode
@@ -41,13 +38,9 @@
                       go-gopath
                       go-snippets
                       company-go
+
                       guru-mode
-                      ghc
-                      ghci-completion
-                      haskell-mode
-                      haskell-snippets
                       htmlize
-                      hy-mode
                       less-css-mode
                       magit
                       markdown-mode
@@ -60,9 +53,6 @@
                       rainbow-mode
                       restclient
                       rust-mode
-                      shm
-                      slime
-                      slime-company
                       smex
                       tuareg
                       yaml-mode

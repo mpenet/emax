@@ -14,6 +14,14 @@
 (set-face-attribute 'region nil :background "#6f6f6f")
 (set-face-foreground 'show-paren-match "red")
 
+;; flatten modeline
+(set-face-attribute 'mode-line nil :box nil)
+(set-face-attribute 'mode-line-inactive nil :box nil)
+
+;; show fun in modeline
+(which-function-mode)
+
+
 ;; utf8 only
 (setq current-language-environment "UTF-8")
 (set-terminal-coding-system 'utf-8)
