@@ -1,6 +1,13 @@
 ;; global bindings
 
+(global-set-key (kbd "C-h") 'backward-delete-char)
+(global-set-key (kbd "C-M-h") 'backward-kill-word)
+
 (global-set-key (kbd "RET") 'newline-and-indent)
+
+(global-set-key (kbd "<return>") 'ignore)
+;; (global-set-key (kbd "<backspace>") 'ignore)
+
 (global-set-key (kbd "<C-return>") 'newline)
 
 (global-set-key (kbd "<f4>") 'start-or-end-kbd-macro)

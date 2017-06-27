@@ -130,6 +130,8 @@
        (if mark-active
            (paredit-delete-region (region-beginning) (region-end))
          (paredit-backward-delete)))
+     (define-key paredit-mode-map (kbd "C-M-h") 'paredit-backward-kill-word)
+     (define-key paredit-mode-map (kbd "C-h") 'my-paredit-delete)
      (define-key paredit-mode-map (kbd "<delete>") 'my-paredit-delete)
      (define-key paredit-mode-map (kbd "DEL") 'my-paredit-delete)))
 
