@@ -6,7 +6,7 @@
 (global-set-key (kbd "RET") 'newline-and-indent)
 
 (global-set-key (kbd "<return>") 'ignore)
-;; (global-set-key (kbd "<backspace>") 'ignore)
+(global-set-key (kbd "<backspace>") 'ignore)
 
 (global-set-key (kbd "<C-return>") 'newline)
 
