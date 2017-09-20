@@ -41,8 +41,6 @@
 
                       guru-mode
                       htmlize
-                      kotlin-mode
-                      flycheck-kotlin
                       less-css-mode
                       magit
                       markdown-mode
