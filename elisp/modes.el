@@ -251,7 +251,8 @@
                                try-complete-lisp-symbol
                                try-complete-file-name-partially
                                try-complete-file-name))
-
+(global-set-key (kbd "M-/") 'hippie-expand)
+(global-set-key (kbd "M-i") 'hippie-expand)
 
 ;; eshell
 (setq eshell-directory-name (concat-base "extras/eshell"))
