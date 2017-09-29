@@ -19,6 +19,11 @@
 (global-set-key "\C-x\C-k" 'kill-buffer)
 (global-set-key "\C-x\C-o" 'other-window)
 
+(global-set-key (kbd "C-x '") 'delete-other-windows)
+(global-set-key (kbd "C-x ,") 'split-window-below)
+(global-set-key (kbd "C-x .") 'split-window-right)
+(global-set-key (kbd "C-x l") 'delete-window)
+
 (global-set-key (kbd "C-x g") 'rgrep)
 (global-set-key "\C-x\C-g" 'rgrep)
 
