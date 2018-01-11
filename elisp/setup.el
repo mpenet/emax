@@ -72,6 +72,10 @@
 ;; typed text replaces the selection if the selection is active
 (delete-selection-mode t)
 
+(setq display-time-format "%H:%M"
+      display-time-default-load-average nil)
+(display-time-mode)
+
 ;; make emacs use the clipboard if running in X
 (when window-system
   (setq x-select-enable-clipboard t
