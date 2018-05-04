@@ -5,7 +5,7 @@
 (require 'cl)
 
 ;; yasnippet
-(require 'dropdown-list)
+;; (require 'dropdown-list)
 (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
       yas-indent-line nil)
 (eval-after-load 'yasnippet
@@ -85,7 +85,6 @@
 (eval-after-load 'zencoding-mode '(setq zencoding-preview-default nil))
 (add-hook 'sgml-mode-hook 'zencoding-mode)
 
-
 ;; org
 (eval-after-load 'org-mode
     '(progn
@@ -101,7 +100,6 @@
                    (define-key yas-keymap [tab] 'yas-next-field)))))
 (eval-after-load 'htmlize '(setq org-export-htmlize-output-type 'css))
 
-
 ;; github markdown mode
 (add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode))
 
@@ -113,7 +111,6 @@
 (loop for mode-hook
       in '(emacs-lisp-mode-hook
            scheme-mode-hook
-           tuareg-mode-hook
            clojure-mode-hook
            cider-mode-hook
            cider-repl-mode-hook
@@ -140,22 +137,9 @@
 (eval-after-load 'cider
   '(progn
      ;; (setq nrepl-popup-stacktraces nil)
-     (setq cider-popup-stacktraces-in-repl t)))
+     (setq cider-popup-stacktraces-in-repl t)
+     (add-to-list 'exec-path "/usr/local/bin")))
 
-
-;; rust
-(eval-after-load 'rust-mode
-    '(progn
-       (require 'flymake-rust)
-       (add-hook 'rust-mode-hook 'flymake-rust-load)
-
-       (setq racer-rust-src-path "~/rust-src/src")
-       (setq racer-cmd "~/.cargo/bin/racer")
-       (setq racer-cargo-home "~/.cargo")
-
-       (add-hook 'rust-mode-hook #'racer-mode)
-       (add-hook 'racer-mode-hook #'company-mode)
-       (add-hook 'racer-mode-hook #'eldoc-mode)))
 
 (eval-after-load 'flycheck
   '(progn
@@ -176,26 +160,11 @@
        ;; created pair of parentheses.
        (setq-local paredit-space-for-delimiter-predicates
                    '(mpenet/erlang-paredit-space-for-delimiter-p)))))
-;; haskell
-(eval-after-load 'haskell-mode
-  '(progn
-          ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-          ;;(add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent))
-     (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-     (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-     (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)))
 
 
-;; ocaml
-(eval-after-load 'tuareg
-  '(progn
-     (add-hook 'tuareg-mode-hook #'merlin-mode)))
-
-(eval-after-load 'merlin
-  '(progn
-     (setq merlin-use-auto-complete-mode 'easy)
-     (setq merlin-command 'opam)))
-(add-hook 'caml-mode-hook 'merlin-mode t)
+;; fennel
+(autoload 'fennel-mode "/path/to/fennel-mode/fennel-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
 
 ;; buffers, project, files navigation (should refactor this into a mode)
 (ido-mode t)
@@ -253,6 +222,7 @@
                                try-complete-file-name))
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-i") 'hippie-expand)
+(global-set-key (kbd "M-u") 'hippie-expand)
 
 ;; eshell
 (setq eshell-directory-name (concat-base "extras/eshell"))
@@ -280,9 +250,6 @@
 (setq shell-command-switch "-ic")
 (exec-path-from-shell-initialize)
 
-
-
-
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
                           "[ \t\n]*$"
@@ -293,9 +260,3 @@
     (setq exec-path (split-string path-from-shell path-separator))))
 
 (when window-system (set-exec-path-from-shell-PATH))
-
-
-(message (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'")))

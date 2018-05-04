@@ -12,25 +12,21 @@
 
 (defvar my-packages '(cargo
                       cider
-                      clojure-mode
                       clojure-snippets
                       company
                       company-quickhelp
-                      company-ghc
                       dash
                       flycheck
                       flycheck-dialyzer
                       ;; flycheck-rebar3
                       flycheck-pos-tip
-                      docker
-                      docker-tramp
-                      dropdown-list
+                      ;; dropdown-list
                       erc-hl-nicks
                       erlang
+                      es-mode
                       exec-path-from-shell
+;;                      fennel-mode
                       find-file-in-project
-                      flymake-rust
-                      ;; flycheck-ocaml
                       gist
                       go-mode
                       go-autocomplete
@@ -38,23 +34,15 @@
                       go-gopath
                       go-snippets
                       company-go
-
-                      guru-mode
                       htmlize
                       less-css-mode
                       magit
                       markdown-mode
-                      merlin
                       nginx-mode
-                      ocp-indent
-                      ox-reveal
                       paredit
-                      racer
                       rainbow-mode
                       restclient
-                      rust-mode
                       smex
-                      tuareg
                       yaml-mode
                       yasnippet
                       zenburn-theme
