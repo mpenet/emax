@@ -1,6 +1,4 @@
-;; possibly not running on emacs 24
-(when (not (require 'package nil t))
-  (require 'package "package-23.el"))
+(require 'package nil t)
 
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
