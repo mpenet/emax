@@ -63,7 +63,7 @@
            :nick "mpenet" :password gitter-connect-password))
 
 (setq erc-autojoin-channels-alist
-      '(("freenode.net" "#clojure" "#erlang" "#fennel")))
+      '(("freenode.net" "#clojure" "#erlang" "#fennel" "#lua")))
 
 (global-set-key (kbd "C-c e f") 'erc-connect/freenode)
 (global-set-key (kbd "C-c e q") 'erc-connect/quakenet)

@@ -34,6 +34,7 @@
                       company-go
                       htmlize
                       less-css-mode
+                      lua-mode
                       magit
                       markdown-mode
                       nginx-mode
