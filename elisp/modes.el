@@ -161,11 +161,6 @@
        (setq-local paredit-space-for-delimiter-predicates
                    '(mpenet/erlang-paredit-space-for-delimiter-p)))))
 
-
-;; fennel
-(autoload 'fennel-mode "/path/to/fennel-mode/fennel-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.fnl\\'" . fennel-mode))
-
 ;; buffers, project, files navigation (should refactor this into a mode)
 (ido-mode t)
 (ido-everywhere t)
@@ -226,11 +221,6 @@
 
 ;; eshell
 (setq eshell-directory-name (concat-base "extras/eshell"))
-
-
-;; disable arrows & co
-(guru-global-mode)
-
 
 ;; poor mans paredit
 (show-paren-mode t)

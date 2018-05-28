@@ -23,7 +23,7 @@
                       erlang
                       es-mode
                       exec-path-from-shell
-;;                      fennel-mode
+                      fennel-mode
                       find-file-in-project
                       gist
                       go-mode
