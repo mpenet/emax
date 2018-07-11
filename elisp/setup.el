@@ -11,7 +11,10 @@
 
 ;; themes
 (load-theme 'zenburn t)
-(set-face-attribute 'region nil :background "#6f6f6f")
+(set-face-attribute 'region nil
+                    :background (cdr (assoc "zenburn-bg+3"
+                                            zenburn-default-colors-alist)))
+
 (set-face-foreground 'show-paren-match "red")
 
 ;; flatten modeline
@@ -46,7 +49,16 @@
 (setq inhibit-startup-message t
       initial-scratch-message nil
       visible-bell t)
-(set-fringe-mode 1)
+
+;; fringe
+(set-fringe-mode 4)
+(set-face-attribute 'fringe nil :background nil)
+(set-face-attribute 'vertical-border
+                    nil
+                    :foreground (cdr (assoc "zenburn-bg+1"
+                                            zenburn-default-colors-alist)))
+
+;; (message (assq 'zenburn-bg zenburn-default-colors-alist))
 
 ;; highlight the region between the mark and point
 (transient-mark-mode t)
