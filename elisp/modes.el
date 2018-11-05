@@ -102,6 +102,7 @@
 
 ;; github markdown mode
 (add-to-list 'auto-mode-alist '("\\.md$" . gfm-mode))
+(setq markdown-command "pandoc")
 
 ;; rest-client mode
 (add-to-list 'auto-mode-alist '("\\.http$" . restclient-mode))

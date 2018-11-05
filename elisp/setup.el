@@ -3,6 +3,7 @@
 (pcase system-name
   ("sputbox"  (set-frame-font "-xos4-terminus-medium-r-normal-*-16-*-*-*-*-*-*-1"))
   ("thinkbox" (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1"))
+  ("dixie" (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1"))
   (_ (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")))
 
 (setq ns-use-system-highlight-color nil
@@ -87,6 +88,8 @@
 (setq display-time-format "%H:%M"
       display-time-default-load-average nil)
 (display-time-mode)
+
+(powerline-default-theme)
 
 ;; make emacs use the clipboard if running in X
 (when window-system

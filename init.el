@@ -1,19 +1,35 @@
 (require 'package nil t)
 
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archives
+  '(("ELPA"         . "http://tromey.com/elpa/")
+    ("gnu"          . "http://elpa.gnu.org/packages/")
+    ("melpa"        . "http://melpa.org/packages/")
+    ("melpa-stable" . "http://stable.melpa.org/packages/")
+    ("org"          . "http://orgmode.org/elpa/")))
 
-(package-initialize)
+(setq package-pinned-packages
+  '((cider . "melpa-stable")
+    (magit . "melpa-stable")
+    (company . "melpa-stable")
+    (gist . "melpa-stable")
+    (smex . "melpa-stable")
+    (paredit . "melpa-stable")
+    (powerline . "melpa-stable")
+    (clojure-mode . "melpa-stable")))
+
+(unless package--initialized (package-initialize t))
 
 (when (not package-archive-contents)
   (package-refresh-contents))
 
-(defvar my-packages '(cargo
-                      cider
+(defvar my-packages '(cider
                       clojure-snippets
                       company
                       company-quickhelp
                       dash
+                      docker
+                      dockerfile-mode
+;;                      dockercompose-mode
                       flycheck
                       flycheck-dialyzer
                       ;; flycheck-rebar3
@@ -39,6 +55,7 @@
                       markdown-mode
                       nginx-mode
                       paredit
+                      powerline
                       rainbow-mode
                       restclient
                       smex
