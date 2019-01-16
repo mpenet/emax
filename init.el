@@ -297,6 +297,37 @@
         ("C-d" . company-show-doc-buffer)
         ("<tab>" . company-complete-selection)))
 
+(use-package paredit
+  :pin "melpa-stable"
+  :ensure t
+  :config
+  (loop for mode-hook
+        in '(emacs-lisp-mode-hook
+             lisp-interaction-mode-hook
+             clojure-mode-hook
+             cider-mode-hook
+             cider-repl-mode-hook
+             erlang-mode-hook)
+        do (add-hook mode-hook #'paredit-mode))
+  (defun my-paredit-delete ()
+    "If a region is active check if it is balanced and delete it otherwise
+        fallback to regular paredit behavior"
+    (interactive)
+    (if mark-active
+        (paredit-delete-region (region-beginning) (region-end))
+      (paredit-backward-delete)))
+
+  :bind (:map paredit-mode-map
+              ("C-M-h" . paredit-backward-kill-word)
+              ("C-h" . my-paredit-delete)
+              ("<delete>" . my-paredit-delete)
+              ("DEL" . my-paredit-delete)))
+
+(use-package clojure-mode
+  :ensure t
+  :config
+  (add-hook 'clojure-mode-hook #'paredit-mode))
+
 (use-package cider
   :pin "melpa"
   :ensure t
@@ -424,30 +455,6 @@
   (powerline-default-theme)
   (load-theme 'sanityinc-tomorrow-night t)
   :ensure t)
-
-(use-package paredit
-  :pin "melpa-stable"
-  :config
-  (loop for mode-hook
-        in '(emacs-lisp-mode-hook
-             clojure-mode-hook
-             cider-mode-hook
-             cider-repl-mode-hook
-             erlang-mode-hook)
-        do (add-hook mode-hook (lambda () (paredit-mode +1))))
-  (defun my-paredit-delete ()
-    "If a region is active check if it is balanced and delete it otherwise
-        fallback to regular paredit behavior"
-    (interactive)
-    (if mark-active
-        (paredit-delete-region (region-beginning) (region-end))
-      (paredit-backward-delete)))
-
-  :bind (:map paredit-mode-map
-              ("C-M-h" . paredit-backward-kill-word)
-              ("C-h" . my-paredit-delete)
-              ("<delete>" . my-paredit-delete)
-              ("DEL" . my-paredit-delete)))
 
 (use-package flycheck-dialyzer
   :ensure t)
