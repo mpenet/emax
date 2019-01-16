@@ -157,11 +157,10 @@
       package-user-dir (expand-file-name "elpa" user-emacs-directory)
       package-enable-at-startup nil)
 
+(package-initialize)
+
 (unless package-archive-contents
   (package-refresh-contents))
-
-(unless package--initialized
-  (package-initialize t))
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
