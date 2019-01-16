@@ -1,12 +1,3 @@
-(require 'package)
-
-(setq package-archives
-      '(("ELPA" . "http://tromey.com/elpa/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("melpa-stable" . "http://stable.melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-
 ;; misc globals
 (setq load-prefer-newer t
       gc-cons-threshold 50000000
@@ -154,6 +145,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'package)
+
+(setq package-archives
+      '(("ELPA" . "http://tromey.com/elpa/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("melpa-stable" . "http://stable.melpa.org/packages/")
+        ("org" . "http://orgmode.org/elpa/"))
+      package-enable-at-startup nil)
 
 (unless package-archive-contents
   (package-refresh-contents))
