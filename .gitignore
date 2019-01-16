@@ -7,9 +7,6 @@ session.*
 /tramp
 /history
 /eshell/history
-/extras/eshell/history
-/extras/eshell/lastdir
 /elpa
-/update.sh
 /url/cookies
 /ido.last

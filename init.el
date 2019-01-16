@@ -498,7 +498,9 @@
   :ensure t)
 
 (use-package exec-path-from-shell
-  :ensure t)
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package clojure-snippets
   :ensure t)
