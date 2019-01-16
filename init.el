@@ -7,13 +7,6 @@
         ("melpa-stable" . "http://stable.melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/")))
 
-;; update the package metadata is the local cache is missing
-(unless package-archive-contents
-  (package-refresh-contents))
-
-(unless package--initialized
-  (package-initialize t))
-
 ;; misc globals
 (setq load-prefer-newer t
       gc-cons-threshold 50000000
@@ -162,10 +155,17 @@
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(unless package--initialized
+  (package-initialize t))
+
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
 (require 'use-package)
+
 (setq use-package-verbose t)
 
 (use-package paren
