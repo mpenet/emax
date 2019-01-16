@@ -329,7 +329,7 @@
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
-  :pin "melpa"
+  :pin "melpa-stable"
   :ensure t
   :config
   (setq nrepl-log-messages t)
