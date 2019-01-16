@@ -1,11 +1,11 @@
-(require 'package nil t)
+(require 'package)
 
 (setq package-archives
-      '(("ELPA"         . "http://tromey.com/elpa/")
-        ("gnu"          . "http://elpa.gnu.org/packages/")
-        ("melpa"        . "http://melpa.org/packages/")
+      '(("ELPA" . "http://tromey.com/elpa/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
         ("melpa-stable" . "http://stable.melpa.org/packages/")
-        ("org"          . "http://orgmode.org/elpa/")))
+        ("org" . "http://orgmode.org/elpa/")))
 
 ;; update the package metadata is the local cache is missing
 (unless package-archive-contents
@@ -30,7 +30,11 @@
       vc-follow-symlinks nil
       inhibit-startup-message t
       initial-scratch-message nil
-      visible-bell t)
+      visible-bell t
+      scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1
+      skeleton-pair t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GLOBAL BINDINGS
@@ -43,8 +47,6 @@
                                   (region-end)
                                   (- tab-width))
                   (setq mark-active t deactivate-mark nil)))
-
-
 (global-set-key (kbd "<C-tab>")
                 (lambda ()
                   (interactive)
@@ -52,15 +54,10 @@
                                   (region-end)
                                   tab-width)
                   (setq mark-active t deactivate-mark nil)))
-
-;; macros
 (global-set-key (kbd "C-h") 'backward-delete-char)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
-
 (global-set-key (kbd "RET") 'newline-and-indent)
-
 (global-set-key (kbd "<C-return>") 'newline)
-
 (global-set-key (kbd "<f4>")
                 (lambda ()
                   (interactive)
@@ -73,35 +70,28 @@
 (global-set-key (kbd "C-x ,") 'split-window-below)
 (global-set-key (kbd "C-x .") 'split-window-right)
 (global-set-key (kbd "C-x l") 'delete-window)
-
 (global-set-key (kbd "C-x g") 'rgrep)
 (global-set-key "\C-x\C-g" 'rgrep)
-
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key "\C-x\C-r" 'query-replace)
-
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
-
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
-
-;; hippie expand + dabbrev-expand
 (global-set-key "\M- " 'hippie-expand)
 (setq hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
                                try-expand-dabbrev-all-buffers
                                try-expand-dabbrev-from-kill
-                               try-complete-lisp-symbol-partially
-                               try-complete-lisp-symbol
                                try-complete-file-name-partially
-                               try-complete-file-name))
+                               try-complete-file-name
+                               try-expand-all-abbrevs
+                               try-expand-list
+                               try-expand-line
+                               try-complete-lisp-symbol-partially
+                               try-complete-lisp-symbo))
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-i") 'hippie-expand)
 (global-set-key (kbd "M-u") 'hippie-expand)
-
-;; poor mans paredit
-(show-paren-mode t)
-(setq skeleton-pair t)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
@@ -116,12 +106,8 @@
 
 (setq ns-use-system-highlight-color nil
       ns-pop-up-frames nil)
-(global-font-lock-mode 1)
-(set-face-foreground 'show-paren-match "red")
 
-;; flatten modeline
-(set-face-attribute 'mode-line nil :box nil)
-(set-face-attribute 'mode-line-inactive nil :box nil)
+(global-font-lock-mode 1)
 
 ;; show fun in modeline
 (which-function-mode)
@@ -148,13 +134,6 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; fringe
-(set-fringe-mode 4)
-(set-face-attribute 'fringe nil :background nil)
-
-;; highlight the region between the mark and point
-(transient-mark-mode t)
-
 ;; dont display cursor in non selected windows
 (setq-default cursor-in-non-selected-windows nil)
 
@@ -163,12 +142,6 @@
 
 ;; add the current column number to the mode bar
 (column-number-mode t)
-
-;; highlight long lines tails
-(setq whitespace-style '(face trailing lines-tail)
-      whitespace-global-modes '(not erc-mode)
-      whitespace-line-column 80)
-(global-whitespace-mode 1)
 
 ;; case insensitive searches
 (set-default 'case-fold-search t)
@@ -185,10 +158,6 @@
   (setq x-select-enable-clipboard t
         interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-;; global save hooks
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; PACKAGES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -198,6 +167,10 @@
 
 (require 'use-package)
 (setq use-package-verbose t)
+
+(use-package paren
+  :config
+  (show-paren-mode +1))
 
 ;; uniquify buffer names: append path if buffer names are identical
 (use-package uniquify
@@ -231,6 +204,14 @@
         '("\\` " "^\*Mess" "^\*Back" "^\*scratch" ".*Completion" "^\*Ido")
         ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
   :bind ("C-x b" . ido-switch-buffer))
+
+(use-package whitespace
+  :init
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  :config
+  (setq whitespace-style '(face trailing lines-tail)
+        whitespace-global-modes '(not erc-mode)
+        whitespace-line-column 80))
 
 (use-package find-file-in-project
   :ensure t
@@ -423,14 +404,14 @@
 
 (use-package paredit
   :pin "melpa-stable"
-  :init (loop for mode-hook
-              in '(emacs-lisp-mode-hook
-                   clojure-mode-hook
-                   cider-mode-hook
-                   cider-repl-mode-hook
-                   erlang-mode-hook)
-              do (add-hook mode-hook (lambda () (paredit-mode +1))))
   :config
+  (loop for mode-hook
+        in '(emacs-lisp-mode-hook
+             clojure-mode-hook
+             cider-mode-hook
+             cider-repl-mode-hook
+             erlang-mode-hook)
+        do (add-hook mode-hook (lambda () (paredit-mode +1))))
   (defun my-paredit-delete ()
     "If a region is active check if it is balanced and delete it otherwise
         fallback to regular paredit behavior"
