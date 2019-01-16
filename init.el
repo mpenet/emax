@@ -179,6 +179,7 @@
 (use-package winner
   :init
   (setq winner-dont-bind-my-keys t)
+  (winner-mode)
   :bind (("C-x C-u" . winner-undo)
          ("C-x u" . winner-undo)
          ("C-x C-j" . winner-redo)
@@ -224,6 +225,28 @@
           ffip-find-options (mapconcat (lambda (p) (format "-not -iwholename \"%s\"" p))
                                        ffip-ignore-patterns " ")))
   :bind (("C-x f" . find-file-in-project)))
+
+(use-package hl-todo
+  :ensure t
+  :config
+  (setq hl-todo-highlight-punctuation ":")
+  (global-hl-todo-mode))
+
+(use-package dired
+  :config
+  ;; dired - reuse current buffer by pressing 'a'
+  (put 'dired-find-alternate-file 'disabled nil)
+
+  ;; always delete and copy recursively
+  (setq dired-recursive-deletes 'always)
+  (setq dired-recursive-copies 'always)
+
+  ;; if there is a dired buffer displayed in the next window, use its
+  ;; current subdir, instead of the current subdir of this dired buffer
+  (setq dired-dwim-target t)
+
+  ;; enable some really cool extensions like C-x C-j(dired-jump)
+  (require 'dired-x))
 
 (use-package magit
   :pin "melpa-stable"
