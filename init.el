@@ -154,6 +154,7 @@
         ("melpa" . "http://melpa.org/packages/")
         ("melpa-stable" . "http://stable.melpa.org/packages/")
         ("org" . "http://orgmode.org/elpa/"))
+      package-user-dir (expand-file-name "elpa" user-emacs-directory)
       package-enable-at-startup nil)
 
 (unless package-archive-contents
