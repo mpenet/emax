@@ -207,6 +207,10 @@
         ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
   :bind ("C-x b" . ido-switch-buffer))
 
+(use-package hl-line
+  :config
+  (global-hl-line-mode +1))
+
 (use-package whitespace
   :init
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -301,15 +305,15 @@
 (use-package paredit
   :pin "melpa-stable"
   :ensure t
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  (add-hook 'cider-mode-hook #'paredit-mode)
+  (add-hook 'cider-repl-mode-hook #'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'erlang-mode-hook #'paredit-mode)
   :config
-  (loop for mode-hook
-        in '(emacs-lisp-mode-hook
-             lisp-interaction-mode-hook
-             clojure-mode-hook
-             cider-mode-hook
-             cider-repl-mode-hook
-             erlang-mode-hook)
-        do (add-hook mode-hook #'paredit-mode))
   (defun my-paredit-delete ()
     "If a region is active check if it is balanced and delete it otherwise
         fallback to regular paredit behavior"
@@ -317,7 +321,6 @@
     (if mark-active
         (paredit-delete-region (region-beginning) (region-end))
       (paredit-backward-delete)))
-
   :bind (:map paredit-mode-map
               ("C-M-h" . paredit-backward-kill-word)
               ("C-h" . my-paredit-delete)
@@ -442,6 +445,10 @@
 (use-package adoc-mode
   :ensure t
   :mode "\\.adoc\\'")
+
+(use-package rst
+  :bind (:map rst-mode-map
+              ("C-M-h" . backward-kill-word)))
 
 (use-package restclient
   :ensure t
