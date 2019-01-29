@@ -15,9 +15,6 @@
       inhibit-startup-message t
       initial-scratch-message nil
       visible-bell t
-      scroll-margin 0
-      scroll-conservatively 100000
-      scroll-preserve-screen-position 1
       skeleton-pair t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -50,6 +47,7 @@
                     (start-kbd-macro nil))))
 (global-set-key (kbd "<f5>") 'call-last-kbd-macro)
 (global-set-key "\C-x\C-o" 'other-window)
+(global-set-key "\C-x\C-k" 'kill-buffer)
 (global-set-key (kbd "C-x '") 'delete-other-windows)
 (global-set-key (kbd "C-x ,") 'split-window-below)
 (global-set-key (kbd "C-x .") 'split-window-right)
@@ -72,7 +70,7 @@
                                try-expand-list
                                try-expand-line
                                try-complete-lisp-symbol-partially
-                               try-complete-lisp-symbo))
+                               try-complete-lisp-symbol))
 (global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-i") 'hippie-expand)
 (global-set-key (kbd "M-u") 'hippie-expand)
@@ -84,14 +82,12 @@
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(pcase system-name
-  ("dixie" (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1"))
-  (_ (set-frame-font "-xos4-terminus-medium-r-normal-*-12-*-*-*-*-*-*-1")))
+(global-font-lock-mode 1)
+
+(set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
 
 (setq ns-use-system-highlight-color nil
       ns-pop-up-frames nil)
-
-(global-font-lock-mode 1)
 
 ;; show fun in modeline
 (which-function-mode)
@@ -157,7 +153,7 @@
       package-user-dir (expand-file-name "elpa" user-emacs-directory)
       package-enable-at-startup nil)
 
-(package-initialize)
+(unless package--initialized (package-initialize t))
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -190,7 +186,8 @@
   :pin "melpa-stable"
   :ensure t
   :bind (([remap execute-extended-command] . smex)
-         ("C-x m" . smex)))
+         ("C-x m" . smex)
+         ("C-x C-m" . smex)))
 
 (use-package ido
   :ensure t
@@ -202,17 +199,15 @@
         ido-use-filename-at-point t
         ido-auto-merge-work-directories-length -1
         ido-case-fold  t
-        ido-ignore-buffers
-        '("\\` " "^\*Mess" "^\*Back" "^\*scratch" ".*Completion" "^\*Ido")
+        ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" "^\*scratch" ".*Completion" "^\*Ido")
         ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
   :bind ("C-x b" . ido-switch-buffer))
 
-(use-package hl-line
-  :config
-  (global-hl-line-mode +1))
 
 (use-package whitespace
   :init
+  (dolist (hook '(prog-mode-hook text-mode-hook))
+    (add-hook hook #'whitespace-mode))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :config
   (setq whitespace-style '(face trailing lines-tail)
@@ -274,7 +269,7 @@
 
 (use-package company
   :pin "melpa-stable"
-  :ensure t
+  :ensure
   :init
   (setq company-tooltip-flip-when-above t
         company-tooltip-align-annotations t
@@ -333,7 +328,6 @@
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
-  :pin "melpa-stable"
   :ensure t
   :config
   (setq nrepl-log-messages t)
@@ -416,7 +410,7 @@
 (use-package org
   :defer t
   :config
-  ;; overide org-mode tab behavior
+  (setq org-log-done 'time)
   (add-hook 'org-mode-hook
             (lambda ()
               (make-variable-buffer-local 'yas-trigger-key)
