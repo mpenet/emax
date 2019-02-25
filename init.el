@@ -182,13 +182,6 @@
          ("C-x C-j" . winner-redo)
          ("C-x j" . winner-redo)))
 
-(use-package smex
-  :pin "melpa-stable"
-  :ensure t
-  :bind (([remap execute-extended-command] . smex)
-         ("C-x m" . smex)
-         ("C-x C-m" . smex)))
-
 (use-package ido
   :ensure t
   :init (progn
@@ -203,6 +196,46 @@
         ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
   :bind ("C-x b" . ido-switch-buffer))
 
+(use-package ivy
+  :ensure t
+  :bind (("C-c C-r" . ivy-resume)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-partial))
+  :config
+  (ivy-mode 1)
+  (setq-default ivy-use-virtual-buffers t
+                ;; enable-recursive-minibuffers t
+                ivy-virtual-abbreviate 'fullpath
+                ivy-count-format ""
+                ivy-magic-tilde nil
+                ivy-dynamic-exhibit-delay-ms 150
+                ivy-re-builders-alist '((swiper . regexp-quote)
+                                        (t . ivy--regex-fuzzy))))
+
+(use-package swiper
+  :ensure t
+  :bind ("C-c C-s" . swiper))
+
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("C-x C-m" . counsel-M-x)
+         ("C-x m" . counsel-M-x))
+  :config
+  (setq ivy-extra-directories nil)
+  ;; (global-set-key (kbd "M-x") 'counsel-M-x)
+  ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+  ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+  ;; (global-set-key (kbd "<f1> l") 'counsel-find-library)
+  ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+  ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+  ;; (global-set-key (kbd "C-c g") 'counsel-git)
+  ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
+  ;; (global-set-key (kbd "C-c a") 'counsel-ag)
+  ;; (global-set-key (kbd "C-x l") 'counsel-locate)
+  ;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  )
 
 (use-package whitespace
   :init
@@ -451,6 +484,12 @@
 (use-package gist
   :pin "melpa-stable"
   :ensure t)
+
+(use-package plantuml-mode
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
 (use-package color-theme-sanityinc-tomorrow
   :init
