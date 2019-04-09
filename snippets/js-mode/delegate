@@ -1,6 +1,0 @@
-# name: deleg
-# key: deleg
-# --
-delegate('${1: event}', {$>
-  $0$>
-})$>

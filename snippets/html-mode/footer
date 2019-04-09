@@ -1,6 +1,0 @@
-# name : <footer>...</footer>
-# key: footer
-# --
-<footer$1>
-  $0
-</footer>

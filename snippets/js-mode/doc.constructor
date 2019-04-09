@@ -1,7 +1,0 @@
-# name : doc.constructor
-# key: doc
-# --
-/**
- * $1
- * @constructor
- */

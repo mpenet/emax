@@ -1,5 +1,0 @@
-#contributor : Jimmy Wu <frozenthrone88@gmail.com>
-#name : <a href="..." class="...">...</a>
-# key: href
-# --
-<a href="$1" class="$2">$3</a>
