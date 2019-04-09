@@ -52,14 +52,12 @@
 (global-set-key (kbd "C-x ,") 'split-window-below)
 (global-set-key (kbd "C-x .") 'split-window-right)
 (global-set-key (kbd "C-x l") 'delete-window)
-(global-set-key (kbd "C-x g") 'rgrep)
-(global-set-key "\C-x\C-g" 'rgrep)
+(global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key "\C-x\C-r" 'query-replace)
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
-(global-set-key "\M- " 'hippie-expand)
 (setq hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
                                try-expand-dabbrev-all-buffers
@@ -71,9 +69,8 @@
                                try-expand-line
                                try-complete-lisp-symbol-partially
                                try-complete-lisp-symbol))
-(global-set-key (kbd "M-/") 'hippie-expand)
 (global-set-key (kbd "M-i") 'hippie-expand)
-(global-set-key (kbd "M-u") 'hippie-expand)
+(global-set-key (kbd "C-t") 'hippie-expand)
 (global-set-key "(" 'skeleton-pair-insert-maybe)
 (global-set-key "[" 'skeleton-pair-insert-maybe)
 (global-set-key "{" 'skeleton-pair-insert-maybe)
@@ -173,6 +170,11 @@
 (use-package uniquify
   :init (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
 
+(use-package display-line-numbers
+  :if (version<= "26" emacs-version)
+  :hook ((prog-mode conf-mode) . display-line-numbers-mode)
+  :custom (display-line-numbers-width 3))
+
 (use-package winner
   :init
   (setq winner-dont-bind-my-keys t)
@@ -182,60 +184,40 @@
          ("C-x C-j" . winner-redo)
          ("C-x j" . winner-redo)))
 
-(use-package ido
-  :ensure t
-  :init (progn
-          (ido-mode)
-          (ido-everywhere))
-  :config
-  (setq ido-enable-flex-matching t
-        ido-use-filename-at-point t
-        ido-auto-merge-work-directories-length -1
-        ido-case-fold  t
-        ido-ignore-buffers '("\\` " "^\*Mess" "^\*Back" "^\*scratch" ".*Completion" "^\*Ido")
-        ido-ignore-files '("\\.(pyc|jpg|png|gif)$"))
-  :bind ("C-x b" . ido-switch-buffer))
-
 (use-package ivy
   :ensure t
   :bind (("C-c C-r" . ivy-resume)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-partial))
-  :config
+         ("C-c b" . ivy-switch-buffer)
+         ("C-j" . ivy-immediate-done))
+  :init
   (ivy-mode 1)
-  (setq-default ivy-use-virtual-buffers t
-                ;; enable-recursive-minibuffers t
-                ivy-virtual-abbreviate 'fullpath
-                ivy-count-format ""
-                ivy-magic-tilde nil
-                ivy-dynamic-exhibit-delay-ms 150
-                ivy-re-builders-alist '((swiper . regexp-quote)
-                                        (t . ivy--regex-fuzzy))))
+  :config
+  (setq-default ;; ivy-use-virtual-buffers t
+   enable-recursive-minibuffers t
+   ivy-use-selectable-prompt t
+   ivy-virtual-abbreviate 'fullpath
+   ivy-count-format ""
+   ivy-magic-tilde nil
+   ivy-dynamic-exhibit-delay-ms 150
+   ivy-re-builders-alist '((swiper . regexp-quote)
+                           (counsel-M-x . ivy--regex-fuzzy)
+                           (counsel-git . ivy--regex-fuzzy)
+                           (t . ivy--regex-plus))))
 
 (use-package swiper
   :ensure t
-  :bind ("C-c C-s" . swiper))
+  :bind ("C-c s" . swiper))
 
 (use-package counsel
   :ensure t
   :bind (("M-x" . counsel-M-x)
          ("C-x C-m" . counsel-M-x)
-         ("C-x m" . counsel-M-x))
+         ("C-x m" . counsel-M-x)
+         ("C-x C-g" . counsel-ag)
+         ("C-x f" . counsel-git)
+         ("C-x C-f" . counsel-find-file))
   :config
-  (setq ivy-extra-directories nil)
-  ;; (global-set-key (kbd "M-x") 'counsel-M-x)
-  ;; (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  ;; (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-  ;; (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-  ;; (global-set-key (kbd "<f1> l") 'counsel-find-library)
-  ;; (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-  ;; (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-  ;; (global-set-key (kbd "C-c g") 'counsel-git)
-  ;; (global-set-key (kbd "C-c j") 'counsel-git-grep)
-  ;; (global-set-key (kbd "C-c a") 'counsel-ag)
-  ;; (global-set-key (kbd "C-x l") 'counsel-locate)
-  ;; (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  )
+  (setq ivy-extra-directories nil))
 
 (use-package whitespace
   :init
@@ -246,18 +228,6 @@
   (setq whitespace-style '(face trailing lines-tail)
         whitespace-global-modes '(not erc-mode)
         whitespace-line-column 80))
-
-(use-package find-file-in-project
-  :ensure t
-  :config
-  (progn
-    (setq ffip-patterns '("*")
-          ffip-ignore-patterns (list "*/\.*" "*/classes/*" "*/target/*"
-                                     "*\\.jar$" "*\\.gif$" "*\\.jpg$" "*\\.png$"
-                                     "*\\.log$" "*\\.css$")
-          ffip-find-options (mapconcat (lambda (p) (format "-not -iwholename \"%s\"" p))
-                                       ffip-ignore-patterns " ")))
-  :bind (("C-x f" . find-file-in-project)))
 
 (use-package hl-todo
   :ensure t
@@ -304,21 +274,13 @@
   :pin "melpa-stable"
   :ensure
   :init
-  (setq company-tooltip-flip-when-above t
-        company-tooltip-align-annotations t
+  (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 2
         company-require-match nil
         company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
 	                        company-preview-frontend
-	                        company-echo-metadata-frontend)
-        pos-tip-foreground-color "black"
-        pos-tip-background-color "khaki1")
+	                        company-echo-metadata-frontend))
   :config
-  (custom-set-faces
-   `(company-preview
-     ((t (:background "#3F3F3F" :foreground "darkgray" :underline t))))
-   `(company-preview-common
-     ((t (:background "#3F3F3F" :foreground "darkgray" :underline t)))))
   (company-quickhelp-mode 1)
   (global-company-mode)
   :bind
@@ -349,6 +311,7 @@
     (if mark-active
         (paredit-delete-region (region-beginning) (region-end))
       (paredit-backward-delete)))
+  (define-key paredit-mode-map (kbd "C-j") nil)
   :bind (:map paredit-mode-map
               ("C-M-h" . paredit-backward-kill-word)
               ("C-h" . my-paredit-delete)
@@ -361,12 +324,16 @@
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
+  :pin "melpa-stable"
   :ensure t
   :config
   (setq nrepl-log-messages t)
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'paredit-mode))
+
+(use-package flycheck-joker
+  :ensure t)
 
 (use-package company-go
   :ensure t
@@ -583,3 +550,5 @@
 
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(put 'set-goal-column 'disabled nil)
