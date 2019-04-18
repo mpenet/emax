@@ -213,7 +213,7 @@
   :bind (("M-x" . counsel-M-x)
          ("C-x C-m" . counsel-M-x)
          ("C-x m" . counsel-M-x)
-         ("C-x C-g" . counsel-ag)
+         ("C-x C-g" . counsel-rg)
          ("C-x f" . counsel-git)
          ("C-x C-f" . counsel-find-file))
   :config
