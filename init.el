@@ -61,20 +61,6 @@
 ;; GLOBAL BINDINGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-set-key (kbd "<C-M-tab>")
-                (lambda ()
-                  (interactive)
-                  (indent-rigidly (region-beginning)
-                                  (region-end)
-                                  (- tab-width))
-                  (setq mark-active t deactivate-mark nil)))
-(global-set-key (kbd "<C-tab>")
-                (lambda ()
-                  (interactive)
-                  (indent-rigidly (region-beginning)
-                                  (region-end)
-                                  tab-width)
-                  (setq mark-active t deactivate-mark nil)))
 (global-set-key (kbd "C-h") 'backward-delete-char)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 (global-set-key (kbd "RET") 'newline-and-indent)
