@@ -1,4 +1,5 @@
 ;; misc globals
+
 (setq load-prefer-newer t
       gc-cons-threshold 50000000
       large-file-warning-threshold 100000000
@@ -15,7 +16,17 @@
       inhibit-startup-message t
       initial-scratch-message nil
       visible-bell t
-      skeleton-pair t)
+      hippie-expand-try-functions-list
+      '(try-expand-all-abbrevs try-expand-dabbrev
+                               try-expand-dabbrev-all-buffers
+                               try-expand-dabbrev-from-kill
+                               try-complete-file-name-partially
+                               try-complete-file-name
+                               try-expand-all-abbrevs
+                               try-expand-list
+                               try-expand-line
+                               try-complete-lisp-symbol-partially
+                               try-complete-lisp-symbol))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GLOBAL BINDINGS
@@ -58,48 +69,23 @@
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
-(setq hippie-expand-try-functions-list
-      '(try-expand-all-abbrevs try-expand-dabbrev
-                               try-expand-dabbrev-all-buffers
-                               try-expand-dabbrev-from-kill
-                               try-complete-file-name-partially
-                               try-complete-file-name
-                               try-expand-all-abbrevs
-                               try-expand-list
-                               try-expand-line
-                               try-complete-lisp-symbol-partially
-                               try-complete-lisp-symbol))
 (global-set-key (kbd "M-i") 'hippie-expand)
 (global-set-key (kbd "C-t") 'hippie-expand)
-(global-set-key "(" 'skeleton-pair-insert-maybe)
-(global-set-key "[" 'skeleton-pair-insert-maybe)
-(global-set-key "{" 'skeleton-pair-insert-maybe)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(global-font-lock-mode 1)
-
 (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
 
-(setq ns-use-system-highlight-color nil
-      ns-pop-up-frames nil)
-
-;; show fun in modeline
-(which-function-mode)
-
 ;; utf8 only
-(setq current-language-environment "UTF-8"
-      slime-net-coding-system 'utf-8-unix)
+(setq current-language-environment "UTF-8")
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;; tabs are evil
-(setq-default indent-tabs-mode nil)
-
 ;; TAB => 4*'\b'
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default sgml-basic-offset tab-width)
@@ -110,9 +96,6 @@
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; dont display cursor in non selected windows
-(setq-default cursor-in-non-selected-windows nil)
 
 ;; add the current line number to the mode bar
 (line-number-mode t)
@@ -126,13 +109,9 @@
 ;; typed text replaces the selection if the selection is active
 (delete-selection-mode t)
 
-(setq display-time-format "%H:%M"
-      display-time-default-load-average nil)
-(display-time-mode)
-
 ;; make emacs use the clipboard if running in X
 (when window-system
-  (setq x-select-enable-clipboard t
+  (setq select-enable-clipboard t
         interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -166,6 +145,10 @@
   :config
   (show-paren-mode +1))
 
+(use-package elec-pair
+  :config
+  (electric-pair-mode +1))
+
 ;; uniquify buffer names: append path if buffer names are identical
 (use-package uniquify
   :init (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
@@ -174,6 +157,10 @@
   :if (version<= "26" emacs-version)
   :hook ((prog-mode conf-mode) . display-line-numbers-mode)
   :custom (display-line-numbers-width 3))
+
+(use-package which-function-mode
+  :defer t
+  :hook ((prog-mode . which-function-mode)))
 
 (use-package winner
   :init
