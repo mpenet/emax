@@ -32,7 +32,6 @@
 (setq load-prefer-newer t
       gc-cons-threshold 50000000
       large-file-warning-threshold 100000000
-      tramp-default-method "ssh"
       browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome"
       truncate-partial-width-windows nil
@@ -65,13 +64,6 @@
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 (global-set-key (kbd "RET") 'newline-and-indent)
 (global-set-key (kbd "<C-return>") 'newline)
-(global-set-key (kbd "<f4>")
-                (lambda ()
-                  (interactive)
-                  (if defining-kbd-macro
-                      (end-kbd-macro)
-                    (start-kbd-macro nil))))
-(global-set-key (kbd "<f5>") 'call-last-kbd-macro)
 (global-set-key "\C-x\C-o" 'other-window)
 (global-set-key "\C-x\C-k" 'kill-buffer)
 (global-set-key (kbd "C-x '") 'delete-other-windows)
@@ -330,8 +322,6 @@
   :ensure t
   :config
   (setq nrepl-log-messages t)
-  (add-hook 'cider-mode-hook #'eldoc-mode)
-  (add-hook 'cider-repl-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'paredit-mode))
 
 (use-package flycheck-joker
