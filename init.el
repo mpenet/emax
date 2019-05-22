@@ -509,13 +509,6 @@
   :defer t
   :requires (erc-services)
   :init
-  (defun erc-connect/freenode ()
-    "Connect to ERC, or switch to last active buffer"
-    (interactive)
-    (erc :server "irc.freenode.net"
-         :port 6667
-         :nick "mpenet"
-         :full-name "mpenet"))
   (setq erc-modules '(netsplit fill track completion ring button autojoin
                                services match stamp track page scrolltobottom
                                hl-nicks)
@@ -526,7 +519,7 @@
         erc-interpret-mirc-color t
         erc-input-line-position -2
         erc-prompt ">"
-        erc-keywords '("\\bcassandra\\b" "\\balia\\b" "\\bhayt\\b")
+        erc-keywords '("\\bcassandra\\b" "\\bqbits\\b")
         erc-insert-timestaamp-function 'erc-insert-timestamp-left
         ;; erc-current-nick-highlight-type 'nick
         erc-prompt-for-nickserv-password nil
@@ -534,8 +527,15 @@
         '(("freenode.net" "#clojure" "#erlang" "#fennel" "#lua")))
   :config
   (erc-services-mode 1)
-  (erc-track-mode t)
-  :bind ("C-c e f" . erc-connect/freenode))
+  (erc-track-mode t))
+
+(defun mpenet/freenode ()
+  "Connect to ERC, or switch to last active buffer."
+  (interactive)
+  (erc :server "irc.freenode.net"
+       :port 6667
+       :nick "mpenet"
+       :full-name "mpenet"))
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
