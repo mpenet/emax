@@ -83,7 +83,9 @@
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
+;; (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
+;; (set-frame-font "DejaVu Sans Mono:pixelsize=17:foundry=PfEd:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -101,6 +103,8 @@
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+
+(setq-default cursor-in-non-selected-windows nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -467,6 +471,13 @@
   :config
   (flycheck-pos-tip-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode))
+
+(use-package flyspell
+  :config
+  (setq ispell-program-name "aspell" ; use aspell instead of ispell
+        ispell-extra-args '("--sug-mode=ultra"))
+  (add-hook 'text-mode-hook #'flyspell-mode)
+  (add-hook 'prog-mode-hook #'flyspell-prog-mode))
 
 (use-package erlang
   :ensure t
