@@ -31,6 +31,7 @@
 
 (setq load-prefer-newer t
       gc-cons-threshold 50000000
+      auto-window-vscroll nil
       large-file-warning-threshold 100000000
       browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome"
