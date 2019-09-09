@@ -133,15 +133,15 @@
 (require 'package)
 
 (setq package-archives
-      '(("ELPA" . "http://tromey.com/elpa/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("melpa-stable" . "http://stable.melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/"))
+      '(("ELPA" . "https://tromey.com/elpa/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("org" . "https://orgmode.org/elpa/"))
       package-user-dir (expand-file-name "elpa" user-emacs-directory)
       package-enable-at-startup nil)
 
-(unless package--initialized (package-initialize t))
+(package-initialize)
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -506,9 +506,6 @@
 (use-package dockerfile-mode
   :ensure t)
 
-(use-package erc-hl-nicks
-  :ensure t)
-
 (use-package es-mode
   :ensure t)
 
@@ -521,36 +518,44 @@
   :ensure t)
 
 (use-package erc
-  :defer t
+  :ensure t
+  :commands (erc erc-tls)
   :requires (erc-services)
-  :init
-  (setq erc-modules '(netsplit fill track completion ring button autojoin
-                               services match stamp track page scrolltobottom
-                               hl-nicks)
-        erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
-        erc-ignore-list '("chord" "chare")
-        erc-autojoin-mode t
-        erc-timestamp-format "%H:%M "
-        erc-interpret-mirc-color t
-        erc-input-line-position -2
-        erc-prompt ">"
-        erc-keywords '("\\bcassandra\\b" "\\bqbits\\b")
-        erc-insert-timestaamp-function 'erc-insert-timestamp-left
-        ;; erc-current-nick-highlight-type 'nick
-        erc-prompt-for-nickserv-password nil
-        erc-autojoin-channels-alist
-        '(("freenode.net" "#clojure" "#erlang" "#fennel" "#lua")))
+  :preface
+  (defun setup-erc-env ()
+    (setq erc-modules '(netsplit fill track completion ring button autojoin
+                                 services match stamp track page scrolltobottom
+                                 hl-nicks)
+          erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
+          erc-autojoin-mode t
+          erc-timestamp-format "%H:%M "
+          erc-interpret-mirc-color t
+          erc-input-line-position -2
+          erc-prompt ">"
+          erc-keywords '("\\bmpenet\\b")
+          erc-insert-timestamp-function 'erc-insert-timestamp-left
+          erc-current-nick-highlight-type 'nick
+          erc-prompt-for-nickserv-password nil
+          erc-autojoin-channels-alist exo-irc-channels
+          erc-enable-logging 'erc-log-all-but-server-buffers))
+  (defun irc/exo ()
+    "Connect to ERC, or switch to last active buffer."
+    (interactive)
+    (load "~/.emacs.d/.secrets.el")
+    (setup-erc-env)
+    (erc-tls :server exo-irc-server-host
+             :port exo-irc-server-port
+             :nick exo-irc-nick
+             :full-name exo-irc-full-name
+             :password exo-irc-password))
   :config
   (erc-services-mode 1)
+  (erc-log-mode)
   (erc-track-mode t))
 
-(defun mpenet/freenode ()
-  "Connect to ERC, or switch to last active buffer."
-  (interactive)
-  (erc :server "irc.freenode.net"
-       :port 6667
-       :nick "mpenet"
-       :full-name "mpenet"))
+(use-package erc-hl-nicks
+  :after irc/exo
+  :ensure t)
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))

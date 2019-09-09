@@ -10,3 +10,4 @@ session.*
 /elpa
 /url/cookies
 /ido.last
+.secrets.el
