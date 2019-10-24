@@ -85,8 +85,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
-;; (set-frame-font "DejaVu Sans Mono:pixelsize=17:foundry=PfEd:weight=normal:slant=normal:width=normal:spacing=100:scalable=true")
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
+
+;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
+(add-to-list 'default-frame-alist '(font . "Input Mono-13"))
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -375,9 +376,6 @@
   (setq js-indent-level tab-width)
   (add-hook 'js-mode-hook 'yas-minor-mode))
 
-(use-package lua-mode
-  :ensure t)
-
 (use-package fennel-mode
   :ensure t)
 
@@ -523,6 +521,7 @@
   :requires (erc-services)
   :preface
   (defun setup-erc-env ()
+    (setq-default erc-enable-logging 'erc-log-all-but-server-buffers)
     (setq erc-modules '(netsplit fill track completion ring button autojoin
                                  services match stamp track page scrolltobottom
                                  hl-nicks)
@@ -537,12 +536,14 @@
           erc-current-nick-highlight-type 'nick
           erc-prompt-for-nickserv-password nil
           erc-autojoin-channels-alist exo-irc-channels
-          erc-enable-logging 'erc-log-all-but-server-buffers))
+          erc-server-auto-reconnect t))
+
   (defun irc/exo ()
     "Connect to ERC, or switch to last active buffer."
     (interactive)
     (load "~/.emacs.d/.secrets.el")
     (setup-erc-env)
+    (erc-log-mode)
     (erc-tls :server exo-irc-server-host
              :port exo-irc-server-port
              :nick exo-irc-nick
@@ -550,8 +551,18 @@
              :password exo-irc-password))
   :config
   (erc-services-mode 1)
-  (erc-log-mode)
   (erc-track-mode t))
+
+(use-package erc-log
+  :init
+  (setq erc-log-channels-directory "~/.erc/logs/"
+        ;; erc-save-buffer-on-part nil
+        ;; erc-save-queries-on-quit nil
+        ;; erc-log-write-after-send t
+        ;; erc-log-write-after-insert t
+        )
+  (if (not (file-exists-p erc-log-channels-directory))
+      (mkdir erc-log-channels-directory t)))
 
 (use-package erc-hl-nicks
   :after irc/exo
