@@ -78,7 +78,6 @@
 (global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 (global-set-key (kbd "M-i") 'hippie-expand)
-(global-set-key (kbd "C-t") 'hippie-expand)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
@@ -86,8 +85,9 @@
 
 ;; (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
 
-;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
-(add-to-list 'default-frame-alist '(font . "Input Mono-13"))
+(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
+;; (add-to-list 'default-frame-alist '(font . "Input Mono-13"))
+;; (add-to-list 'default-frame-alist '(font . "Input Mono Narrow-13"))
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -206,7 +206,7 @@
 
 (use-package swiper
   :ensure t
-  :bind ("C-c s" . swiper))
+  :bind (("\C-t" . swiper-isearch)))
 
 (use-package counsel
   :ensure t
@@ -218,6 +218,9 @@
          ("C-x C-f" . counsel-find-file))
   :config
   (setq ivy-extra-directories nil))
+
+(use-package smex
+  :ensure t)
 
 (use-package whitespace
   :init
@@ -331,6 +334,10 @@
   (add-hook 'cider-repl-mode-hook #'paredit-mode))
 
 (use-package flycheck-joker
+  :ensure t)
+
+(use-package flycheck-clj-kondo
+  :disabled t
   :ensure t)
 
 (use-package company-go
@@ -458,6 +465,17 @@
   (powerline-default-theme)
   (load-theme 'sanityinc-tomorrow-night t)
   :ensure t)
+
+(use-package emojify
+  :ensure t
+  :config
+  (setq emojify-display-style 'image)
+  ;; only replace unicode and github, no ascii)
+  (setq emojify-emoji-styles '(unicode github))
+  ;; echo the actual underlying character to the minibuffer when point
+  ;; is over them so we don't mess with the displayed buffer itself
+  (setq emojify-point-entered-behaviour 'echo)
+  (global-emojify-mode 1))
 
 (use-package flycheck-dialyzer
   :ensure t)
