@@ -295,6 +295,10 @@
         ("C-d" . company-show-doc-buffer)
         ("<tab>" . company-complete-selection)))
 
+(use-package expand-region
+  :ensure t
+  :bind ("C-o" . er/expand-region))
+
 (use-package paredit
   :pin "melpa-stable"
   :ensure t
