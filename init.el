@@ -297,7 +297,8 @@
 
 (use-package expand-region
   :ensure t
-  :bind ("C-o" . er/expand-region))
+  :bind (("C-o" . er/expand-region)
+         ("C-M-o" . er/contract-region)))
 
 (use-package paredit
   :pin "melpa-stable"
@@ -335,7 +336,9 @@
   :ensure t
   :config
   (setq nrepl-log-messages t)
-  (add-hook 'cider-repl-mode-hook #'paredit-mode))
+  (add-hook 'cider-repl-mode-hook #'paredit-mode)
+  (add-hook 'cider-mode-hook #'eldoc-mode)
+  (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
 (use-package flycheck-joker
   :ensure t)
@@ -460,6 +463,7 @@
 
 (use-package plantuml-mode
   :ensure t
+  :disabled t
   :config
   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
