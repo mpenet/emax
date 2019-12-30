@@ -418,6 +418,8 @@
 
 (use-package doom-modeline
   :ensure t
+  :config
+  (setq doom-modeline-irc-buffers t)
   :hook (after-init . doom-modeline-mode))
 
 (use-package all-the-icons
@@ -505,7 +507,7 @@
 
 (use-package doom-themes
   :ensure t
-  :config (load-theme 'doom-one t))
+  :config (load-theme 'doom-tomorrow-night t))
 
 (use-package emojify
   :ensure t
