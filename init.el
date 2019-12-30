@@ -222,7 +222,21 @@
 (use-package smex
   :ensure t)
 
+(use-package diminish
+  :ensure t
+  :demand t)
+
+(use-package ivy-posframe
+  :after ivy
+  :diminish
+  :config
+  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
+        ivy-posframe-parameters '((internal-border-width . 10))
+        ivy-posframe-width 70)
+  (ivy-posframe-mode +1))
+
 (use-package whitespace
+  :diminish
   :init
   (dolist (hook '(prog-mode-hook text-mode-hook))
     (add-hook hook #'whitespace-mode))
@@ -262,6 +276,7 @@
 
 (use-package yasnippet
   :ensure t
+  :diminish
   :config
   (use-package yasnippet-snippets
     :ensure t)
@@ -397,8 +412,21 @@
   :ensure t)
 
 (use-package powerline
+  :disabled t
   :pin "melpa-stable"
   :ensure t)
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode))
+
+(use-package all-the-icons
+  :ensure t
+  :config (setq all-the-icons-scale-factor 1.0))
+
+(use-package all-the-icons-ivy
+  :ensure t
+  :hook (after-init . all-the-icons-ivy-setup))
 
 (use-package rainbow-mode
   :defer t
@@ -469,10 +497,15 @@
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
 
 (use-package color-theme-sanityinc-tomorrow
+  :disabled t
   :init
-  (powerline-default-theme)
+  ;; (powerline-default-theme)
   (load-theme 'sanityinc-tomorrow-night t)
   :ensure t)
+
+(use-package doom-themes
+  :ensure t
+  :config (load-theme 'doom-one t))
 
 (use-package emojify
   :ensure t
