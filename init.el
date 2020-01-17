@@ -196,7 +196,7 @@
    enable-recursive-minibuffers t
    ivy-use-selectable-prompt t
    ivy-virtual-abbreviate 'fullpath
-   ivy-count-format ""
+   ivy-count-format "(%d/%d) "
    ivy-magic-tilde nil
    ivy-dynamic-exhibit-delay-ms 150
    ivy-re-builders-alist '((swiper . regexp-quote)
@@ -507,7 +507,7 @@
 
 (use-package doom-themes
   :ensure t
-  :config (load-theme 'doom-tomorrow-night t))
+  :config (load-theme 'doom-city-lights t))
 
 (use-package emojify
   :ensure t
