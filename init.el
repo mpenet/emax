@@ -85,9 +85,16 @@
 
 ;; (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
 
-(add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
+;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono 13"))
 ;; (add-to-list 'default-frame-alist '(font . "Input Mono-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Input Mono Narrow-13"))
+
+;; (let ((alist '((45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>-]\\)"))))
+(let ((alist '((45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>-]\\)"))))
+  (dolist (char-regexp alist)
+    (set-char-table-range composition-function-table (car char-regexp)
+                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -184,6 +191,13 @@
          ("C-x C-j" . winner-redo)
          ("C-x j" . winner-redo)))
 
+(use-package isearch
+  :config
+  (setq isearch-lazy-count t
+        lazy-count-prefix-format "(%s/%s) "
+        lazy-count-suffix-format nil
+        isearch-allow-scroll 'unlimited))
+
 (use-package ivy
   :ensure t
   :bind (("C-c C-r" . ivy-resume)
@@ -232,6 +246,7 @@
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
         ivy-posframe-parameters '((internal-border-width . 10))
+        ivy-posframe-height-alist '((t . 20))
         ivy-posframe-width 70)
   (ivy-posframe-mode +1))
 
@@ -251,6 +266,10 @@
   :config
   (setq hl-todo-highlight-punctuation ":")
   (global-hl-todo-mode))
+
+(use-package hl-line
+  :config
+  (global-hl-line-mode +1))
 
 (use-package dired
   :config
@@ -419,7 +438,9 @@
 (use-package doom-modeline
   :ensure t
   :config
-  (setq doom-modeline-irc-buffers t)
+  (setq doom-modeline-irc-buffers t
+        doom-modeline-irc t
+        doom-modeline-buffer-encoding nil)
   :hook (after-init . doom-modeline-mode))
 
 (use-package all-the-icons
@@ -507,7 +528,9 @@
 
 (use-package doom-themes
   :ensure t
-  :config (load-theme 'doom-city-lights t))
+  ;; :config (load-theme 'doom-city-lights t)
+    :config (load-theme 'doom-sourcerer t)
+  )
 
 (use-package emojify
   :ensure t
@@ -597,7 +620,8 @@
           erc-current-nick-highlight-type 'nick
           erc-prompt-for-nickserv-password nil
           erc-autojoin-channels-alist exo-irc-channels
-          erc-server-auto-reconnect t))
+          erc-server-auto-reconnect t
+          erc-track-exclude exo-irc-track-exclude))
 
   (defun irc/exo ()
     "Connect to ERC, or switch to last active buffer."
