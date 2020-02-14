@@ -134,32 +134,34 @@
   (setq select-enable-clipboard t
         interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PACKAGES
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Packages
+;;; via straight el
+;;;
 
-(require 'package)
+(setq straight-use-package-by-default t
+      straight-built-in-pseudo-packages '(which-function-mode
+                                          isearch
+                                          dired
+                                          js-mode
+                                          erc-log
+                                          uniquify))
 
-(setq package-archives
-      '(("ELPA" . "https://tromey.com/elpa/")
-        ("gnu" . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")
-        ("melpa-stable" . "https://stable.melpa.org/packages/")
-        ("org" . "https://orgmode.org/elpa/"))
-      package-user-dir (expand-file-name "elpa" user-emacs-directory)
-      package-enable-at-startup nil)
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(package-initialize)
+(straight-use-package 'use-package)
 
-(unless package-archive-contents
-  (package-refresh-contents))
-
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-
-(setq use-package-verbose t)
+;;;
 
 (use-package paren
   :config
@@ -198,8 +200,9 @@
         lazy-count-suffix-format nil
         isearch-allow-scroll 'unlimited))
 
+
+
 (use-package ivy
-  :ensure t
   :bind (("C-c C-r" . ivy-resume)
          ("C-c b" . ivy-switch-buffer)
          ("C-j" . ivy-immediate-done))
@@ -219,11 +222,9 @@
                            (t . ivy--regex-plus))))
 
 (use-package swiper
-  :ensure t
   :bind (("\C-t" . swiper-isearch)))
 
 (use-package counsel
-  :ensure t
   :bind (("M-x" . counsel-M-x)
          ("C-x C-m" . counsel-M-x)
          ("C-x m" . counsel-M-x)
@@ -233,15 +234,14 @@
   :config
   (setq ivy-extra-directories nil))
 
-(use-package smex
-  :ensure t)
+(use-package smex)
 
 (use-package diminish
-  :ensure t
   :demand t)
 
 (use-package ivy-posframe
   :after ivy
+  :disabled t
   :diminish
   :config
   (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
@@ -262,7 +262,6 @@
         whitespace-line-column 80))
 
 (use-package hl-todo
-  :ensure t
   :config
   (setq hl-todo-highlight-punctuation ":")
   (global-hl-todo-mode))
@@ -288,28 +287,22 @@
   (require 'dired-x))
 
 (use-package magit
-  :pin "melpa-stable"
-  :ensure t
+  ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
 (use-package yasnippet
-  :ensure t
   :diminish
   :config
-  (use-package yasnippet-snippets
-    :ensure t)
+  (use-package yasnippet-snippets)
   (yas-global-mode t)
   (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
         yas-indent-line nil)
   :diminish yas-minor-mode)
 
-(use-package company-quickhelp
-  :ensure t)
+(use-package company-quickhelp)
 
 (use-package company
-  :pin "melpa-stable"
-  :ensure
   :init
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 2
@@ -330,13 +323,10 @@
         ("<tab>" . company-complete-selection)))
 
 (use-package expand-region
-  :ensure t
   :bind (("C-o" . er/expand-region)
          ("C-M-o" . er/contract-region)))
 
 (use-package paredit
-  :pin "melpa-stable"
-  :ensure t
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
   (add-hook 'lisp-interaction-mode-hook #'paredit-mode)
@@ -344,7 +334,6 @@
   (add-hook 'cider-mode-hook #'paredit-mode)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-  (add-hook 'erlang-mode-hook #'paredit-mode)
   :config
   (defun my-paredit-delete ()
     "If a region is active check if it is balanced and delete it otherwise
@@ -360,36 +349,32 @@
               ("<delete>" . my-paredit-delete)
               ("DEL" . my-paredit-delete)))
 
+(use-package flycheck-clj-kondo)
+
 (use-package clojure-mode
-  :ensure t
   :config
+  (require 'flycheck-clj-kondo)
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
-  :pin "melpa-stable"
-  :ensure t
   :config
   (setq nrepl-log-messages t)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
-(use-package flycheck-joker
-  :ensure t)
-
-(use-package flycheck-clj-kondo
+(use-package flycheck-posframe
   :disabled t
-  :ensure t)
+  :after flycheck
+  :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
 
 (use-package company-go
-  :ensure t
   :defer t
   :init
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-go)))
 
 (use-package go-mode
-  :ensure t
   :requires (go-autocomplete go-gopath)
   :config
   (add-hook 'go-mode-hook (lambda ()
@@ -402,17 +387,13 @@
   (:map go-mode-map
         ("C-c C-e" . go-gopath-set-gopath)))
 
-(use-package go-autocomplete
-  :ensure t)
+(use-package go-autocomplete)
 
-(use-package go-gopath
-  :ensure t)
+(use-package go-gopath)
 
-(use-package go-snippets
-  :ensure t)
+(use-package go-snippets)
 
 (use-package go-eldoc
-  :ensure t
   :defer t
   :init
   (add-hook 'go-mode-hook 'go-eldoc-setup))
@@ -424,19 +405,14 @@
   (setq js-indent-level tab-width)
   (add-hook 'js-mode-hook 'yas-minor-mode))
 
-(use-package fennel-mode
-  :ensure t)
+(use-package fennel-mode)
 
-(use-package nginx-mode
-  :ensure t)
+(use-package nginx-mode)
 
 (use-package powerline
-  :disabled t
-  :pin "melpa-stable"
-  :ensure t)
+  :disabled t)
 
 (use-package doom-modeline
-  :ensure t
   :config
   (setq doom-modeline-irc-buffers t
         doom-modeline-irc t
@@ -444,25 +420,21 @@
   :hook (after-init . doom-modeline-mode))
 
 (use-package all-the-icons
-  :ensure t
   :config (setq all-the-icons-scale-factor 1.0))
 
 (use-package all-the-icons-ivy
-  :ensure t
   :hook (after-init . all-the-icons-ivy-setup))
 
 (use-package rainbow-mode
-  :defer t
-  :ensure t)
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-mode))
 
 (use-package css-mode
-  :ensure t
   :config
   (progn (add-hook 'css-mode-hook 'rainbow-mode)
          (setq css-indent-offset tab-width)))
 
 (use-package zencoding-mode
-  :ensure t
   :config
   (setq zencoding-preview-default nil)
   (add-hook 'sgml-mode-hook 'zencoding-mode))
@@ -482,22 +454,18 @@
               (define-key yas-keymap [tab] 'yas-next-field))))
 
 (use-package htmlize
-  :ensure t
   :config (setq org-export-htmlize-output-type 'css))
 
 (use-package markdown-mode
-  :ensure t
   :mode (("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :config
   (setq markdown-fontify-code-blocks-natively t))
 
 (use-package yaml-mode
-  :defer t
-  :ensure t)
+  :defer t)
 
 (use-package adoc-mode
-  :ensure t
   :mode "\\.adoc\\'")
 
 (use-package rst
@@ -505,15 +473,11 @@
               ("C-M-h" . backward-kill-word)))
 
 (use-package restclient
-  :ensure t
   :mode ("\\.http$". restclient-mode))
 
-(use-package gist
-  :pin "melpa-stable"
-  :ensure t)
+(use-package gist)
 
 (use-package plantuml-mode
-  :ensure t
   :disabled t
   :config
   (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
@@ -523,17 +487,15 @@
   :disabled t
   :init
   ;; (powerline-default-theme)
-  (load-theme 'sanityinc-tomorrow-night t)
-  :ensure t)
+  (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package doom-themes
-  :ensure t
-  ;; :config (load-theme 'doom-city-lights t)
-    :config (load-theme 'doom-sourcerer t)
-  )
+  :config
+  (load-theme 'doom-nord t)
+  :custom-face
+  (default ((t (:background "#191C25")))))
 
 (use-package emojify
-  :ensure t
   :config
   (setq emojify-display-style 'image)
   ;; only replace unicode and github, no ascii)
@@ -543,20 +505,15 @@
   (setq emojify-point-entered-behaviour 'echo)
   (global-emojify-mode 1))
 
-(use-package flycheck-dialyzer
-  :ensure t)
-
-(use-package flycheck-pos-tip
-  :ensure t)
+(use-package flycheck-pos-tip)
 
 (use-package flycheck
-  :ensure t
+  :bind (("C-c C-l" . flycheck-list-errors))
   :config
   (flycheck-pos-tip-mode)
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package flyspell
-  :ensure t
   :config
   (setq ispell-program-name "aspell" ; use aspell instead of ispell
         ispell-extra-args '("--sug-mode=ultra"))
@@ -565,42 +522,16 @@
   :bind (:map flyspell-mode-map
               ("C-;" . comment-or-uncomment-region)))
 
-(use-package erlang
-  :ensure t
-  :requires (flycheck-dializer paredit)
-  :config
-  (add-hook 'erlang-mode-hook 'flycheck-mode)
-  (flycheck-add-next-checker 'erlang 'erlang-dialyzer)
-  (add-hook 'erlang-mode-hook 'mpenet/disable-paredit-spaces-before-paren)
-  (defun mpenet/disable-paredit-spaces-before-paren ()
-    ;; Function which always returns nil -> never insert a space
-    ;; when insert a parentheses.
-    (defun mpenet/erlang-paredit-space-for-delimiter-p (endp delimiter) nil)
-    ;; Set this function locally as only predicate to check when
-    ;; determining if a space should be inserted before a newly
-    ;; created pair of parentheses.
-    (setq-local paredit-space-for-delimiter-predicates
-                '(mpenet/erlang-paredit-space-for-delimiter-p))))
-
-(use-package docker
-  :ensure t)
-
-(use-package dockerfile-mode
-  :ensure t)
-
-(use-package es-mode
-  :ensure t)
+(use-package docker)
+(use-package dockerfile-mode)
 
 (use-package exec-path-from-shell
-  :ensure t
   :config
   (exec-path-from-shell-initialize))
 
-(use-package clojure-snippets
-  :ensure t)
+(use-package clojure-snippets)
 
 (use-package erc
-  :ensure t
   :commands (erc erc-tls)
   :requires (erc-services)
   :preface
@@ -650,8 +581,7 @@
       (mkdir erc-log-channels-directory t)))
 
 (use-package erc-hl-nicks
-  :after irc/exo
-  :ensure t)
+  :after irc/exo)
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -660,3 +590,4 @@
   (load custom-file))
 
 (put 'set-goal-column 'disabled nil)
+(put 'upcase-region 'disabled nil)
