@@ -161,6 +161,14 @@
 
 (straight-use-package 'use-package)
 
+
+;;;
+
+(use-package gcmh
+  :ensure t
+  :init
+  (gcmh-mode 1))
+
 ;;;
 
 (use-package paren
@@ -238,17 +246,6 @@
 
 (use-package diminish
   :demand t)
-
-(use-package ivy-posframe
-  :after ivy
-  :disabled t
-  :diminish
-  :config
-  (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-frame-center))
-        ivy-posframe-parameters '((internal-border-width . 10))
-        ivy-posframe-height-alist '((t . 20))
-        ivy-posframe-width 70)
-  (ivy-posframe-mode +1))
 
 (use-package whitespace
   :diminish
@@ -363,11 +360,6 @@
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
-(use-package flycheck-posframe
-  :disabled t
-  :after flycheck
-  :config (add-hook 'flycheck-mode-hook #'flycheck-posframe-mode))
-
 (use-package company-go
   :defer t
   :init
@@ -408,9 +400,6 @@
 (use-package fennel-mode)
 
 (use-package nginx-mode)
-
-(use-package powerline
-  :disabled t)
 
 (use-package doom-modeline
   :config
@@ -476,18 +465,6 @@
   :mode ("\\.http$". restclient-mode))
 
 (use-package gist)
-
-(use-package plantuml-mode
-  :disabled t
-  :config
-  (add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
-
-(use-package color-theme-sanityinc-tomorrow
-  :disabled t
-  :init
-  ;; (powerline-default-theme)
-  (load-theme 'sanityinc-tomorrow-night t))
 
 (use-package doom-themes
   :config
