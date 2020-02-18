@@ -43,7 +43,9 @@
       save-place nil
       vc-follow-symlinks nil
       inhibit-startup-message t
+      frame-inhibit-implied-resize t
       initial-scratch-message nil
+      initial-major-mode 'fundamental-mode ;; skip scratch
       visible-bell t
       hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
@@ -139,6 +141,7 @@
 ;;;
 
 (setq straight-use-package-by-default t
+      straight-repository-branch "develop"
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
                                           dired
@@ -165,7 +168,6 @@
 ;;;
 
 (use-package gcmh
-  :ensure t
   :init
   (gcmh-mode 1))
 
