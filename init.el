@@ -164,15 +164,6 @@
 
 (straight-use-package 'use-package)
 
-
-;;;
-
-(use-package gcmh
-  :init
-  (gcmh-mode 1))
-
-;;;
-
 (use-package paren
   :config
   (show-paren-mode +1))
@@ -264,10 +255,6 @@
   :config
   (setq hl-todo-highlight-punctuation ":")
   (global-hl-todo-mode))
-
-(use-package hl-line
-  :config
-  (global-hl-line-mode +1))
 
 (use-package dired
   :config
