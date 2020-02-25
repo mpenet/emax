@@ -138,7 +138,6 @@
 
 ;;; Packages
 ;;; via straight el
-;;;
 
 (setq straight-use-package-by-default t
       straight-repository-branch "develop"
@@ -200,8 +199,6 @@
         lazy-count-prefix-format "(%s/%s) "
         lazy-count-suffix-format nil
         isearch-allow-scroll 'unlimited))
-
-
 
 (use-package ivy
   :bind (("C-c C-r" . ivy-resume)
