@@ -517,6 +517,28 @@
           erc-server-auto-reconnect t
           erc-track-exclude exo-irc-track-exclude))
 
+  (defun kikoo-line (nick)
+    (let ((front (+ (random 13) 1))
+          (back (+ (random 13) 1)))
+      (while (= back front)
+        (setq back (+ (random 13) 1)))
+      (erc-send-message (apply 'concat
+                               (append (list (format "\002\003%s,%sKIKOO"
+                                                     front
+                                                     back))
+                                       (make-list (+ (random 11) 2) "O")
+                                       (list " " nick " ")
+                                       (make-list (+ (random 11) 2) "!")
+                                       (list " :o")
+                                       (make-list (+ (random 11) 2) ")")))
+                        t)))
+
+  (defun kikoo ()
+    (interactive)
+    (let ((nick (completing-read "Enter nick: " (erc-get-channel-nickname-list))))
+      (dotimes (i 3)
+        (kikoo-line nick))))
+
   (defun irc/exo ()
     "Connect to ERC, or switch to last active buffer."
     (interactive)
