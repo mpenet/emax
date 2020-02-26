@@ -502,7 +502,7 @@
     (setq-default erc-enable-logging 'erc-log-all-but-server-buffers)
     (setq erc-modules '(netsplit fill track completion ring button autojoin
                                  services match stamp track page scrolltobottom
-                                 hl-nicks)
+                                 hl-nicks irccontrols)
           erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
           erc-autojoin-mode t
           erc-timestamp-format "%H:%M "
@@ -523,7 +523,6 @@
     (load "~/.emacs.d/.secrets.el")
     (setup-erc-env)
     (erc-log-mode)
-    (erc-irccontrols-mode t)
     (erc-tls :server exo-irc-server-host
              :port exo-irc-server-port
              :nick exo-irc-nick
