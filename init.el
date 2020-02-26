@@ -523,6 +523,7 @@
     (load "~/.emacs.d/.secrets.el")
     (setup-erc-env)
     (erc-log-mode)
+    (erc-irccontrols-mode t)
     (erc-tls :server exo-irc-server-host
              :port exo-irc-server-port
              :nick exo-irc-nick
