@@ -89,6 +89,9 @@
 
 ;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono 13"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 ;; (add-to-list 'default-frame-alist '(font . "Input Mono-13"))
 ;; (add-to-list 'default-frame-alist '(font . "Input Mono Narrow-13"))
 
@@ -182,7 +185,7 @@
 
 (use-package which-function-mode
   :defer t
-  :hook ((prog-mode . which-function-mode)))
+  :hook ((lisp-mode . which-function-mode)))
 
 (use-package winner
   :init
@@ -454,9 +457,7 @@
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-nord t)
-  :custom-face
-  (default ((t (:background "#191C25")))))
+  (load-theme 'doom-wilmersdorf t))
 
 (use-package emojify
   :config
@@ -502,7 +503,7 @@
     (setq-default erc-enable-logging 'erc-log-all-but-server-buffers)
     (setq erc-modules '(netsplit fill track completion ring button autojoin
                                  services match stamp track page scrolltobottom
-                                 hl-nicks irccontrols)
+                                 hl-nicks irccontrols spelling)
           erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
           erc-autojoin-mode t
           erc-timestamp-format "%H:%M "
