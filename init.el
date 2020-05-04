@@ -85,21 +85,93 @@
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (set-frame-font "-xos4-terminus-medium-r-normal-*-14-*-*-*-*-*-*-1")
-
-;; (add-to-list 'default-frame-alist '(font . "DejaVu Sans Mono 13"))
-(add-to-list 'default-frame-alist '(font . "JetBrains Mono 13"))
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;; (add-to-list 'default-frame-alist '(font . "Input Mono-13"))
-;; (add-to-list 'default-frame-alist '(font . "Input Mono Narrow-13"))
+;; Gathered from https://www.jetbrains.com/lp/mono/#ligatures
+;; The cheatsheat shows "\/" and "\" which I couldn't get working
+(let ((alist '(;;  -> -- --> ->> -< -<< --- -~ -|
+               (?- . ".\\(?:--\\|[->]>?\\|<<?\\|[~|]\\)")
 
-;; (let ((alist '((45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>-]\\)"))))
-(let ((alist '((45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>-]\\)"))))
+               ;; // /* /// /= /== />
+               ;; /** is not supported - see https://github.com/JetBrains/JetBrainsMono/issues/202
+               ;; /* cannot be conditioned on patterns followed by a whitespace,
+               ;; because that would require support for lookaheads in regex.
+               ;; We cannot just match on /*\s, because the whitespace would be considered
+               ;; as part of the match, but the font only specifies the ligature for /* with
+               ;; no trailing characters
+               ;;
+               (?/ . ".\\(?://?\\|==?\\|\\*\\*?\\|[>]\\)")
+
+               ;; */ *** *>
+               ;; Prevent grouping of **/ as *(*/) by actively looking for **/
+               ;; which consumes the triple but the font does not define a substitution,
+               ;; so it's rendered normally
+               (?* . ".\\(?:\\*/\\|\\*\\*\\|[>/]\\)")
+
+               ;; <!-- <<- <- <=> <= <| <|| <||| <|> <: <> <-< <<< <=< <<= <== <==>
+               ;; <~> << <-| <=| <~~ <~ <$> <$ <+> <+ <*> <* </ </> <->
+               (?< . ".\\(?:==>\\|!--\\|~~\\|-[|<]\\||>\\||\\{1,3\\}\\|<[=<-]?\\|=[><|=]?\\|[*+$~/-]>?\\|[:>]\\)")
+
+               ;; := ::= :?> :? :: ::: :< :>
+               (?: . ".\\(?:\\?>\\|:?=\\|::?\\|[>?<]\\)")
+
+               ;; == =:= === => =!= =/= ==> =>>
+               (?= . ".\\(?:[=>]?>\\|[:=!/]?=\\)")
+
+               ;;  != !== !!
+               (?! . ".\\(?:==?\\|!\\)")
+
+               ;; >= >> >] >: >- >>> >>= >>- >=>
+               (?> . ".\\(?:=>\\|>[=>-]\\|[]=:>-]\\)")
+
+               ;; && &&&
+               (?& . ".&&?")
+
+               ;; || |> ||> |||> |] |} |-> |=> |- ||- |= ||=
+               (?| . ".\\(?:||?>\\||[=-]\\|[=-]>\\|[]>}|=-]\\)")
+
+               ;; ... .. .? .= .- ..<
+               (?. . ".\\(?:\\.[.<]?\\|[.?=-]\\)")
+
+               ;; ++ +++ +>
+               (?+ . ".\\(?:\\+\\+?\\|>\\)")
+
+               ;; [| [< [||]
+               (?\[ . ".\\(?:|\\(?:|]\\)?\\|<\\)")
+
+               ;; {|
+               (?{ . ".|")
+
+               ;; ?: ?. ?? ?=
+               (?? . ".[:.?=]")
+
+               ;; ## ### #### #{ #[ #( #? #_ #_( #: #! #=
+               (?# . ".\\(?:#\\{1,3\\}\\|_(?\\|[{[(?:=!]\\)")
+
+               ;; ;;
+               (?\; . ".;")
+
+               ;; __ _|_
+               (?_ . ".|?_")
+
+               ;; ~~ ~~> ~> ~= ~- ~@
+               (?~ . ".\\(?:~>\\|[>@=~-]\\)")
+
+               ;; $>
+               (?$ . ".>")
+
+               ;; ^=
+               (?^ . ".=")
+
+               ;; ]#
+               (?\] . ".#")
+               )))
   (dolist (char-regexp alist)
     (set-char-table-range composition-function-table (car char-regexp)
                           `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
+
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -149,7 +221,8 @@
                                           dired
                                           js-mode
                                           erc-log
-                                          uniquify))
+                                          uniquify
+                                          inferior-lisp))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -386,7 +459,14 @@
   (setq js-indent-level tab-width)
   (add-hook 'js-mode-hook 'yas-minor-mode))
 
-(use-package fennel-mode)
+(use-package fennel-mode
+  :hook (fennel-mode . paredit-mode)
+  :bind (:map fennel-mode-map ("C-c C-c" . lisp-eval-defun)))
+
+(use-package inferior-lisp
+  :hook (inferior-lisp-mode . paredit-mode))
+
+(use-package lua-mode)
 
 (use-package nginx-mode)
 
