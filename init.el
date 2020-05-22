@@ -239,10 +239,6 @@
 
 (straight-use-package 'use-package)
 
-(use-package paren
-  :config
-  (show-paren-mode +1))
-
 (use-package elec-pair
   :config
   (electric-pair-mode +1))
@@ -538,6 +534,11 @@
 (use-package doom-themes
   :config
   (load-theme 'doom-wilmersdorf t))
+
+(use-package paren
+  :config
+  (show-paren-mode +1)
+  (set-face-foreground 'show-paren-match "red"))
 
 (use-package emojify
   :config
