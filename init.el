@@ -576,6 +576,8 @@
 
 (use-package clojure-snippets)
 
+(use-package vterm)
+
 (use-package erc
   :commands (erc erc-tls)
   :requires (erc-services)
