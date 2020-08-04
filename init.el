@@ -87,6 +87,7 @@
 
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; Gathered from https://www.jetbrains.com/lp/mono/#ligatures
 ;; The cheatsheat shows "\/" and "\" which I couldn't get working
@@ -579,7 +580,8 @@
 (use-package vterm
   :bind (:map vterm-mode-map
               ("C-h" . vterm-send-backspace)
-              ("C-M-h" . vterm-send-meta-backspace)))
+              ("C-M-h" . vterm-send-meta-backspace)
+              ("M-p" . vterm-send-up)))
 
 (use-package erc
   :commands (erc erc-tls)
