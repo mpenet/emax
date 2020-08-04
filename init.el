@@ -576,7 +576,10 @@
 
 (use-package clojure-snippets)
 
-(use-package vterm)
+(use-package vterm
+  :bind (:map vterm-mode-map
+              ("C-h" . vterm-send-backspace)
+              ("C-M-h" . vterm-send-meta-backspace)))
 
 (use-package erc
   :commands (erc erc-tls)
