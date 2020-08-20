@@ -47,6 +47,7 @@
       initial-scratch-message nil
       initial-major-mode 'fundamental-mode ;; skip scratch
       visible-bell t
+      mouse-yank-at-point t
       hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
                                try-expand-dabbrev-all-buffers
@@ -342,10 +343,15 @@
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
 
+(use-package which-key
+  :config (which-key-mode +1))
+
 (use-package magit
   ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
+
+(use-package gist)
 
 (use-package yasnippet
   :diminish
@@ -578,6 +584,7 @@
 (use-package clojure-snippets)
 
 (use-package vterm
+  :config (setq vterm-max-scrollback 10000)
   :bind (:map vterm-mode-map
               ("C-h" . vterm-send-backspace)
               ("C-M-h" . vterm-send-meta-backspace)
