@@ -85,10 +85,12 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono 11"))
+;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
+;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 15"))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
+
 
 ;; Gathered from https://www.jetbrains.com/lp/mono/#ligatures
 ;; The cheatsheat shows "\/" and "\" which I couldn't get working
@@ -241,9 +243,15 @@
 
 (straight-use-package 'use-package)
 
+(use-package diminish)
+
 (use-package elec-pair
   :config
   (electric-pair-mode +1))
+
+(use-package aggressive-indent
+  :diminish
+  :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
 
 ;; uniquify buffer names: append path if buffer names are identical
 (use-package uniquify
@@ -291,7 +299,8 @@
    ivy-re-builders-alist '((swiper . regexp-quote)
                            (counsel-M-x . ivy--regex-fuzzy)
                            (counsel-git . ivy--regex-fuzzy)
-                           (t . ivy--regex-plus))))
+                           (t . ivy--regex-plus)))
+  :diminish)
 
 (use-package swiper
   :bind (("\C-t" . swiper-isearch)))
@@ -307,9 +316,6 @@
   (setq ivy-extra-directories nil))
 
 (use-package smex)
-
-(use-package diminish
-  :demand t)
 
 (use-package whitespace
   :diminish
@@ -342,9 +348,6 @@
 
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
-
-(use-package which-key
-  :config (which-key-mode +1))
 
 (use-package magit
   ;; :pin "melpa-stable"
@@ -382,7 +385,11 @@
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-d" . company-show-doc-buffer)
-        ("<tab>" . company-complete-selection)))
+        ("<tab>" . company-complete-selection))
+  :diminish)
+
+(use-package eldoc
+  :diminish)
 
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
@@ -409,13 +416,16 @@
               ("C-M-h" . paredit-backward-kill-word)
               ("C-h" . my-paredit-delete)
               ("<delete>" . my-paredit-delete)
-              ("DEL" . my-paredit-delete)))
+              ("DEL" . my-paredit-delete))
+  :diminish)
 
 (use-package flycheck-clj-kondo)
 
 (use-package clojure-mode
   :config
   (require 'flycheck-clj-kondo)
+  ;; (add-hook 'clojure-mode-hook #'clojure-refactor-mode)
+
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
@@ -424,6 +434,11 @@
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'eldoc-mode))
+
+(use-package clj-refactor
+  :config
+  (add-hook 'cider-mode-hook #'clj-refactor-mode)
+  (cljr-add-keybindings-with-prefix "C-c C-m"))
 
 (use-package company-go
   :defer t
@@ -473,22 +488,10 @@
 
 (use-package nginx-mode)
 
-(use-package doom-modeline
-  :config
-  (setq doom-modeline-irc-buffers t
-        doom-modeline-irc t
-        doom-modeline-buffer-encoding nil)
-  :hook (after-init . doom-modeline-mode))
-
-(use-package all-the-icons
-  :config (setq all-the-icons-scale-factor 1.0))
-
-(use-package all-the-icons-ivy
-  :hook (after-init . all-the-icons-ivy-setup))
-
 (use-package rainbow-mode
   :config
-  (add-hook 'prog-mode-hook #'rainbow-mode))
+  (add-hook 'prog-mode-hook #'rainbow-mode)
+  :diminish)
 
 (use-package css-mode
   :config
@@ -572,7 +575,8 @@
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :bind (:map flyspell-mode-map
-              ("C-;" . comment-or-uncomment-region)))
+              ("C-;" . comment-or-uncomment-region))
+  :diminish)
 
 (use-package docker)
 (use-package dockerfile-mode)
@@ -672,3 +676,4 @@
 
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
