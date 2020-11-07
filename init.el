@@ -602,7 +602,8 @@
     (setq-default erc-enable-logging 'erc-log-all-but-server-buffers)
     (setq erc-modules '(netsplit fill track completion ring button autojoin
                                  services match stamp track page scrolltobottom
-                                 hl-nicks irccontrols spelling)
+                                 hl-nicks irccontrols spelling truncate)
+          erc-max-buffer-size 40000
           erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
           erc-autojoin-mode t
           erc-timestamp-format "%H:%M "
