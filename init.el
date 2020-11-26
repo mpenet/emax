@@ -354,6 +354,9 @@
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
+(use-package autorevert
+  :diminish auto-revert-mode)
+
 (use-package gist)
 
 (use-package yasnippet
@@ -429,6 +432,7 @@
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
+  :diminish
   :config
   (setq nrepl-log-messages t)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
@@ -436,6 +440,7 @@
   (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
 (use-package clj-refactor
+  :diminish
   :config
   (add-hook 'cider-mode-hook #'clj-refactor-mode)
   (cljr-add-keybindings-with-prefix "C-c C-m"))
