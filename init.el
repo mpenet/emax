@@ -215,6 +215,9 @@
   (setq select-enable-clipboard t
         interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
+(if (version<= "27.1" emacs-version)
+    (global-so-long-mode 1))
+
 ;;; Packages
 ;;; via straight el
 
@@ -373,8 +376,10 @@
 (use-package company
   :init
   (setq company-tooltip-align-annotations t
-        company-minimum-prefix-length 2
+        company-minimum-prefix-length 1
         company-require-match nil
+        company-idle-delay 0.5
+        company-tooltip-limit 10
         company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
 	                        company-preview-frontend
 	                        company-echo-metadata-frontend))
@@ -512,6 +517,8 @@
   :defer t
   :config
   (setq org-log-done 'time)
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
   (add-hook 'org-mode-hook
             (lambda ()
               (make-variable-buffer-local 'yas-trigger-key)
@@ -603,6 +610,7 @@
   :commands (erc erc-tls)
   :requires (erc-services)
   :preface
+
   (defun setup-erc-env ()
     (setq-default erc-enable-logging 'erc-log-all-but-server-buffers)
     (setq erc-modules '(netsplit fill track completion ring button autojoin
