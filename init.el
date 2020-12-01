@@ -63,6 +63,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GLOBAL BINDINGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(global-set-key (kbd "C-x m") 'execute-extended-command)
+(global-set-key (kbd "C-x C-m") 'execute-extended-command)
 
 (global-set-key (kbd "C-h") 'backward-delete-char)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
@@ -283,42 +285,140 @@
   (setq isearch-lazy-count t
         lazy-count-prefix-format "(%s/%s) "
         lazy-count-suffix-format nil
-        isearch-allow-scroll 'unlimited))
-
-(use-package ivy
-  :bind (("C-c C-r" . ivy-resume)
-         ("C-c b" . ivy-switch-buffer)
-         ("C-j" . ivy-immediate-done))
-  :init
-  (ivy-mode 1)
-  :config
-  (setq-default ;; ivy-use-virtual-buffers t
-   enable-recursive-minibuffers t
-   ivy-use-selectable-prompt t
-   ivy-virtual-abbreviate 'fullpath
-   ivy-count-format "(%d/%d) "
-   ivy-magic-tilde nil
-   ivy-dynamic-exhibit-delay-ms 150
-   ivy-re-builders-alist '((swiper . regexp-quote)
-                           (counsel-M-x . ivy--regex-fuzzy)
-                           (counsel-git . ivy--regex-fuzzy)
-                           (t . ivy--regex-plus)))
-  :diminish)
-
-(use-package swiper
-  :bind (("\C-t" . swiper-isearch)))
+        isearch-allow-scroll 'unlimited)
+  :bind (:map isearch-mode-map
+              ("C-c C-o" . isearch-occur)))
 
 (use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x C-m" . counsel-M-x)
-         ("C-x m" . counsel-M-x)
-         ("C-x C-g" . counsel-rg)
-         ("C-x f" . counsel-git)
-         ("C-x C-f" . counsel-find-file))
+  :bind (("C-x C-g" . counsel-rg))
   :config
   (setq ivy-extra-directories nil))
 
-(use-package smex)
+(use-package selectrum-prescient)
+
+(use-package selectrum
+  :preface (declare-function selectrum-insert-or-submit-current-candidate nil)
+  :init
+  (defun selectrum-insert-or-submit-current-candidate ()
+    "Insert current candidate depending, or forward to
+`selectrum-select-current-candidate' if input text hasn't changed since
+last completion
+Similar to ivy's `ivy-partial-or-done'."
+    (interactive)
+    (progn
+      (let ((prev-input (selectrum-get-current-input)))
+        (when (> (length (selectrum-get-current-candidates)) 0)
+          (selectrum-insert-current-candidate))
+        (when (string= prev-input (selectrum-get-current-input))
+          (selectrum-select-current-candidate)))))
+  :config
+  (selectrum-mode +1)
+  ;; to make sorting and filtering more intelligent
+  (selectrum-prescient-mode +1)
+  ;; to save your command history on disk, so the sorting gets more
+  ;; intelligent over time
+  (prescient-persist-mode +1)
+  (setq selectrum-count-style 'current/matches)
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; swiper
+  (defvar selectrum-swiper-history nil "Submission history for `selectrum-swiper'.")
+  ;; (autoload 'selectrum-read "selectrum")
+  (defun selectrum-swiper ()
+    "Search for a matching line and jump to the beginning of its text.
+The default candidate is a non-empty line closest to point.
+This command obeys narrowing."
+    (interactive)
+    (let ((selectrum-should-sort-p nil)
+          ;; Get the current line number for determining the travel distance.
+          (current-line-number (line-number-at-pos (point) t)))
+      (cl-destructuring-bind (default-candidate formatted-candidates)
+          (cl-loop
+           with buffer-lines = (split-string (buffer-string) "\n")
+           with number-format = (concat "%0"
+                                        (number-to-string
+                                         (length (number-to-string
+                                                  (length buffer-lines))))
+                                        "d: ")
+
+           with formatted-candidates = nil
+           for line-text in buffer-lines
+           for line-num = (line-number-at-pos (point-min) t) then (1+ line-num)
+
+           with default-candidate = nil
+           with prev-distance-to-default-cand = 1.0e+INF ; This updated later.
+           for distance-to-default-cand = (abs (- current-line-number line-num))
+
+           unless (string-empty-p line-text) ; Just skip empty lines.
+           do
+           ;; Find if we’ve started to move away from the current line.
+           (when (null default-candidate)
+             (when (> distance-to-default-cand
+                      prev-distance-to-default-cand)
+               (setq default-candidate (cl-first formatted-candidates)))
+             (setq prev-distance-to-default-cand distance-to-default-cand))
+
+           ;; Format current line and collect candidate.
+           (push (propertize line-text
+                             'selectrum-candidate-display-prefix
+                             (propertize (format number-format line-num)
+                                         'face 'completions-annotations)
+                             'line-num line-num)
+                 formatted-candidates)
+
+           finally return (list default-candidate
+                                (nreverse formatted-candidates)))
+        (let ((chosen-line-number
+               (get-text-property
+                0 'line-num
+                (selectrum-read "Jump to matching line: "
+                                formatted-candidates
+                                :default-candidate default-candidate
+                                :history 'selectrum-swiper-history
+                                :require-match t
+                                :no-move-default-candidate t))))
+          (push-mark (point) t)
+          (forward-line (- chosen-line-number current-line-number))
+          (beginning-of-line-text 1)))))
+
+  :bind (("C-t" . selectrum-swiper)
+         (:map selectrum-minibuffer-map
+               ("TAB" . selectrum-insert-or-submit-current-candidate)
+               ("C-c C-o" . embark-occur))))
+
+(use-package embark
+  :straight '(embark :type git :host github :repo "oantolin/embark")
+  :config
+  ;; (setq embark-occur-minibuffer-completion t)
+  (add-hook 'embark-target-finders 'selectrum-get-current-candidate)
+  (add-hook 'embark-candidate-collectors
+            (defun embark-selectrum-candidates+ ()
+              (when selectrum-active-p
+                (selectrum-get-current-candidates
+                 ;; Pass relative file names for dired.
+                 minibuffer-completing-file-name))))
+
+  ;; No unnecessary computation delay after injection.
+  (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
+  (add-hook 'embark-input-getters
+            (defun embark-selectrum-input-getter+ ()
+              (when selectrum-active-p
+                (let ((input (selectrum-get-current-input)))
+                  (if minibuffer-completing-file-name
+                      ;; Only get the input used for matching.
+                      (file-name-nondirectory input)
+                    input))))))
+
+(use-package projectile
+  :config
+  (projectile-mode +1)
+  (setq projectile-completion-system 'default)
+  (defun refresh-selectrum ()
+    (setq selectrum--previous-input-string nil))
+
+  (add-hook 'embark-pre-action-hook #'refresh-selectrum)
+  (add-to-list 'projectile-globally-ignored-files ".clj-kondo/*")
+
+  :bind (("C-x f" . projectile-find-file)))
 
 (use-package whitespace
   :diminish
@@ -433,7 +533,6 @@
   :config
   (require 'flycheck-clj-kondo)
   ;; (add-hook 'clojure-mode-hook #'clojure-refactor-mode)
-
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
