@@ -320,70 +320,13 @@ Similar to ivy's `ivy-partial-or-done'."
   (prescient-persist-mode +1)
   (setq selectrum-count-style 'current/matches)
 
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; swiper
-  (defvar selectrum-swiper-history nil "Submission history for `selectrum-swiper'.")
-  ;; (autoload 'selectrum-read "selectrum")
-  (defun selectrum-swiper ()
-    "Search for a matching line and jump to the beginning of its text.
-The default candidate is a non-empty line closest to point.
-This command obeys narrowing."
-    (interactive)
-    (let ((selectrum-should-sort-p nil)
-          ;; Get the current line number for determining the travel distance.
-          (current-line-number (line-number-at-pos (point) t)))
-      (cl-destructuring-bind (default-candidate formatted-candidates)
-          (cl-loop
-           with buffer-lines = (split-string (buffer-string) "\n")
-           with number-format = (concat "%0"
-                                        (number-to-string
-                                         (length (number-to-string
-                                                  (length buffer-lines))))
-                                        "d: ")
-
-           with formatted-candidates = nil
-           for line-text in buffer-lines
-           for line-num = (line-number-at-pos (point-min) t) then (1+ line-num)
-
-           with default-candidate = nil
-           with prev-distance-to-default-cand = 1.0e+INF ; This updated later.
-           for distance-to-default-cand = (abs (- current-line-number line-num))
-
-           unless (string-empty-p line-text) ; Just skip empty lines.
-           do
-           ;; Find if we’ve started to move away from the current line.
-           (when (null default-candidate)
-             (when (> distance-to-default-cand
-                      prev-distance-to-default-cand)
-               (setq default-candidate (cl-first formatted-candidates)))
-             (setq prev-distance-to-default-cand distance-to-default-cand))
-
-           ;; Format current line and collect candidate.
-           (push (propertize line-text
-                             'selectrum-candidate-display-prefix
-                             (propertize (format number-format line-num)
-                                         'face 'completions-annotations)
-                             'line-num line-num)
-                 formatted-candidates)
-
-           finally return (list default-candidate
-                                (nreverse formatted-candidates)))
-        (let ((chosen-line-number
-               (get-text-property
-                0 'line-num
-                (selectrum-read "Jump to matching line: "
-                                formatted-candidates
-                                :default-candidate default-candidate
-                                :history 'selectrum-swiper-history
-                                :require-match t
-                                :no-move-default-candidate t))))
-          (push-mark (point) t)
-          (forward-line (- chosen-line-number current-line-number))
-          (beginning-of-line-text 1)))))
-
-  :bind (("C-t" . selectrum-swiper)
-         (:map selectrum-minibuffer-map
+  :bind ((:map selectrum-minibuffer-map
                ("TAB" . selectrum-insert-or-submit-current-candidate)
                ("C-c C-o" . embark-occur))))
+
+(use-package consult
+  :straight '(consult :type git :host github :repo "minad/consult")
+  :bind (("C-t" . consult-line)))
 
 (use-package embark
   :straight '(embark :type git :host github :repo "oantolin/embark")
@@ -409,15 +352,16 @@ This command obeys narrowing."
                     input))))))
 
 (use-package projectile
+  :diminish
+  :init
+  (setq projectile-project-search-path '("~/src/")
+        projectile-completion-system 'default)
   :config
   (projectile-mode +1)
-  (setq projectile-completion-system 'default)
   (defun refresh-selectrum ()
     (setq selectrum--previous-input-string nil))
-
   (add-hook 'embark-pre-action-hook #'refresh-selectrum)
   (add-to-list 'projectile-globally-ignored-files ".clj-kondo/*")
-
   :bind (("C-x f" . projectile-find-file)))
 
 (use-package whitespace
@@ -654,7 +598,18 @@ This command obeys narrowing."
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-wilmersdorf t))
+  (require 'doom-wilmersdorf-theme)
+  (let ((class '((class color) (min-colors 89))))
+    (custom-theme-set-faces
+     'doom-wilmersdorf
+     ;; `(selectrum-current-candidate
+     ;;   ((,class (:background "#48384c"
+     ;;                         :weight bold
+     ;;                         :foreground "#9e9e9e"))))
+     `(selectrum-primary-highlight ((,class (:foreground "orange";; "#b0a2e7"
+                                                         ))))
+     `(selectrum-secondary-highlight ((,class (:foreground "#98be65"))))))
+  (enable-theme 'doom-wilmersdorf))
 
 (use-package paren
   :config
