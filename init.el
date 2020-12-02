@@ -602,11 +602,13 @@ Similar to ivy's `ivy-partial-or-done'."
   (let ((class '((class color) (min-colors 89))))
     (custom-theme-set-faces
      'doom-wilmersdorf
-     ;; `(selectrum-current-candidate
-     ;;   ((,class (:background "#48384c"
-     ;;                         :weight bold
-     ;;                         :foreground "#9e9e9e"))))
-     `(selectrum-primary-highlight ((,class (:foreground "orange";; "#b0a2e7"
+     `(selectrum-current-candidate
+       ((,class (:background "#41454b"
+                             :weight bold
+                             :foreground "#c9d9ff"
+                             ))))
+     `(selectrum-primary-highlight ((,class (:foreground "violet"
+                                                         ;; "#b0a2e7"
                                                          ))))
      `(selectrum-secondary-highlight ((,class (:foreground "#98be65"))))))
   (enable-theme 'doom-wilmersdorf))
