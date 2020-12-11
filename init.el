@@ -326,7 +326,9 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package consult
   :straight '(consult :type git :host github :repo "minad/consult")
-  :bind (("C-t" . consult-line)))
+  :config (consult-preview-mode)
+  :bind (("C-t" . consult-line)
+         ("C-x C-l" . consult-flycheck)))
 
 (use-package embark
   :straight '(embark :type git :host github :repo "oantolin/embark")
@@ -350,6 +352,13 @@ Similar to ivy's `ivy-partial-or-done'."
                       ;; Only get the input used for matching.
                       (file-name-nondirectory input)
                     input))))))
+
+(use-package marginalia
+  :disabled
+  :straight '(marginalia :type git :host github :repo "minad/marginalia")
+  :init
+  (marginalia-mode)
+  (setq marginalia-annotators '(marginalia-annotators-heavy)))
 
 (use-package projectile
   :diminish
