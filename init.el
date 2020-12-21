@@ -325,11 +325,19 @@ Similar to ivy's `ivy-partial-or-done'."
                ("C-c C-o" . embark-occur))))
 
 (use-package consult
-  :straight '(consult :type git :host github :repo "minad/consult")
   :config (consult-preview-mode)
   :bind (("C-t" . consult-line)
-         ("C-x C-l" . consult-flycheck)))
+         ("M-g M-g" . consult-goto-line)
+         ("C-x C-e" . consult-error)
+         ("C-x e" . consult-error)))
 
+(use-package consult-selectrum)
+
+(use-package consult-flycheck
+  :disabled
+  :straight '(consult-flycheck :type git :host github :repo "minad/consult")
+  :bind (:map flycheck-command-map
+              (("C-x C-l" . consult-flycheck))))
 (use-package embark
   :straight '(embark :type git :host github :repo "oantolin/embark")
   :config
