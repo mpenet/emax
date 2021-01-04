@@ -28,7 +28,6 @@
 
 ;;; Code:
 
-
 (setq load-prefer-newer t
       gc-cons-threshold 50000000
       auto-window-vscroll nil
@@ -289,10 +288,7 @@
   :bind (:map isearch-mode-map
               ("C-c C-o" . isearch-occur)))
 
-(use-package counsel
-  :bind (("C-x C-g" . counsel-rg))
-  :config
-  (setq ivy-extra-directories nil))
+(use-package wgrep :ensure t)
 
 (use-package selectrum-prescient)
 
@@ -322,12 +318,13 @@ Similar to ivy's `ivy-partial-or-done'."
 
   :bind ((:map selectrum-minibuffer-map
                ("TAB" . selectrum-insert-or-submit-current-candidate)
-               ("C-c C-o" . embark-occur))))
+               ("C-c C-o" . embark-export))))
 
 (use-package consult
   :config (consult-preview-mode)
   :bind (("C-t" . consult-line)
          ("M-g M-g" . consult-goto-line)
+         ("C-x C-g" . consult-ripgrep)
          ("C-x C-e" . consult-error)
          ("C-x e" . consult-error)))
 
@@ -338,28 +335,34 @@ Similar to ivy's `ivy-partial-or-done'."
   :straight '(consult-flycheck :type git :host github :repo "minad/consult")
   :bind (:map flycheck-command-map
               (("C-x C-l" . consult-flycheck))))
+
 (use-package embark
   :straight '(embark :type git :host github :repo "oantolin/embark")
   :config
-  ;; (setq embark-occur-minibuffer-completion t)
-  (add-hook 'embark-target-finders 'selectrum-get-current-candidate)
-  (add-hook 'embark-candidate-collectors
-            (defun embark-selectrum-candidates+ ()
+  (add-hook 'embark-target-finders
+	        (defun current-candidate+category ()
               (when selectrum-active-p
-                (selectrum-get-current-candidates
-                 ;; Pass relative file names for dired.
-                 minibuffer-completing-file-name))))
+	            (cons (selectrum--get-meta 'category)
+		              (selectrum-get-current-candidate)))))
+
+  (add-hook 'embark-candidate-collectors
+            (defun current-candidates+category ()
+              (when selectrum-active-p
+	            (cons (selectrum--get-meta 'category)
+		              (selectrum-get-current-candidates
+		               ;; Pass relative file names for dired.
+		               minibuffer-completing-file-name)))))
 
   ;; No unnecessary computation delay after injection.
   (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
-  (add-hook 'embark-input-getters
-            (defun embark-selectrum-input-getter+ ()
-              (when selectrum-active-p
-                (let ((input (selectrum-get-current-input)))
-                  (if minibuffer-completing-file-name
-                      ;; Only get the input used for matching.
-                      (file-name-nondirectory input)
-                    input))))))
+
+  ;; The following is not selectrum specific but included here for convenience.
+  ;; If you don't want to use which-key as a key prompter skip the following code.
+  ;; (setq embark-action-indicator
+  ;;       (lambda (map) (which-key--show-keymap "Embark" map nil nil 'no-paging)
+  ;;         #'which-key--hide-popup-ignore-command)
+  ;;       embark-become-indicator embark-action-indicator)
+  )
 
 (use-package marginalia
   :disabled
@@ -463,6 +466,15 @@ Similar to ivy's `ivy-partial-or-done'."
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
          ("C-M-o" . er/contract-region)))
+
+(use-package undo-tree
+  :disabled
+  :config
+  ;; autosave the undo-tree history
+  (setq undo-tree-history-directory-alist
+        `((".*" . ,temporary-file-directory)))
+  (setq undo-tree-auto-save-history t)
+  (global-undo-tree-mode +1))
 
 (use-package paredit
   :init
@@ -574,6 +586,7 @@ Similar to ivy's `ivy-partial-or-done'."
   (add-hook 'sgml-mode-hook 'zencoding-mode))
 
 (use-package org
+  :disabled
   :defer t
   :config
   (setq org-log-done 'time)
