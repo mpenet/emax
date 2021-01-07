@@ -86,7 +86,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono 11"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 15"))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -335,10 +335,8 @@ Similar to ivy's `ivy-partial-or-done'."
 (use-package consult-selectrum)
 
 (use-package consult-flycheck
-  :disabled
-  :straight '(consult-flycheck :type git :host github :repo "minad/consult")
-  :bind (:map flycheck-command-map
-              (("C-x C-l" . consult-flycheck))))
+  :bind (("C-x C-l" . consult-flycheck)
+         ("C-x l" . consult-flycheck)))
 
 (use-package embark
   :straight '(embark :type git :host github :repo "oantolin/embark")
@@ -646,6 +644,14 @@ Similar to ivy's `ivy-partial-or-done'."
                                                          ))))
      `(selectrum-secondary-highlight ((,class (:foreground "#98be65"))))))
   (enable-theme 'doom-wilmersdorf))
+
+(use-package all-the-icons)
+
+(use-package doom-modeline
+  :ensure t
+  :init
+  (setq doom-modeline-irc t)
+  (doom-modeline-mode 1))
 
 (use-package paren
   :config
