@@ -508,7 +508,12 @@ Similar to ivy's `ivy-partial-or-done'."
   :config
   (require 'flycheck-clj-kondo)
   ;; (add-hook 'clojure-mode-hook #'clojure-refactor-mode)
-  (add-hook 'clojure-mode-hook #'paredit-mode))
+  (add-hook 'clojure-mode-hook #'paredit-mode)
+  (defun cljfmt ()
+    (interactive)
+    (async-shell-command "lein cljfmt fix && echo 'done'"
+                         "*cljfmt-output*"
+                         "*cljfmt-err*")))
 
 (use-package cider
   :diminish
