@@ -321,7 +321,11 @@ Similar to ivy's `ivy-partial-or-done'."
                ("C-c C-o" . embark-export))))
 
 (use-package consult
-  :config (consult-preview-mode)
+  :config
+  ;; Optionally configure a function which returns the project root directory
+  (autoload 'projectile-project-root "projectile")
+  (setq consult-project-root-function #'projectile-project-root)
+  (consult-preview-mode)
   :bind (("C-t" . consult-line)
          ("M-g M-g" . consult-goto-line)
          ("C-x C-g" . consult-ripgrep)
