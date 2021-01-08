@@ -11,3 +11,12 @@ session.*
 /url/cookies
 /ido.last
 .secrets.el
+/projectile-bookmarks.eld
+/projects
+/straight/build-cache.el
+/straight/build/
+/straight/modified/
+/straight/repos/
+/transient/
+/var/
+/org-clock-save.el
