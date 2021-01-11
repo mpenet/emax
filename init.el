@@ -1,3 +1,4 @@
+
 ;;; init.el --- @mpenet Emacs config
 ;;
 ;; Author: Max Penet <m@qbits.cc>
@@ -226,6 +227,7 @@
       straight-repository-branch "develop"
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
+                                          erc
                                           dired
                                           js-mode
                                           erc-log
