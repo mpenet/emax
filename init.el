@@ -406,10 +406,10 @@ Similar to ivy's `ivy-partial-or-done'."
   :diminish
   :bind (("M-o" . nil)
          ("M-o o". symbol-overlay-put)
-         ("M-o M-o". symbol-overlay-put))
+         ("M-o M-o". symbol-overlay-put)
+         ("M-o r" . symbol-overlay-remove-all))
   :config
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "M-o r") 'symbol-overlay-remove-all)
     (define-key map (kbd "M-o n") 'symbol-overlay-rename)
     (setq symbol-overlay-map map))
   :hook (prog-mode . symbol-overlay-mode))
