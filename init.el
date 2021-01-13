@@ -407,7 +407,8 @@ Similar to ivy's `ivy-partial-or-done'."
   :bind (("M-o" . nil)
          ("M-o o". symbol-overlay-put)
          ("M-o M-o". symbol-overlay-put)
-         ("M-o r" . symbol-overlay-remove-all))
+         ("M-o r" . symbol-overlay-remove-all)
+         ("M-o s" . symbol-overlay-toggle-in-scope))
   :config
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-o n") 'symbol-overlay-rename)
