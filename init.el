@@ -320,7 +320,8 @@ Similar to ivy's `ivy-partial-or-done'."
 
   :bind ((:map selectrum-minibuffer-map
                ("TAB" . selectrum-insert-or-submit-current-candidate)
-               ("C-c C-o" . embark-export))))
+               ("C-c C-o" . embark-export)
+               ("C-c C-c" . embark-act-noexit))))
 
 (use-package consult
   :config
@@ -404,15 +405,24 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package symbol-overlay
   :diminish
+  :config
+  (defun symbol-overlay-ignore-function-clojure (symbol)
+    "Determine whether SYMBOL should be ignored (clojure)."
+    (symbol-overlay-match-keyword-list
+     symbol
+     '(defn def let deftest is)))
+  (add-to-list 'symbol-overlay-ignore-functions
+               '(clojure-mode . symbol-overlay-ignore-function-clojure))
+  ;; overwrite mode local keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "M-o n") 'symbol-overlay-rename)
+    (setq symbol-overlay-map map))
+
   :bind (("M-o" . nil)
          ("M-o o". symbol-overlay-put)
          ("M-o M-o". symbol-overlay-put)
          ("M-o r" . symbol-overlay-remove-all)
          ("M-o s" . symbol-overlay-toggle-in-scope))
-  :config
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "M-o n") 'symbol-overlay-rename)
-    (setq symbol-overlay-map map))
   :hook (prog-mode . symbol-overlay-mode))
 
 (use-package dired
