@@ -368,8 +368,6 @@ Similar to ivy's `ivy-partial-or-done'."
   )
 
 (use-package marginalia
-  :disabled
-  :straight '(marginalia :type git :host github :repo "minad/marginalia")
   :init
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy)))
