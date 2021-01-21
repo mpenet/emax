@@ -76,6 +76,8 @@
 (global-set-key (kbd "C-x ,") 'split-window-below)
 (global-set-key (kbd "C-x .") 'split-window-right)
 (global-set-key (kbd "C-x l") 'delete-window)
+(global-set-key (kbd "<prior>") 'shrink-window)
+(global-set-key (kbd "<next>") 'enlarge-window)
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key "\C-x\C-r" 'query-replace)
@@ -92,92 +94,6 @@
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 15"))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
-
-
-;; Gathered from https://www.jetbrains.com/lp/mono/#ligatures
-;; The cheatsheat shows "\/" and "\" which I couldn't get working
-(let ((alist '(;;  -> -- --> ->> -< -<< --- -~ -|
-               (?- . ".\\(?:--\\|[->]>?\\|<<?\\|[~|]\\)")
-
-               ;; // /* /// /= /== />
-               ;; /** is not supported - see https://github.com/JetBrains/JetBrainsMono/issues/202
-               ;; /* cannot be conditioned on patterns followed by a whitespace,
-               ;; because that would require support for lookaheads in regex.
-               ;; We cannot just match on /*\s, because the whitespace would be considered
-               ;; as part of the match, but the font only specifies the ligature for /* with
-               ;; no trailing characters
-               ;;
-               (?/ . ".\\(?://?\\|==?\\|\\*\\*?\\|[>]\\)")
-
-               ;; */ *** *>
-               ;; Prevent grouping of **/ as *(*/) by actively looking for **/
-               ;; which consumes the triple but the font does not define a substitution,
-               ;; so it's rendered normally
-               (?* . ".\\(?:\\*/\\|\\*\\*\\|[>/]\\)")
-
-               ;; <!-- <<- <- <=> <= <| <|| <||| <|> <: <> <-< <<< <=< <<= <== <==>
-               ;; <~> << <-| <=| <~~ <~ <$> <$ <+> <+ <*> <* </ </> <->
-               (?< . ".\\(?:==>\\|!--\\|~~\\|-[|<]\\||>\\||\\{1,3\\}\\|<[=<-]?\\|=[><|=]?\\|[*+$~/-]>?\\|[:>]\\)")
-
-               ;; := ::= :?> :? :: ::: :< :>
-               (?: . ".\\(?:\\?>\\|:?=\\|::?\\|[>?<]\\)")
-
-               ;; == =:= === => =!= =/= ==> =>>
-               (?= . ".\\(?:[=>]?>\\|[:=!/]?=\\)")
-
-               ;;  != !== !!
-               (?! . ".\\(?:==?\\|!\\)")
-
-               ;; >= >> >] >: >- >>> >>= >>- >=>
-               (?> . ".\\(?:=>\\|>[=>-]\\|[]=:>-]\\)")
-
-               ;; && &&&
-               (?& . ".&&?")
-
-               ;; || |> ||> |||> |] |} |-> |=> |- ||- |= ||=
-               (?| . ".\\(?:||?>\\||[=-]\\|[=-]>\\|[]>}|=-]\\)")
-
-               ;; ... .. .? .= .- ..<
-               (?. . ".\\(?:\\.[.<]?\\|[.?=-]\\)")
-
-               ;; ++ +++ +>
-               (?+ . ".\\(?:\\+\\+?\\|>\\)")
-
-               ;; [| [< [||]
-               (?\[ . ".\\(?:|\\(?:|]\\)?\\|<\\)")
-
-               ;; {|
-               (?{ . ".|")
-
-               ;; ?: ?. ?? ?=
-               (?? . ".[:.?=]")
-
-               ;; ## ### #### #{ #[ #( #? #_ #_( #: #! #=
-               (?# . ".\\(?:#\\{1,3\\}\\|_(?\\|[{[(?:=!]\\)")
-
-               ;; ;;
-               (?\; . ".;")
-
-               ;; __ _|_
-               (?_ . ".|?_")
-
-               ;; ~~ ~~> ~> ~= ~- ~@
-               (?~ . ".\\(?:~>\\|[>@=~-]\\)")
-
-               ;; $>
-               (?$ . ".>")
-
-               ;; ^=
-               (?^ . ".=")
-
-               ;; ]#
-               (?\] . ".#")
-               )))
-  (dolist (char-regexp alist)
-    (set-char-table-range composition-function-table (car char-regexp)
-                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
-
-
 
 ;; utf8 only
 (setq current-language-environment "UTF-8")
@@ -333,14 +249,11 @@ Similar to ivy's `ivy-partial-or-done'."
          ("M-g M-g" . consult-goto-line)
          ("C-x C-g" . consult-ripgrep)))
 
-(use-package consult-selectrum)
-
 (use-package consult-flycheck
   :bind (("C-x C-l" . consult-flycheck)
          ("C-x l" . consult-flycheck)))
 
 (use-package embark
-  :straight '(embark :type git :host github :repo "oantolin/embark")
   :config
   (add-hook 'embark-target-finders
 	        (defun current-candidate+category ()
@@ -395,6 +308,26 @@ Similar to ivy's `ivy-partial-or-done'."
   (setq whitespace-style '(face trailing lines-tail)
         whitespace-global-modes '(not erc-mode)
         whitespace-line-column 80))
+
+(use-package ligature
+  :straight '(:host github :repo "mickeynp/ligature.el")
+  :config
+  (ligature-set-ligatures 't
+                          '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
+                            "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
+                            "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
+                            "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
+                            "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
+                            "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
+                            "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
+                            "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
+                            ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
+                            "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
+                            "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
+                            "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
+                            "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+                            "&="))
+  (global-ligature-mode t))
 
 (use-package hl-todo
   :config
