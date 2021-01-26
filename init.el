@@ -208,7 +208,9 @@
 
 (use-package wgrep :ensure t)
 
-(use-package selectrum-prescient)
+(use-package selectrum-prescient
+  :config
+  (prescient-persist-mode +1))
 
 (use-package selectrum
   :preface (declare-function selectrum-insert-or-submit-current-candidate nil)
