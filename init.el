@@ -84,7 +84,7 @@
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
-(global-set-key (kbd "M-i") 'hippie-expand)
+(global-set-key (kbd "TAB") 'hippie-expand)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
@@ -400,7 +400,7 @@ Similar to ivy's `ivy-partial-or-done'."
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 1
         company-require-match nil
-        company-idle-delay 0.5
+        company-idle-delay 0.1
         company-tooltip-limit 10
         company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
 	                        company-preview-frontend
@@ -415,7 +415,7 @@ Similar to ivy's `ivy-partial-or-done'."
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-d" . company-show-doc-buffer)
-        ("<tab>" . company-complete-selection))
+        ("TAB" . company-complete-selection))
   :diminish)
 
 (use-package eldoc
