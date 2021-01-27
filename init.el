@@ -84,7 +84,7 @@
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "C-;") 'comment-or-uncomment-region)
-(global-set-key (kbd "TAB") 'hippie-expand)
+(global-set-key (kbd "M-i") 'hippie-expand)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
@@ -252,6 +252,8 @@ Similar to ivy's `ivy-partial-or-done'."
          ("C-x C-g" . consult-ripgrep)))
 
 (use-package consult-flycheck
+  :config
+  (setq flycheck-display-errors-delay 0.5)
   :bind (("C-x C-l" . consult-flycheck)
          ("C-x l" . consult-flycheck)))
 
