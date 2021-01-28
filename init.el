@@ -414,6 +414,7 @@ Similar to ivy's `ivy-partial-or-done'."
   (:map company-active-map
         ("M-n" . nil)
         ("M-p" . nil)
+        ("C-h" . nil)
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
         ("C-d" . company-show-doc-buffer)
