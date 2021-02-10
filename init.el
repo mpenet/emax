@@ -402,7 +402,7 @@ Similar to ivy's `ivy-partial-or-done'."
   (setq company-tooltip-align-annotations t
         company-minimum-prefix-length 1
         company-require-match nil
-        company-idle-delay 0.1
+        company-idle-delay 0.3
         company-tooltip-limit 10
         company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
 	                        company-preview-frontend
@@ -488,35 +488,6 @@ Similar to ivy's `ivy-partial-or-done'."
   (add-hook 'cider-mode-hook #'clj-refactor-mode)
   (cljr-add-keybindings-with-prefix "C-c C-m"))
 
-(use-package company-go
-  :defer t
-  :init
-  (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-go)))
-
-(use-package go-mode
-  :requires (go-autocomplete go-gopath)
-  :config
-  (add-hook 'go-mode-hook (lambda ()
-                            (flycheck-mode)
-                            (set (make-local-variable 'company-backends)
-                                 '(company-go))))
-
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  :bind
-  (:map go-mode-map
-        ("C-c C-e" . go-gopath-set-gopath)))
-
-(use-package go-autocomplete)
-
-(use-package go-gopath)
-
-(use-package go-snippets)
-
-(use-package go-eldoc
-  :defer t
-  :init
-  (add-hook 'go-mode-hook 'go-eldoc-setup))
 
 (use-package js-mode
   :defer t
@@ -527,7 +498,8 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package fennel-mode
   :hook (fennel-mode . paredit-mode)
-  :bind (:map fennel-mode-map ("C-c C-c" . lisp-eval-defun)))
+  :bind (:map fennel-mode-map
+              ("C-c C-c" . lisp-eval-defun)))
 
 (use-package inferior-lisp
   :hook (inferior-lisp-mode . paredit-mode))
