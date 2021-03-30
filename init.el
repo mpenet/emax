@@ -68,8 +68,9 @@
 
 (global-set-key (kbd "C-h") 'backward-delete-char)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
+(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
 (global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "<C-return>") 'newline)
+(global-set-key (kbd "<C-return>") 'comment-or-uncomment-region)
 (global-set-key "\C-x\C-o" 'other-window)
 (global-set-key "\C-x\C-k" 'kill-buffer)
 (global-set-key (kbd "C-x '") 'delete-other-windows)
@@ -235,13 +236,12 @@ Similar to ivy's `ivy-partial-or-done'."
   ;; intelligent over time
   (prescient-persist-mode +1)
   (setq selectrum-count-style 'current/matches)
-
   :bind ((:map selectrum-minibuffer-map
                ("TAB" . selectrum-insert-or-submit-current-candidate)
-               ("C-c C-o" . embark-export)
-               ("C-c C-c" . embark-act-noexit))))
+               ("C-c C-o" . embark-export))))
 
 (use-package consult
+  :after erc
   :config
   ;; Optionally configure a function which returns the project root directory
   (autoload 'projectile-project-root "projectile")
@@ -249,9 +249,12 @@ Similar to ivy's `ivy-partial-or-done'."
 
   :bind (("C-t" . consult-line)
          ("M-g M-g" . consult-goto-line)
+         ("C-x C-SPC" . consult-global-mark)
+         ("C-c C-SPC" . consult-mark)
          ("C-x C-g" . consult-ripgrep)))
 
 (use-package consult-flycheck
+  :after consult
   :config
   (setq flycheck-display-errors-delay 0.5)
   :bind (("C-x C-l" . consult-flycheck)
@@ -259,32 +262,18 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package embark
   :config
-  (add-hook 'embark-target-finders
-	        (defun current-candidate+category ()
-              (when selectrum-active-p
-	            (cons (selectrum--get-meta 'category)
-		              (selectrum-get-current-candidate)))))
-
-  (add-hook 'embark-candidate-collectors
-            (defun current-candidates+category ()
-              (when selectrum-active-p
-	            (cons (selectrum--get-meta 'category)
-		              (selectrum-get-current-candidates
-		               ;; Pass relative file names for dired.
-		               minibuffer-completing-file-name)))))
-
-  ;; No unnecessary computation delay after injection.
-  (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
-
-  ;; The following is not selectrum specific but included here for convenience.
-  ;; If you don't want to use which-key as a key prompter skip the following code.
-  ;; (setq embark-action-indicator
-  ;;       (lambda (map) (which-key--show-keymap "Embark" map nil nil 'no-paging)
-  ;;         #'which-key--hide-popup-ignore-command)
-  ;;       embark-become-indicator embark-action-indicator)
-  )
+  (defun refresh-selectrum ()
+    (setq selectrum--previous-input-string nil))
+  (add-hook 'embark-pre-action-hook #'refresh-selectrum)
+  (add-hook 'embark-post-action-hook #'embark-collect--update-linked)
+  (add-hook 'embark-collect-post-revert-hook
+            (defun resize-embark-collect-window (&rest _)
+              (when (memq embark-collect--kind '(:live :completions))
+                (fit-window-to-buffer (get-buffer-window)
+                                      (floor (frame-height) 2) 1)))))
 
 (use-package marginalia
+  :after consult
   :init
   (marginalia-mode)
   (setq marginalia-annotators '(marginalia-annotators-heavy)))
@@ -488,7 +477,6 @@ Similar to ivy's `ivy-partial-or-done'."
   (add-hook 'cider-mode-hook #'clj-refactor-mode)
   (cljr-add-keybindings-with-prefix "C-c C-m"))
 
-
 (use-package js-mode
   :defer t
   :mode ("\\.json$" . js-mode)
@@ -654,7 +642,10 @@ Similar to ivy's `ivy-partial-or-done'."
           erc-timestamp-format "%H:%M "
           erc-interpret-mirc-color t
           erc-input-line-position -2
+          erc-track-enable-keybindings nil
           erc-prompt ">"
+          erc-fill-function 'erc-fill-static
+          erc-fill-static-center 14
           erc-keywords '("\\bmpenet\\b")
           erc-insert-timestamp-function 'erc-insert-timestamp-left
           erc-current-nick-highlight-type 'nick
