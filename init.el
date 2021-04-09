@@ -329,6 +329,8 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package symbol-overlay
   :diminish
+  :custom-face
+  (symbol-overlay-default-face ((t (:inherit 'highlight :background "#3d3d3d"))))
   :config
   (defun symbol-overlay-ignore-function-clojure (symbol)
     "Determine whether SYMBOL should be ignored (clojure)."
