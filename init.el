@@ -70,7 +70,7 @@
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
 (global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "<C-return>") 'comment-or-uncomment-region)
+(global-set-key (kbd "<M-return>") 'comment-or-uncomment-region)
 (global-set-key "\C-x\C-o" 'other-window)
 (global-set-key "\C-x\C-k" 'kill-buffer)
 (global-set-key (kbd "C-x '") 'delete-other-windows)
@@ -251,7 +251,7 @@ Similar to ivy's `ivy-partial-or-done'."
          ("M-g M-g" . consult-goto-line)
          ("C-x C-SPC" . consult-global-mark)
          ("C-c C-SPC" . consult-mark)
-         ("C-x C-g" . consult-ripgrep)))
+         ("C-x C-g" . consult-git-grep)))
 
 (use-package consult-flycheck
   :after consult
@@ -427,15 +427,6 @@ Similar to ivy's `ivy-partial-or-done'."
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
          ("C-M-o" . er/contract-region)))
-
-(use-package undo-tree
-  :disabled
-  :config
-  ;; autosave the undo-tree history
-  (setq undo-tree-history-directory-alist
-        `((".*" . ,temporary-file-directory)))
-  (setq undo-tree-auto-save-history t)
-  (global-undo-tree-mode +1))
 
 (use-package paredit
   :init
