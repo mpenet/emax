@@ -141,6 +141,7 @@
 ;;; via straight el
 
 (setq straight-use-package-by-default t
+      straight-disable-native-compile t
       straight-repository-branch "develop"
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
@@ -213,6 +214,10 @@
   :config
   (prescient-persist-mode +1))
 
+(use-package orderless
+  :ensure t
+  :custom (completion-styles '(orderless)))
+
 (use-package selectrum
   :preface (declare-function selectrum-insert-or-submit-current-candidate nil)
   :init
@@ -228,14 +233,19 @@ Similar to ivy's `ivy-partial-or-done'."
           (selectrum-insert-current-candidate))
         (when (string= prev-input (selectrum-get-current-input))
           (selectrum-select-current-candidate)))))
+  :init (selectrum-mode +1)
   :config
-  (selectrum-mode +1)
   ;; to make sorting and filtering more intelligent
   (selectrum-prescient-mode +1)
-  ;; to save your command history on disk, so the sorting gets more
-  ;; intelligent over time
+  ;; ;; to save your command history on disk, so the sorting gets more
+  ;; ;; intelligent over time
   (prescient-persist-mode +1)
+
   (setq selectrum-count-style 'current/matches)
+  ;; (setq selectrum-refine-candidates-function #'orderless-filter)
+  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
+
+  (setq selectrum-prescient-enable-filtering nil)
   :bind ((:map selectrum-minibuffer-map
                ("TAB" . selectrum-insert-or-submit-current-candidate)
                ("C-c C-o" . embark-export))))
