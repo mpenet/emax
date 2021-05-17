@@ -70,6 +70,7 @@
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
 (global-set-key (kbd "RET") 'newline-and-indent)
+(global-set-key (kbd "<C-return>") 'newline-and-indent)
 (global-set-key (kbd "<M-return>") 'comment-or-uncomment-region)
 (global-set-key "\C-x\C-o" 'other-window)
 (global-set-key "\C-x\C-k" 'kill-buffer)
@@ -237,15 +238,15 @@ Similar to ivy's `ivy-partial-or-done'."
   :config
   ;; to make sorting and filtering more intelligent
   (selectrum-prescient-mode +1)
-  ;; ;; to save your command history on disk, so the sorting gets more
-  ;; ;; intelligent over time
+  ;; ;; ;; to save your command history on disk, so the sorting gets more
+  ;; ;; ;; intelligent over time
   (prescient-persist-mode +1)
 
   (setq selectrum-count-style 'current/matches)
   ;; (setq selectrum-refine-candidates-function #'orderless-filter)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
-
   (setq selectrum-prescient-enable-filtering nil)
+
   :bind ((:map selectrum-minibuffer-map
                ("TAB" . selectrum-insert-or-submit-current-candidate)
                ("C-c C-o" . embark-export))))
@@ -399,11 +400,14 @@ Similar to ivy's `ivy-partial-or-done'."
 (use-package yasnippet
   :diminish
   :config
-  (use-package yasnippet-snippets)
   (yas-global-mode t)
   (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
         yas-indent-line nil)
   :diminish yas-minor-mode)
+
+(use-package yasnippet-snippets)
+
+(use-package clojure-snippets)
 
 (use-package company-quickhelp)
 
@@ -585,9 +589,12 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package doom-modeline
   :ensure t
+  :config
   :init
-  (setq doom-modeline-irc t)
-  (doom-modeline-mode 1))
+  (defun my-doom-modeline--font-height () 32)
+  (doom-modeline-mode 1)
+  (advice-add #'doom-modeline--font-height :override #'my-doom-modeline--font-height)
+  (setq doom-modeline-irc t))
 
 (use-package paren
   :config
@@ -628,8 +635,6 @@ Similar to ivy's `ivy-partial-or-done'."
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
-
-(use-package clojure-snippets)
 
 (use-package vterm
   :config (setq vterm-max-scrollback 10000)
