@@ -211,45 +211,44 @@
 
 (use-package wgrep :ensure t)
 
-(use-package selectrum-prescient
-  :config
-  (prescient-persist-mode +1))
-
+;; Use the `orderless' completion style.
+;; Enable `partial-completion' for files to allow path expansion.
+;; You may prefer to use `initials' instead of `partial-completion'.
 (use-package orderless
-  :ensure t
-  :custom (completion-styles '(orderless)))
-
-(use-package selectrum
-  :preface (declare-function selectrum-insert-or-submit-current-candidate nil)
   :init
-  (defun selectrum-insert-or-submit-current-candidate ()
-    "Insert current candidate depending, or forward to
-`selectrum-select-current-candidate' if input text hasn't changed since
-last completion
-Similar to ivy's `ivy-partial-or-done'."
-    (interactive)
-    (progn
-      (let ((prev-input (selectrum-get-current-input)))
-        (when (> (length (selectrum-get-current-candidates)) 0)
-          (selectrum-insert-current-candidate))
-        (when (string= prev-input (selectrum-get-current-input))
-          (selectrum-select-current-candidate)))))
-  :init (selectrum-mode +1)
-  :config
-  ;; to make sorting and filtering more intelligent
-  (selectrum-prescient-mode +1)
-  ;; ;; ;; to save your command history on disk, so the sorting gets more
-  ;; ;; ;; intelligent over time
-  (prescient-persist-mode +1)
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
 
-  (setq selectrum-count-style 'current/matches)
-  ;; (setq selectrum-refine-candidates-function #'orderless-filter)
-  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches)
-  (setq selectrum-prescient-enable-filtering nil)
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
 
-  :bind ((:map selectrum-minibuffer-map
-               ("TAB" . selectrum-insert-or-submit-current-candidate)
+(use-package vertico
+  :init
+  (vertico-mode)
+  :bind ((:map minibuffer-local-map
+               ;; ("TAB" . selectrum-insert-or-submit-current-candidate)
                ("C-c C-o" . embark-export))))
+
+(use-package emacs
+  :init
+  ;; Add prompt indicator to `completing-read-multiple'.
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
+  ;; Grow and shrink minibuffer
+  ;;(setq resize-mini-windows t)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
 
 (use-package consult
   :after erc
@@ -273,9 +272,6 @@ Similar to ivy's `ivy-partial-or-done'."
 
 (use-package embark
   :config
-  (defun refresh-selectrum ()
-    (setq selectrum--previous-input-string nil))
-  (add-hook 'embark-pre-action-hook #'refresh-selectrum)
   (add-hook 'embark-post-action-hook #'embark-collect--update-linked)
   (add-hook 'embark-collect-post-revert-hook
             (defun resize-embark-collect-window (&rest _)
@@ -305,9 +301,6 @@ Similar to ivy's `ivy-partial-or-done'."
         projectile-completion-system 'default)
   :config
   (projectile-mode +1)
-  (defun refresh-selectrum ()
-    (setq selectrum--previous-input-string nil))
-  (add-hook 'embark-pre-action-hook #'refresh-selectrum)
   (add-to-list 'projectile-globally-ignored-files ".clj-kondo/*")
   :bind (("C-x f" . projectile-find-file)))
 
@@ -574,15 +567,10 @@ Similar to ivy's `ivy-partial-or-done'."
   (let ((class '((class color) (min-colors 89))))
     (custom-theme-set-faces
      'doom-wilmersdorf
-     `(selectrum-current-candidate
+     `(vertico-current
        ((,class (:background "#41454b"
                              :weight bold
-                             :foreground "#c9d9ff"
-                             ))))
-     `(selectrum-primary-highlight ((,class (:foreground "violet"
-                                                         ;; "#b0a2e7"
-                                                         ))))
-     `(selectrum-secondary-highlight ((,class (:foreground "#98be65"))))))
+                             :foreground "#c9d9ff"))))))
   (enable-theme 'doom-wilmersdorf))
 
 (use-package all-the-icons)
