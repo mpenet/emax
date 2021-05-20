@@ -60,6 +60,7 @@
                                try-complete-lisp-symbol-partially
                                try-complete-lisp-symbol))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; GLOBAL BINDINGS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -85,8 +86,8 @@
 (global-set-key "\C-x\C-r" 'query-replace)
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
-(global-set-key (kbd "C-;") 'comment-or-uncomment-region)
 (global-set-key (kbd "M-i") 'hippie-expand)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
@@ -234,7 +235,6 @@
                 (setq-local completion-auto-help nil
                             completion-show-inline-help nil)))
   :bind ((:map minibuffer-local-map
-               ;; ("TAB" . selectrum-insert-or-submit-current-candidate)
                ("C-c C-o" . embark-export))))
 
 (use-package emacs
@@ -617,10 +617,9 @@
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :bind (:map flyspell-mode-map
-              ("C-;" . comment-or-uncomment-region))
+              ("<M-return>" . comment-or-uncomment-region))
   :diminish)
 
-(use-package docker)
 (use-package dockerfile-mode)
 
 (use-package exec-path-from-shell
