@@ -228,6 +228,11 @@
 (use-package vertico
   :init
   (vertico-mode)
+  :config
+  (advice-add #'vertico--setup :after
+              (lambda (&rest _)
+                (setq-local completion-auto-help nil
+                            completion-show-inline-help nil)))
   :bind ((:map minibuffer-local-map
                ;; ("TAB" . selectrum-insert-or-submit-current-candidate)
                ("C-c C-o" . embark-export))))
@@ -289,10 +294,8 @@
   (embark-collect-mode . embark-consult-preview-minor-mode))
 
 (use-package marginalia
-  :after consult
   :init
-  (marginalia-mode)
-  (setq marginalia-annotators '(marginalia-annotators-heavy)))
+  (marginalia-mode))
 
 (use-package projectile
   :diminish
