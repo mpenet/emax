@@ -210,7 +210,7 @@
   :bind (:map isearch-mode-map
               ("C-c C-o" . isearch-occur)))
 
-(use-package wgrep :ensure t)
+(use-package wgrep)
 
 ;; Use the `orderless' completion style.
 ;; Enable `partial-completion' for files to allow path expansion.
@@ -285,7 +285,6 @@
                                       (floor (frame-height) 2) 1)))))
 
 (use-package embark-consult
-  :ensure t
   :after (embark consult)
   :demand t ; only necessary if you have the hook below
   ;; if you want to have consult previews as you move around an
@@ -579,7 +578,6 @@
 (use-package all-the-icons)
 
 (use-package doom-modeline
-  :ensure t
   :config
   :init
   (defun my-doom-modeline--font-height () 32)
