@@ -143,7 +143,6 @@
 ;;; via straight el
 
 (setq straight-use-package-by-default t
-      straight-disable-native-compile t
       straight-repository-branch "develop"
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
@@ -580,9 +579,7 @@
 (use-package doom-modeline
   :config
   :init
-  (defun my-doom-modeline--font-height () 32)
   (doom-modeline-mode 1)
-  (advice-add #'doom-modeline--font-height :override #'my-doom-modeline--font-height)
   (setq doom-modeline-irc t))
 
 (use-package paren
