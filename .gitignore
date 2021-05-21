@@ -20,3 +20,4 @@ session.*
 /transient/
 /var/
 /org-clock-save.el
+/eln-cache/
