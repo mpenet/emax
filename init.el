@@ -707,6 +707,8 @@
 (use-package erc-hl-nicks
   :after irc/exo)
 
+(use-package sudo-edit)
+
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
