@@ -258,8 +258,10 @@
   :after erc
   :config
   ;; Optionally configure a function which returns the project root directory
-  (autoload 'projectile-project-root "projectile")
-  (setq consult-project-root-function #'projectile-project-root)
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (car (project-roots project)))))
 
   :bind (("C-t" . consult-line)
          ("M-g M-g" . consult-goto-line)
@@ -295,15 +297,9 @@
   :init
   (marginalia-mode))
 
-(use-package projectile
-  :diminish
-  :init
-  (setq projectile-project-search-path '("~/src/")
-        projectile-completion-system 'default)
-  :config
-  (projectile-mode +1)
-  (add-to-list 'projectile-globally-ignored-files ".clj-kondo/*")
-  :bind (("C-x f" . projectile-find-file)))
+(use-package project
+  :init (setq project-ignores ".clj-kondo")
+  :bind (("C-x f" . project-find-file)))
 
 (use-package whitespace
   :diminish
