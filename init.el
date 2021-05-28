@@ -30,6 +30,7 @@
 ;;; Code:
 
 (setq load-prefer-newer t
+      warning-minimum-level :error
       gc-cons-threshold 50000000
       auto-window-vscroll nil
       large-file-warning-threshold 100000000
@@ -691,12 +692,7 @@
 
 (use-package erc-log
   :init
-  (setq erc-log-channels-directory "~/.erc/logs/"
-        ;; erc-save-buffer-on-part nil
-        ;; erc-save-queries-on-quit nil
-        ;; erc-log-write-after-send t
-        ;; erc-log-write-after-insert t
-        )
+  (setq erc-log-channels-directory "~/.erc/logs/")
   (if (not (file-exists-p erc-log-channels-directory))
       (mkdir erc-log-channels-directory t)))
 
