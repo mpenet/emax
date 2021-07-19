@@ -151,6 +151,7 @@
                                           dired
                                           js-mode
                                           erc-log
+                                          project
                                           uniquify
                                           inferior-lisp))
 
@@ -235,7 +236,8 @@
                 (setq-local completion-auto-help nil
                             completion-show-inline-help nil)))
   :bind ((:map minibuffer-local-map
-               ("C-c C-o" . embark-export))))
+               ("C-c C-o" . embark-export)
+               ("C-l" . embark-act))))
 
 (use-package emacs
   :init
@@ -299,7 +301,7 @@
   (marginalia-mode))
 
 (use-package project
-  :init (setq project-ignores ".clj-kondo")
+  :init (setq project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
   :bind (("C-x f" . project-find-file)))
 
 (use-package whitespace
