@@ -147,10 +147,8 @@
       straight-repository-branch "develop"
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
-                                          erc
                                           dired
                                           js-mode
-                                          erc-log
                                           project
                                           uniquify
                                           inferior-lisp))
@@ -258,7 +256,6 @@
   (setq enable-recursive-minibuffers t))
 
 (use-package consult
-  :after erc
   :config
   ;; Optionally configure a function which returns the project root directory
   (setq consult-project-root-function
@@ -312,7 +309,6 @@
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :config
   (setq whitespace-style '(face trailing lines-tail)
-        whitespace-global-modes '(not erc-mode)
         whitespace-line-column 80))
 
 (use-package ligature
@@ -619,87 +615,6 @@
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
-
-(use-package vterm
-  :config (setq vterm-max-scrollback 10000)
-  :bind (:map vterm-mode-map
-              ("C-h" . vterm-send-backspace)
-              ("C-M-h" . vterm-send-meta-backspace)
-              ("M-p" . vterm-send-up)))
-
-(use-package erc
-  :commands (erc erc-tls)
-  :requires (erc-services)
-  :preface
-
-  (defun setup-erc-env ()
-    (setq-default erc-enable-logging 'erc-log-all-but-server-buffers)
-    (setq erc-modules '(netsplit fill track completion ring button autojoin
-                                 services match stamp track page scrolltobottom
-                                 hl-nicks irccontrols spelling truncate)
-          erc-max-buffer-size 40000
-          erc-hide-list '("JOIN" "PART" "QUIT" "NICK")
-          erc-autojoin-mode t
-          erc-timestamp-format "%H:%M "
-          erc-interpret-mirc-color t
-          erc-input-line-position -2
-          erc-track-enable-keybindings nil
-          erc-prompt ">"
-          erc-fill-function 'erc-fill-static
-          erc-fill-static-center 14
-          erc-keywords '("\\bmpenet\\b")
-          erc-insert-timestamp-function 'erc-insert-timestamp-left
-          erc-current-nick-highlight-type 'nick
-          erc-prompt-for-nickserv-password nil
-          erc-autojoin-channels-alist exo-irc-channels
-          erc-server-auto-reconnect t
-          erc-track-exclude exo-irc-track-exclude))
-
-  (defun kikoo-line (nick)
-    (let ((front (+ (random 13) 1))
-          (back (+ (random 13) 1)))
-      (while (= back front)
-        (setq back (+ (random 13) 1)))
-      (erc-send-message (apply 'concat
-                               (append (list (format "\002\003%s,%sKIKOO"
-                                                     front
-                                                     back))
-                                       (make-list (+ (random 11) 2) "O")
-                                       (list " " nick " ")
-                                       (make-list (+ (random 11) 2) "!")
-                                       (list " :o")
-                                       (make-list (+ (random 11) 2) ")")))
-                        t)))
-
-  (defun kikoo ()
-    (interactive)
-    (let ((nick (completing-read "Enter nick: " (erc-get-channel-nickname-list))))
-      (dotimes (i 3)
-        (kikoo-line nick))))
-
-  (defun irc/exo ()
-    "Connect to ERC, or switch to last active buffer."
-    (interactive)
-    (load "~/.emacs.d/.secrets.el")
-    (setup-erc-env)
-    (erc-log-mode)
-    (erc-tls :server exo-irc-server-host
-             :port exo-irc-server-port
-             :nick exo-irc-nick
-             :full-name exo-irc-full-name
-             :password exo-irc-password))
-  :config
-  (erc-services-mode 1)
-  (erc-track-mode t))
-
-(use-package erc-log
-  :init
-  (setq erc-log-channels-directory "~/.erc/logs/")
-  (if (not (file-exists-p erc-log-channels-directory))
-      (mkdir erc-log-channels-directory t)))
-
-(use-package erc-hl-nicks
-  :after irc/exo)
 
 (use-package sudo-edit)
 
