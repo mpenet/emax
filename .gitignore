@@ -21,3 +21,5 @@ session.*
 /var/
 /org-clock-save.el
 /eln-cache/
+/forge-database.sqlite
+/eshell/

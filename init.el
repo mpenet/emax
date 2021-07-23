@@ -30,6 +30,7 @@
 ;;; Code:
 
 (setq load-prefer-newer t
+      auth-sources '("~/.authinfo.gpg")
       warning-minimum-level :error
       gc-cons-threshold 50000000
       auto-window-vscroll nil
@@ -381,6 +382,8 @@
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
+(use-package forge)
+
 (use-package autorevert
   :diminish auto-revert-mode)
 
@@ -611,6 +614,11 @@
   :diminish)
 
 (use-package dockerfile-mode)
+
+(use-package eshell
+  :bind (:map
+         eshell-mode-map
+         ("C-r" . consult-history)))
 
 (use-package exec-path-from-shell
   :config
