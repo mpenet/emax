@@ -138,9 +138,6 @@
   (setq select-enable-clipboard t
         interprogram-paste-function 'x-cut-buffer-or-selection-value))
 
-(if (version<= "27.1" emacs-version)
-    (global-so-long-mode 1))
-
 ;;; Packages
 ;;; via straight el
 
@@ -170,6 +167,9 @@
 (straight-use-package 'use-package)
 
 (use-package diminish)
+
+(use-package so-long
+  :config (global-so-long-mode 1))
 
 (use-package elec-pair
   :config
@@ -502,8 +502,6 @@
 
 (use-package lua-mode)
 
-(use-package nginx-mode)
-
 (use-package rainbow-mode
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode)
@@ -518,23 +516,6 @@
   :config
   (setq zencoding-preview-default nil)
   (add-hook 'sgml-mode-hook 'zencoding-mode))
-
-(use-package org
-  :disabled
-  :defer t
-  :config
-  (setq org-log-done 'time)
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
-  (add-hook 'org-mode-hook
-            (lambda ()
-              (make-variable-buffer-local 'yas-trigger-key)
-              (setq yas-trigger-key [tab])
-              (add-to-list 'org-tab-first-hook
-                           (lambda ()
-                             (let ((yas-fallback-behavior 'return-nil))
-                               (yas-expand))))
-              (define-key yas-keymap [tab] 'yas-next-field))))
 
 (use-package htmlize
   :config (setq org-export-htmlize-output-type 'css))
