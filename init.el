@@ -382,8 +382,6 @@
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
-(use-package forge)
-
 (use-package autorevert
   :diminish auto-revert-mode)
 
