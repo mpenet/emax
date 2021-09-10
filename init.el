@@ -597,9 +597,9 @@
 (use-package dockerfile-mode)
 
 (use-package eshell
-  :bind (:map
-         eshell-mode-map
-         ("C-r" . consult-history)))
+  :after esh-mode
+  :bind (:map eshell-mode-map
+              ("C-r" . consult-history)))
 
 (use-package exec-path-from-shell
   :config
