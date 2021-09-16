@@ -33,6 +33,7 @@
       auth-sources '("~/.authinfo.gpg")
       warning-minimum-level :error
       gc-cons-threshold 50000000
+      read-process-output-max (* 1024 1024)
       auto-window-vscroll nil
       large-file-warning-threshold 100000000
       browse-url-browser-function 'browse-url-generic
@@ -496,6 +497,8 @@
    (clojurescript-mode . lsp))
 
   :init (setq lsp-keymap-prefix "M-l")
+  :bind (:map lsp-mode-map
+              ("M-l M-l" . lsp-execute-code-action))
   :config
   (dolist (m '(clojure-mode
                clojurec-mode
@@ -505,7 +508,8 @@
   (setq cljr-add-ns-to-blank-clj-files nil
         cider-eldoc-display-for-symbol-at-point nil
         lsp-enable-indentation nil
-        lsp-headerline-breadcrumb-enable nil))
+        lsp-headerline-breadcrumb-enable nil
+        lsp-enable-symbol-highlighting nil))
 
 (use-package consult-lsp)
 
