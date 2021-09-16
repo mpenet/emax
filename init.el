@@ -494,7 +494,10 @@
   :hook
   ((clojure-mode . lsp)
    (clojurec-mode . lsp)
-   (clojurescript-mode . lsp))
+   (clojurescript-mode . lsp)
+   (lsp-mode . (lambda ()
+                 ;; don't do double overlays, lsp is better at this
+                 (symbol-overlay-mode -1))))
 
   :init (setq lsp-keymap-prefix "M-l")
   :bind (:map lsp-mode-map
@@ -508,8 +511,7 @@
   (setq cljr-add-ns-to-blank-clj-files nil
         cider-eldoc-display-for-symbol-at-point nil
         lsp-enable-indentation nil
-        lsp-headerline-breadcrumb-enable nil
-        lsp-enable-symbol-highlighting nil))
+        lsp-headerline-breadcrumb-enable nil))
 
 (use-package consult-lsp)
 
