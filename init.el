@@ -262,7 +262,9 @@
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
-            (car (project-roots project)))))
+            (car (project-roots project))))
+        xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
 
   :bind (("C-t" . consult-line)
          ("M-g M-g" . consult-goto-line)
@@ -456,12 +458,13 @@
               ("DEL" . my-paredit-delete))
   :diminish)
 
-(use-package flycheck-clj-kondo)
+(use-package flycheck-clj-kondo
+  :disabled)
 
 (use-package clojure-mode
   :custom (cider-edit-jack-in-command t)
   :config
-  (require 'flycheck-clj-kondo)
+  ;; (require 'flycheck-clj-kondo)
   ;; (add-hook 'clojure-mode-hook #'clojure-refactor-mode)
   (add-hook 'clojure-mode-hook #'paredit-mode)
 
@@ -484,6 +487,27 @@
   :config
   (add-hook 'cider-mode-hook #'clj-refactor-mode)
   (cljr-add-keybindings-with-prefix "C-c C-m"))
+
+(use-package lsp-mode
+  :ensure t
+  :hook
+  ((clojure-mode . lsp)
+   (clojurec-mode . lsp)
+   (clojurescript-mode . lsp))
+
+  :init (setq lsp-keymap-prefix "M-l")
+  :config
+  (dolist (m '(clojure-mode
+               clojurec-mode
+               clojurescript-mode
+               clojurex-mode))
+    (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+  (setq cljr-add-ns-to-blank-clj-files nil
+        cider-eldoc-display-for-symbol-at-point nil
+        lsp-enable-indentation nil
+        lsp-headerline-breadcrumb-enable nil))
+
+(use-package consult-lsp)
 
 (use-package js-mode
   :defer t

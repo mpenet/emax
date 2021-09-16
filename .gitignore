@@ -23,3 +23,5 @@ session.*
 /eln-cache/
 /forge-database.sqlite
 /eshell/
+/workspace/
+/.lsp-session-*
