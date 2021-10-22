@@ -411,10 +411,7 @@
         company-minimum-prefix-length 1
         company-require-match nil
         company-idle-delay 0.3
-        company-tooltip-limit 10
-        company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
-	                        company-preview-frontend
-	                        company-echo-metadata-frontend))
+        company-tooltip-limit 10)
   :config
   (company-quickhelp-mode 1)
   (global-company-mode)
@@ -484,7 +481,6 @@
   (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
 (use-package lsp-mode
-  :ensure t
   :hook
   ((clojure-mode . lsp)
    (clojurec-mode . lsp)
@@ -502,7 +498,9 @@
   (setq cljr-add-ns-to-blank-clj-files nil
         cider-eldoc-display-for-symbol-at-point nil
         lsp-enable-indentation nil
-        lsp-headerline-breadcrumb-enable nil))
+        lsp-headerline-breadcrumb-enable nil
+        ;; lsp-signature-auto-activate nil
+        ))
 
 (use-package consult-lsp)
 
