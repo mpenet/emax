@@ -341,6 +341,7 @@
   (global-hl-todo-mode))
 
 (use-package symbol-overlay
+  :disabled
   :diminish
   :custom-face
   (symbol-overlay-default-face ((t (:inherit 'highlight :background "#3d3d3d"))))
@@ -466,7 +467,6 @@
   :custom (cider-edit-jack-in-command t)
   :config
   ;; (require 'flycheck-clj-kondo)
-  ;; (add-hook 'clojure-mode-hook #'clojure-refactor-mode)
   (add-hook 'clojure-mode-hook #'paredit-mode)
 
   (defun cljfmt ()
@@ -483,21 +483,12 @@
   (add-hook 'cider-mode-hook #'eldoc-mode)
   (add-hook 'cider-repl-mode-hook #'eldoc-mode))
 
-(use-package clj-refactor
-  :diminish
-  :config
-  (add-hook 'cider-mode-hook #'clj-refactor-mode)
-  (cljr-add-keybindings-with-prefix "C-c C-m"))
-
 (use-package lsp-mode
   :ensure t
   :hook
   ((clojure-mode . lsp)
    (clojurec-mode . lsp)
-   (clojurescript-mode . lsp)
-   (lsp-mode . (lambda ()
-                 ;; don't do double overlays, lsp is better at this
-                 (symbol-overlay-mode -1))))
+   (clojurescript-mode . lsp))
 
   :init (setq lsp-keymap-prefix "M-l")
   :bind (:map lsp-mode-map
@@ -582,6 +573,8 @@
                              :weight bold
                              :foreground "#c9d9ff"))))))
   (enable-theme 'doom-wilmersdorf))
+(use-package solaire-mode
+  :config (solaire-global-mode +1))
 
 (use-package all-the-icons)
 
