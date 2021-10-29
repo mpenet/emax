@@ -503,7 +503,12 @@
   (setq cljr-add-ns-to-blank-clj-files nil
         lsp-enable-indentation nil
         lsp-headerline-breadcrumb-enable nil
-        lsp-signature-auto-activate nil))
+        lsp-signature-auto-activate nil
+        lsp-semantic-tokens-enable t))
+
+(use-package lsp-treemacs
+  :config
+  (setq lsp-treemacs-error-list-current-project-only t))
 
 (use-package consult-lsp)
 
