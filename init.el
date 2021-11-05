@@ -480,10 +480,8 @@
         cider-eldoc-display-for-symbol-at-point nil ; use lsp
         cider-prompt-for-symbol nil)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point))) ; use lsp
-  ;; (add-hook 'cider-mode-hook #'eldoc-mode)
-  ;; (add-hook 'cider-repl-mode-hook #'eldoc-mode)
-  )
+  ;; use lsp
+  (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point))))
 
 (use-package lsp-mode
   :hook
