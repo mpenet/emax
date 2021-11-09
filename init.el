@@ -122,9 +122,6 @@
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; add the current line number to the mode bar
-(line-number-mode t)
-
 ;; add the current column number to the mode bar
 (column-number-mode t)
 
@@ -185,9 +182,12 @@
   :init (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 (use-package display-line-numbers
-  :if (version<= "26" emacs-version)
   :hook ((prog-mode conf-mode) . display-line-numbers-mode)
   :custom (display-line-numbers-width 3))
+
+(use-package hl-line
+  :config
+  (global-hl-line-mode t))
 
 (use-package which-function-mode
   :defer t
@@ -238,6 +238,14 @@
   :bind ((:map minibuffer-local-map
                ("C-c C-o" . embark-export)
                ("C-l" . embark-act))))
+
+(use-package vertico-posframe
+  :init
+  (setq vertico-posframe-parameters
+        '((left-fringe . 8)
+          (right-fringe . 8)))
+  :config
+  (vertico-posframe-mode 1))
 
 (use-package emacs
   :init
@@ -503,6 +511,16 @@
         lsp-headerline-breadcrumb-enable nil
         lsp-signature-auto-activate nil
         lsp-semantic-tokens-enable t))
+
+(use-package lsp-ui
+  :after lsp-mode
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-peek-list-width 60
+        lsp-ui-doc-max-width 60
+        lsp-ui-doc-enable nil
+        lsp-ui-peek-fontify 'always
+        lsp-ui-sideline-show-code-actions nil))
 
 (use-package lsp-treemacs
   :config
