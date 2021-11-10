@@ -239,14 +239,6 @@
                ("C-c C-o" . embark-export)
                ("C-l" . embark-act))))
 
-(use-package vertico-posframe
-  :init
-  (setq vertico-posframe-parameters
-        '((left-fringe . 8)
-          (right-fringe . 8)))
-  :config
-  (vertico-posframe-mode 1))
-
 (use-package emacs
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
@@ -595,6 +587,7 @@
                              :weight bold
                              :foreground "#c9d9ff"))))))
   (enable-theme 'doom-wilmersdorf))
+
 (use-package solaire-mode
   :config (solaire-global-mode +1))
 
