@@ -202,6 +202,12 @@
          ("C-x C-j" . winner-redo)
          ("C-x j" . winner-redo)))
 
+(use-package ace-window
+  :bind (([remap other-window] . ace-window))
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+        aw-background nil))
+
 (use-package isearch
   :config
   (setq isearch-lazy-count t
