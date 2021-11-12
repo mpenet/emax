@@ -203,7 +203,14 @@
          ("C-x j" . winner-redo)))
 
 (use-package ace-window
-  :bind (([remap other-window] . ace-window))
+  :bind (("M-o" . ace-window))
+  :init
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t
+       (:foreground "orange"
+                    :bold t
+                    :inherit 'hl-line)))))
   :config
   (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
         aw-background nil))
@@ -584,15 +591,16 @@
 
 (use-package doom-themes
   :config
-  (require 'doom-wilmersdorf-theme)
-  (let ((class '((class color) (min-colors 89))))
-    (custom-theme-set-faces
-     'doom-wilmersdorf
-     `(vertico-current
-       ((,class (:background "#41454b"
-                             :weight bold
-                             :foreground "#c9d9ff"))))))
-  (enable-theme 'doom-wilmersdorf))
+  ;; (require 'doom-wilmersdorf-theme)
+  ;; (let ((class '((class color) (min-colors 89))))
+  ;;   (custom-theme-set-faces
+  ;;    'doom-wilmersdorf
+  ;;    `(vertico-current
+  ;;      ((,class (:background "#41454b"
+  ;;                            :weight bold
+  ;;                            :foreground "#c9d9ff"))))))
+  ;; (enable-theme 'doom-wilmersdorf)
+  (load-theme 'doom-nord))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
