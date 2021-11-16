@@ -478,6 +478,9 @@
               ("DEL" . my-paredit-delete))
   :diminish)
 
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 (use-package flycheck-clj-kondo
   :disabled)
 
