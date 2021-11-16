@@ -186,6 +186,7 @@
   :custom (display-line-numbers-width 3))
 
 (use-package hl-line
+  :disabled
   :config
   (global-hl-line-mode t))
 
@@ -313,6 +314,13 @@
 (use-package marginalia
   :init
   (marginalia-mode))
+
+(use-package all-the-icons)
+
+(use-package all-the-icons-completion
+  :config
+  (all-the-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
 
 (use-package project
   :init (setq project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
@@ -604,8 +612,6 @@
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
-
-(use-package all-the-icons)
 
 (use-package doom-modeline
   :config
