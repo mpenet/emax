@@ -175,7 +175,11 @@
 
 (use-package aggressive-indent
   :diminish
-  :hook ((emacs-lisp-mode clojure-mode) . aggressive-indent-mode))
+  :config
+
+  :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
+                                            (aggressive-indent-mode)
+                                            (remove-hook 'before-save-hook #'aggressive-indent--process-changed-list-and-indent 'local))))
 
 ;; uniquify buffer names: append path if buffer names are identical
 (use-package uniquify
