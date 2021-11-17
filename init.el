@@ -407,6 +407,9 @@
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
+(use-package git-gutter-fringe
+  :config (global-git-gutter-mode t))
+
 (use-package autorevert
   :diminish auto-revert-mode)
 
