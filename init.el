@@ -522,7 +522,10 @@
 
   :init (setq lsp-keymap-prefix "M-l")
   :bind (:map lsp-mode-map
-              ("M-l M-l" . lsp-execute-code-action))
+              ("M-l M-l" . lsp-execute-code-action)
+              ("M-j d" . lsp-find-definition)
+              ("M-j r" . lsp-find-references))
+
   :config
   (dolist (m '(clojure-mode
                clojurec-mode
@@ -618,7 +621,7 @@
   ;;                            :weight bold
   ;;                            :foreground "#c9d9ff"))))))
   ;; (enable-theme 'doom-wilmersdorf)
-  (load-theme 'doom-nord))
+  (load-theme 'doom-nord t))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
@@ -674,6 +677,27 @@
   (exec-path-from-shell-initialize))
 
 (use-package sudo-edit)
+
+(use-package org-roam
+  :ensure t
+  :init
+  (setq org-roam-v2-ack t)
+  :custom
+  (org-roam-directory "~/.roam")
+  (org-roam-completion-everywhere t)
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert)
+         ;; :map org-mode-map
+         ;; ("C-M-i"    . completion-at-point)
+         )
+  :config
+  (org-roam-setup))
+
+(use-package org
+  :hook
+  ;; (org-mode . variable-pitch-mode)
+  (org-mode . visual-line-mode))
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
