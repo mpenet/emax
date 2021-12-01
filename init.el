@@ -90,14 +90,15 @@
 (global-set-key (kbd "C-.") 'find-tag)
 (global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "M-i") 'hippie-expand)
-
+(global-unset-key (kbd "M-r"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
-;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 15"))
+;; (add-to-list 'default-frame-alist '(font . "FiraCode 10"))
+
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
 
@@ -112,6 +113,8 @@
 (setq-default tab-width 4)
 (setq-default c-basic-offset tab-width)
 (setq-default sgml-basic-offset tab-width)
+
+(setq-default fill-column 80)
 
 ;; ui
 (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -147,7 +150,8 @@
                                           js-mode
                                           project
                                           uniquify
-                                          inferior-lisp))
+                                          inferior-lisp
+                                          visual-line-mode))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -176,7 +180,6 @@
 (use-package aggressive-indent
   :diminish
   :config
-
   :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
                                             (aggressive-indent-mode)
                                             (remove-hook 'before-save-hook #'aggressive-indent--process-changed-list-and-indent 'local))))
@@ -193,6 +196,10 @@
   :disabled
   :config
   (global-hl-line-mode t))
+
+(use-package visual-line-mode
+  :hook (;; (prog-mode . visual-line-mode)
+         (org-mode . visual-line-mode)))
 
 (use-package which-function-mode
   :defer t
@@ -337,8 +344,8 @@
     (add-hook hook #'whitespace-mode))
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
   :config
-  (setq whitespace-style '(face trailing lines-tail)
-        whitespace-line-column 80))
+  (setq whitespace-style '(face trailing ;; lines-tail
+                                )))
 
 (use-package ligature
   :straight '(:host github :repo "mickeynp/ligature.el")
@@ -477,12 +484,14 @@
     (if mark-active
         (paredit-delete-region (region-beginning) (region-end))
       (paredit-backward-delete)))
-  (define-key paredit-mode-map (kbd "C-j") nil)
+  ;; (define-key paredit-mode-map (kbd "C-j") nil)
   :bind (:map paredit-mode-map
               ("C-M-h" . paredit-backward-kill-word)
               ("C-h" . my-paredit-delete)
               ("<delete>" . my-paredit-delete)
-              ("DEL" . my-paredit-delete))
+              ("DEL" . my-paredit-delete)
+              ("M-r" . nil)
+              ("C-j" . nil))
   :diminish)
 
 (use-package rainbow-delimiters
@@ -524,6 +533,7 @@
   :bind (:map lsp-mode-map
               ("M-l M-l" . lsp-execute-code-action)
               ("M-j d" . lsp-find-definition)
+              ("M-j r" . lsp-find-references)
               ("M-j r" . lsp-find-references))
 
   :config
@@ -679,25 +689,25 @@
 (use-package sudo-edit)
 
 (use-package org-roam
-  :ensure t
   :init
   (setq org-roam-v2-ack t)
   :custom
   (org-roam-directory "~/.roam")
   (org-roam-completion-everywhere t)
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n i" . org-roam-node-insert)
-         ;; :map org-mode-map
-         ;; ("C-M-i"    . completion-at-point)
-         )
+  :bind (("M-r M-r" . org-roam-node-find)
+         ("M-r l" . org-roam-buffer-toggle)
+         ("M-r i" . org-roam-node-insert)
+         ("M-r c" . org-roam-capture)
+         :map org-mode-map
+         ("C-M-i"    . completion-at-point))
   :config
   (org-roam-setup))
 
-(use-package org
-  :hook
-  ;; (org-mode . variable-pitch-mode)
-  (org-mode . visual-line-mode))
+;; (use-package org
+;;   :hook
+;;   ;; (org-mode . variable-pitch-mode)
+;;   ;; (org-mode . visual-line-mode)
+;;   )
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
