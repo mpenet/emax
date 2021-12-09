@@ -95,9 +95,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
+;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 11"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
-;; (add-to-list 'default-frame-alist '(font . "FiraCode 10"))
+(add-to-list 'default-frame-alist '(font . "FiraCode-9"))
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
@@ -546,7 +546,11 @@
         lsp-enable-indentation nil
         lsp-headerline-breadcrumb-enable nil
         lsp-signature-auto-activate nil
-        lsp-semantic-tokens-enable t))
+        lsp-semantic-tokens-enable t)
+
+  :custom-face
+  (lsp-face-semhl-namespace  ((t :inherit font-lock-type-face :weight normal)))
+  (lsp-face-semhl-definition  ((t :inherit font-lock-function-name-face :weight normal))))
 
 (use-package lsp-ui
   :after lsp-mode
