@@ -95,9 +95,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 11"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
-(add-to-list 'default-frame-alist '(font . "FiraCode-9"))
+;; (add-to-list 'default-frame-alist '(font . "FiraCode-9"))
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
