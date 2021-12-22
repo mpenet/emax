@@ -134,11 +134,6 @@
 ;; typed text replaces the selection if the selection is active
 (delete-selection-mode t)
 
-;; make emacs use the clipboard if running in X
-(when window-system
-  (setq select-enable-clipboard t
-        interprogram-paste-function 'x-cut-buffer-or-selection-value))
-
 ;;; Packages
 ;;; via straight el
 
@@ -533,8 +528,9 @@
   :bind (:map lsp-mode-map
               ("M-l M-l" . lsp-execute-code-action)
               ("M-j d" . lsp-find-definition)
+              ("M-j M-d" . lsp-find-definition)
               ("M-j r" . lsp-find-references)
-              ("M-j r" . lsp-find-references))
+              ("M-j M-r" . lsp-find-references))
 
   :config
   (dolist (m '(clojure-mode
@@ -707,11 +703,20 @@
   :config
   (org-roam-setup))
 
-;; (use-package org
-;;   :hook
-;;   ;; (org-mode . variable-pitch-mode)
-;;   ;; (org-mode . visual-line-mode)
-;;   )
+
+(use-package org-roam-ui
+  :straight
+  (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
+  :after org-roam
+  ;;         normally we'd recommend hooking orui after org-roam, but since org-roam does not have
+  ;;         a hookable mode anymore, you're advised to pick something yourself
+  ;;         if you don't care about startup time, use
+  ;;  :hook (after-init . org-roam-ui-mode)
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
