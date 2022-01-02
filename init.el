@@ -121,6 +121,9 @@
 (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
+(when (fboundp 'pixel-scroll-precision-mode)
+  (pixel-scroll-precision-mode t))
+
 (setq-default cursor-in-non-selected-windows nil)
 
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -621,17 +624,13 @@
 (use-package gist)
 
 (use-package doom-themes
+  :disabled
   :config
-  ;; (require 'doom-wilmersdorf-theme)
-  ;; (let ((class '((class color) (min-colors 89))))
-  ;;   (custom-theme-set-faces
-  ;;    'doom-wilmersdorf
-  ;;    `(vertico-current
-  ;;      ((,class (:background "#41454b"
-  ;;                            :weight bold
-  ;;                            :foreground "#c9d9ff"))))))
-  ;; (enable-theme 'doom-wilmersdorf)
   (load-theme 'doom-nord t))
+
+(use-package gotham-theme
+  :config
+  (load-theme 'gotham t))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
@@ -639,8 +638,7 @@
 (use-package doom-modeline
   :config
   :init
-  (doom-modeline-mode 1)
-  (setq doom-modeline-irc t))
+  (doom-modeline-mode 1))
 
 (use-package paren
   :config
