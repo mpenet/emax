@@ -95,7 +95,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 ;; (add-to-list 'default-frame-alist '(font . "FiraCode-9"))
 
@@ -174,13 +174,6 @@
 (use-package elec-pair
   :config
   (electric-pair-mode +1))
-
-(use-package aggressive-indent
-  :diminish
-  :config
-  :hook ((emacs-lisp-mode clojure-mode) . (lambda ()
-                                            (aggressive-indent-mode)
-                                            (remove-hook 'before-save-hook #'aggressive-indent--process-changed-list-and-indent 'local))))
 
 ;; uniquify buffer names: append path if buffer names are identical
 (use-package uniquify
@@ -623,14 +616,14 @@
 
 (use-package gist)
 
+(use-package kaolin-themes
+  :config
+  (load-theme 'kaolin-mono-dark t))
+
 (use-package doom-themes
   :disabled
   :config
   (load-theme 'doom-nord t))
-
-(use-package gotham-theme
-  :config
-  (load-theme 'gotham t))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
@@ -641,6 +634,8 @@
   (doom-modeline-mode 1))
 
 (use-package paren
+  :custom
+  (show-paren-context-when-offscreen t)
   :config
   (show-paren-mode +1)
   (set-face-foreground 'show-paren-match "red"))
