@@ -1,4 +1,3 @@
-
 ;;; init.el --- @mpenet Emacs config
 ;;
 ;; Author: Max Penet <m@qbits.cc>
@@ -70,7 +69,10 @@
 (global-set-key (kbd "C-x m") 'execute-extended-command)
 (global-set-key (kbd "C-x C-m") 'execute-extended-command)
 
-(global-set-key (kbd "C-h") 'backward-delete-char)
+(global-unset-key (kbd "M-r"))
+(global-unset-key (kbd "M-j"))
+
+;; (global-set-key (kbd "C-h") 'backward-delete-char)
 (global-set-key (kbd "C-M-h") 'backward-kill-word)
 (global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
 (global-set-key (kbd "RET") 'newline-and-indent)
@@ -87,15 +89,17 @@
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key "\C-x\C-r" 'query-replace)
-(global-set-key (kbd "C-.") 'find-tag)
-(global-set-key (kbd "C-,") 'pop-tag-mark)
 (global-set-key (kbd "M-i") 'hippie-expand)
-(global-unset-key (kbd "M-r"))
+(global-set-key (kbd "M-j d") 'xref-find-definitions)
+(global-set-key (kbd "M-j M-d") 'xref-find-definitions)
+(global-set-key  (kbd "M-j r") 'xref-find-references)
+(global-set-key (kbd "M-j M-r") 'xref-find-references)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
+(add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 ;; (add-to-list 'default-frame-alist '(font . "FiraCode-9"))
 
@@ -274,14 +278,21 @@
   (setq enable-recursive-minibuffers t))
 
 (use-package consult
+  :init
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  ;; Optionally replace `completing-read-multiple' with an enhanced version.
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
   :config
   ;; Optionally configure a function which returns the project root directory
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
-            (car (project-roots project))))
-        xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
+            (car (project-roots project)))))
 
   :bind (("C-t" . consult-line)
          ("M-g M-g" . consult-goto-line)
@@ -381,12 +392,14 @@
     (define-key map (kbd "M-o n") 'symbol-overlay-rename)
     (setq symbol-overlay-map map))
 
-  :bind (("M-o" . nil)
-         ("M-o o". symbol-overlay-put)
-         ("M-o M-o". symbol-overlay-put)
-         ("M-o r" . symbol-overlay-remove-all)
-         ("M-o s" . symbol-overlay-toggle-in-scope))
+  :bind (("M-u" . nil)
+         ("M-u u". symbol-overlay-put)
+         ("M-u M-u". symbol-overlay-put)
+         ("M-u r" . symbol-overlay-remove-all)
+         ("M-u s" . symbol-overlay-toggle-in-scope))
   :hook (prog-mode . symbol-overlay-mode))
+
+
 
 (use-package dired
   :config
@@ -404,13 +417,13 @@
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
 
+(use-package diredfl
+  :config (diredfl-global-mode 1))
+
 (use-package magit
   ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
-
-(use-package git-gutter-fringe
-  :config (global-git-gutter-mode t))
 
 (use-package autorevert
   :diminish auto-revert-mode)
@@ -478,15 +491,12 @@
   ;; (define-key paredit-mode-map (kbd "C-j") nil)
   :bind (:map paredit-mode-map
               ("C-M-h" . paredit-backward-kill-word)
-              ("C-h" . my-paredit-delete)
+              ;; ("C-h" . my-paredit-delete)
               ("<delete>" . my-paredit-delete)
               ("DEL" . my-paredit-delete)
               ("M-r" . nil)
               ("C-j" . nil))
   :diminish)
-
-(use-package rainbow-delimiters
-  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package flycheck-clj-kondo
   :disabled)
@@ -538,7 +548,9 @@
         lsp-enable-indentation nil
         lsp-headerline-breadcrumb-enable nil
         lsp-signature-auto-activate nil
-        lsp-semantic-tokens-enable t)
+        lsp-semantic-tokens-enable t
+        ;; after last buffer closed, kill workspace
+        lsp-keep-workspace-alive nil)
 
   :custom-face
   (lsp-face-semhl-namespace  ((t :inherit font-lock-type-face :weight normal)))
@@ -617,6 +629,7 @@
 (use-package gist)
 
 (use-package kaolin-themes
+  :custom (kaolin-themes-distinct-parentheses t)
   :config
   (load-theme 'kaolin-mono-dark t))
 
@@ -633,9 +646,11 @@
   :init
   (doom-modeline-mode 1))
 
+
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 (use-package paren
-  :custom
-  (show-paren-context-when-offscreen t)
   :config
   (show-paren-mode +1)
   (set-face-foreground 'show-paren-match "red"))
