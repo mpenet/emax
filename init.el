@@ -277,6 +277,9 @@
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t))
 
+(use-package xref
+  :init (setq xref-prompt-for-identifier nil))
+
 (use-package consult
   :init
   ;; Use Consult to select xref locations with preview
