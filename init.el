@@ -1,4 +1,4 @@
-;;; init.el --- @mpenet Emacs config
+
 ;;
 ;; Author: Max Penet <m@qbits.cc>
 ;; URL: https://github.com/mpenet/emax
@@ -275,7 +275,17 @@
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t
+        completion-cycle-threshold 3
+
+        ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+        ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+        read-extended-command-predicate
+        #'command-completion-default-include-p
+
+        ;; Enable indentation+completion using the TAB key.
+        ;; `completion-at-point' is often bound to M-TAB.
+        tab-always-indent 'complete))
 
 (use-package xref
   :init (setq xref-prompt-for-identifier nil))
@@ -445,28 +455,39 @@
 
 (use-package clojure-snippets)
 
-(use-package company-quickhelp)
+(use-package corfu
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-commit-predicate nil)   ;; Do not commit selected candidates on next input
+  (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
+  (corfu-quit-no-match t)        ;; Automatically quit if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  (corfu-preselect-first nil)    ;; Disable candidate preselection
+  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+  (corfu-scroll-margin 5)        ;; Use scroll margin
 
-(use-package company
-  :init
-  (setq company-tooltip-align-annotations t
-        company-minimum-prefix-length 1
-        company-require-match nil
-        company-idle-delay 0.3
-        company-tooltip-limit 10)
-  :config
-  (company-quickhelp-mode 1)
-  (global-company-mode)
+  ;; You may want to enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
   :bind
-  (:map company-active-map
-        ("M-n" . nil)
-        ("M-p" . nil)
-        ("C-h" . nil)
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)
-        ("C-d" . company-show-doc-buffer)
-        ("TAB" . company-complete-selection))
-  :diminish)
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ([tab] . corfu-next))
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since dabbrev can be used globally (M-/).
+  :init
+  (corfu-global-mode))
+
+;; Add extensions
+(use-package cape
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 (use-package eldoc
   :diminish)
@@ -528,12 +549,21 @@
   (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point))))
 
 (use-package lsp-mode
+  :custom
+  (lsp-completion-provider :none) ;; we use Corfu!
+
+  :init
+  (setq lsp-keymap-prefix "M-l")
+  (defun mpenet/lsp-mode-setup-completion ()
+    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
+          '(flex))) ;; Configure flex
+
   :hook
   ((clojure-mode . lsp)
    (clojurec-mode . lsp)
-   (clojurescript-mode . lsp))
+   (clojurescript-mode . lsp)
+   (lsp-completion-mode . mpenet/lsp-mode-setup-completion))
 
-  :init (setq lsp-keymap-prefix "M-l")
   :bind (:map lsp-mode-map
               ("M-l M-l" . lsp-execute-code-action)
               ("M-j d" . lsp-find-definition)
