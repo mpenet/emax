@@ -489,6 +489,17 @@
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
 
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+  :config
+  (setq  kind-icon-blend-frac 0.24
+         ;; kind-icon-blend-background nil
+         )
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 (use-package eldoc
   :diminish)
 
