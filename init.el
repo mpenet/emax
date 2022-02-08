@@ -573,7 +573,8 @@
   ((clojure-mode . lsp)
    (clojurec-mode . lsp)
    (clojurescript-mode . lsp)
-   (lsp-completion-mode . mpenet/lsp-mode-setup-completion))
+   (lsp-completion-mode . mpenet/lsp-mode-setup-completion)
+   (before-save . lsp-format-buffer))
 
   :bind (:map lsp-mode-map
               ("M-l M-l" . lsp-execute-code-action)
