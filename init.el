@@ -99,24 +99,25 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
+;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
 ;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
 ;; (add-to-list 'default-frame-alist '(font . "FiraCode-9"))
+
+(set-face-attribute 'default nil
+                    :font "JetBrains Mono"
+                    :weight 'light
+                    :height 100)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; utf8 only
-(setq current-language-environment "UTF-8")
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+
 
 ;; TAB => 4*'\b'
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
-(setq-default c-basic-offset tab-width)
-(setq-default sgml-basic-offset tab-width)
 
 (setq-default fill-column 80)
 
@@ -320,6 +321,7 @@
   :bind (("C-x C-l" . consult-flycheck)
          ("C-x l" . consult-flycheck)))
 
+
 (use-package embark
   :config
   (add-hook 'embark-post-action-hook #'embark-collect--update-linked)
@@ -362,25 +364,25 @@
   (setq whitespace-style '(face trailing ;; lines-tail
                                 )))
 
-(use-package ligature
-  :straight '(:host github :repo "mickeynp/ligature.el")
-  :config
-  (ligature-set-ligatures 't
-                          '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
-                            "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
-                            "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
-                            "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
-                            "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
-                            "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
-                            "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
-                            "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
-                            ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
-                            "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
-                            "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
-                            "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
-                            "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
-                            "&="))
-  (global-ligature-mode t))
+;; (use-package ligature
+;;   :straight '(:host github :repo "mickeynp/ligature.el")
+;;   :config
+;;   (ligature-set-ligatures 't
+;;                           '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
+;;                             "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
+;;                             "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
+;;                             "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
+;;                             "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
+;;                             "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
+;;                             "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
+;;                             "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
+;;                             ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
+;;                             "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
+;;                             "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
+;;                             "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
+;;                             "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+;;                             "&="))
+;;   (global-ligature-mode t))
 
 (use-package hl-todo
   :config
@@ -437,6 +439,9 @@
   ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
+
+(use-package magit-todos
+  :hook (magit-mode . magit-todos-mode))
 
 (use-package autorevert
   :diminish auto-revert-mode)
@@ -771,6 +776,11 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
+;; (use-package org-modern
+;;   :straight (:host github :repo "minad/org-modern" :branch "main")
+;;   :after org-roam
+;;   :hooks (org-mode . org-modern-mode))
+
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
@@ -780,3 +790,5 @@
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+
