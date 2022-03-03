@@ -1,4 +1,5 @@
 
+
 ;;
 ;; Author: Max Penet <m@qbits.cc>
 ;; URL: https://github.com/mpenet/emax
@@ -321,7 +322,6 @@
   :bind (("C-x C-l" . consult-flycheck)
          ("C-x l" . consult-flycheck)))
 
-
 (use-package embark
   :config
   (add-hook 'embark-post-action-hook #'embark-collect--update-linked)
@@ -364,25 +364,26 @@
   (setq whitespace-style '(face trailing ;; lines-tail
                                 )))
 
-;; (use-package ligature
-;;   :straight '(:host github :repo "mickeynp/ligature.el")
-;;   :config
-;;   (ligature-set-ligatures 't
-;;                           '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
-;;                             "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
-;;                             "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
-;;                             "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
-;;                             "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
-;;                             "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
-;;                             "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
-;;                             "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
-;;                             ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
-;;                             "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
-;;                             "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
-;;                             "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
-;;                             "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
-;;                             "&="))
-;;   (global-ligature-mode t))
+(use-package ligature
+  :straight '(:host github :repo "mickeynp/ligature.el")
+  :disabled
+  :config
+  (ligature-set-ligatures 't
+                          '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
+                            "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
+                            "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
+                            "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
+                            "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
+                            "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
+                            "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
+                            "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
+                            ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
+                            "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
+                            "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
+                            "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
+                            "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
+                            "&="))
+  (global-ligature-mode t))
 
 (use-package hl-todo
   :config
@@ -439,9 +440,6 @@
   ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
-
-(use-package magit-todos
-  :hook (magit-mode . magit-todos-mode))
 
 (use-package autorevert
   :diminish auto-revert-mode)
@@ -696,7 +694,6 @@
   :init
   (doom-modeline-mode 1))
 
-
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -761,7 +758,6 @@
   :config
   (org-roam-setup))
 
-
 (use-package org-roam-ui
   :straight
   (:host github :repo "org-roam/org-roam-ui" :branch "main" :files ("*.el" "out"))
@@ -775,11 +771,6 @@
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
-
-;; (use-package org-modern
-;;   :straight (:host github :repo "minad/org-modern" :branch "main")
-;;   :after org-roam
-;;   :hooks (org-mode . org-modern-mode))
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
