@@ -730,6 +730,8 @@
               ("<M-return>" . comment-or-uncomment-region))
   :diminish)
 
+(use-package scratch)
+
 (use-package dockerfile-mode)
 
 (use-package eshell
