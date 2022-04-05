@@ -677,12 +677,12 @@
 (use-package gist)
 
 (use-package kaolin-themes
+  :disabled
   :custom (kaolin-themes-distinct-parentheses t)
   :config
   (load-theme 'kaolin-mono-dark t))
 
 (use-package doom-themes
-  :disabled
   :config
   (load-theme 'doom-nord t))
 
@@ -744,6 +744,8 @@
   (exec-path-from-shell-initialize))
 
 (use-package sudo-edit)
+
+;; (use-package screenshot)
 
 (use-package org-roam
   :init
