@@ -357,12 +357,15 @@
 (use-package whitespace
   :diminish
   :init
-  (dolist (hook '(prog-mode-hook text-mode-hook))
+  (dolist (hook '(prog-mode-hook text-mode-hook yaml-mode-hook))
     (add-hook hook #'whitespace-mode))
-  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
   :config
   (setq whitespace-style '(face trailing ;; lines-tail
                                 )))
+
+(use-package ws-butler
+  :hooks (prog-mode-hook . ws-butler-mode))
 
 (use-package ligature
   :straight '(:host github :repo "mickeynp/ligature.el")
