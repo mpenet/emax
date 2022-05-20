@@ -1,5 +1,3 @@
-
-
 ;;
 ;; Author: Max Penet <m@qbits.cc>
 ;; URL: https://github.com/mpenet/emax
@@ -360,12 +358,15 @@
   (dolist (hook '(prog-mode-hook text-mode-hook yaml-mode-hook))
     (add-hook hook #'whitespace-mode))
 
-  :config
-  (setq whitespace-style '(face trailing ;; lines-tail
-                                )))
+  (add-hook 'before-save-hook
+            (lambda ()
+              (if (member 'lsp-mode local-minor-modes)
+                  (lsp-format-buffer)
+                (whitespace-cleanup))))
 
-(use-package ws-butler
-  :hooks (prog-mode-hook . ws-butler-mode))
+  :config
+  (setq whitespace-style '(face tabs empty trailing ;; lines-tail
+                                )))
 
 (use-package ligature
   :straight '(:host github :repo "mickeynp/ligature.el")
@@ -579,8 +580,7 @@
   ((clojure-mode . lsp)
    (clojurec-mode . lsp)
    (clojurescript-mode . lsp)
-   (lsp-completion-mode . mpenet/lsp-mode-setup-completion)
-   (before-save . lsp-format-buffer))
+   (lsp-completion-mode . mpenet/lsp-mode-setup-completion))
 
   :bind (:map lsp-mode-map
               ("M-l M-l" . lsp-execute-code-action)
@@ -595,6 +595,7 @@
                clojurescript-mode
                clojurex-mode))
     (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
+
   (setq cljr-add-ns-to-blank-clj-files nil
         lsp-enable-indentation nil
         lsp-headerline-breadcrumb-enable nil
@@ -788,5 +789,3 @@
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-
-
