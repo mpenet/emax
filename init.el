@@ -482,7 +482,8 @@
   :bind
   (:map corfu-map
         ("TAB" . corfu-next)
-        ([tab] . corfu-next))
+        ([tab] . corfu-next)
+        ("<C-return>" . corfu-insert))
   ;; Recommended: Enable Corfu globally.
   ;; This is recommended since dabbrev can be used globally (M-/).
   :init
