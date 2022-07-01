@@ -432,7 +432,7 @@
 
   ;; if there is a dired buffer displayed in the next window, use its
   ;; current subdir, instead of the current subdir of this dired buffer
-  (setq dired-dwim-target t)
+  (setq dired-dwim-target nil)
 
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
@@ -681,12 +681,6 @@
   :mode ("\\.http$". restclient-mode))
 
 (use-package gist)
-
-(use-package kaolin-themes
-  :disabled
-  :custom (kaolin-themes-distinct-parentheses t)
-  :config
-  (load-theme 'kaolin-mono-dark t))
 
 (use-package doom-themes
   :config
