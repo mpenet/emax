@@ -94,7 +94,6 @@
 (global-set-key  (kbd "M-j r") 'xref-find-references)
 (global-set-key (kbd "M-j M-r") 'xref-find-references)
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -134,6 +133,10 @@
 
 ;; add the current column number to the mode bar
 (column-number-mode t)
+
+;; enable repeat-mode
+
+(repeat-mode t)
 
 ;; case insensitive searches
 (set-default 'case-fold-search t)
@@ -193,8 +196,12 @@
   (global-hl-line-mode t))
 
 (use-package visual-line-mode
-  :hook (;; (prog-mode . visual-line-mode)
-         (org-mode . visual-line-mode)))
+  :hook ((org-mode . visual-line-mode)))
+
+(use-package visual-fill-column
+  :init (setq visual-fill-column-width 110
+              visual-fill-column-center-text t)
+  :hook ((org-mode . visual-fill-column-mode)))
 
 (use-package which-function-mode
   :defer t
@@ -208,19 +215,6 @@
          ("C-x u" . winner-undo)
          ("C-x C-j" . winner-redo)
          ("C-x j" . winner-redo)))
-
-(use-package ace-window
-  :bind (("M-o" . ace-window))
-  :init
-  (custom-set-faces
-   '(aw-leading-char-face
-     ((t
-       (:foreground "orange"
-                    :bold t
-                    :inherit 'hl-line)))))
-  :config
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-        aw-background nil))
 
 (use-package isearch
   :config
@@ -457,8 +451,6 @@
   (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
         yas-indent-line nil)
   :diminish yas-minor-mode)
-
-(use-package yasnippet-snippets)
 
 (use-package clojure-snippets)
 
@@ -767,6 +759,20 @@
          ("C-M-i"    . completion-at-point))
   :config
   (org-roam-setup))
+
+(use-package org
+  :init
+  (setq org-confirm-babel-evaluate nil
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-babel-clojure-backend 'cider)
+  :config
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((shell . t)
+                                 (js . t)
+                                 (emacs-lisp . t)
+                                 (clojure . t)
+                                 (python . t))))
 
 ;; config changes made through the customize UI will be stored here
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
