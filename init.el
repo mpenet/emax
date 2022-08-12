@@ -440,9 +440,7 @@
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
   :config
-  (setq  kind-icon-blend-frac 0.24
-         ;; kind-icon-blend-background nil
-         )
+  (setq  kind-icon-blend-frac 0.24)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package eldoc
@@ -481,14 +479,7 @@
 (use-package clojure-mode
   :custom (cider-edit-jack-in-command t)
   :config
-  ;; (require 'flycheck-clj-kondo)
-  (add-hook 'clojure-mode-hook #'paredit-mode)
-
-  (defun cljfmt ()
-    (interactive)
-    (async-shell-command "lein cljfmt fix && echo 'done'"
-                         "*cljfmt-output*"
-                         "*cljfmt-err*")))
+  (add-hook 'clojure-mode-hook #'paredit-mode))
 
 (use-package cider
   :diminish
@@ -679,9 +670,6 @@
 
 (use-package sudo-edit)
 
-;; (use-package screenshot)
-
-
 (use-package org-modern
   :after org-roam
   :init (setq org-startup-indented t)
@@ -721,6 +709,18 @@
 
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(defun screenshot ()
+  "Save a screenshot of the current frame as an SVG image.
+Saves to a temp file and puts the filename in the kill ring."
+  (interactive)
+  (let* ((filename (make-temp-file "emacs-screenshot-" nil ".svg"))
+         (data (x-export-frames nil 'svg)))
+    (with-temp-file filename
+      (insert data))
+    (kill-new filename)
+    (browse-url filename)
+    (message filename)))
 
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
