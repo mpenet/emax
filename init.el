@@ -47,7 +47,6 @@
       frame-inhibit-implied-resize t
       initial-scratch-message nil
       initial-major-mode 'fundamental-mode ;; skip scratch
-      visible-bell t
       mouse-yank-at-point t
       hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
@@ -609,7 +608,10 @@
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-nord t))
+  (load-theme 'doom-nord t)
+  (doom-themes-visual-bell-config)
+  (set-face-attribute 'doom-themes-visual-bell nil
+                      :background (doom-color 'base3)))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
