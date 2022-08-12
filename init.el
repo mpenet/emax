@@ -89,6 +89,7 @@
 (global-set-key (kbd "C-x r") 'query-replace)
 (global-set-key "\C-x\C-r" 'query-replace)
 (global-set-key (kbd "M-i") 'hippie-expand)
+(global-set-key (kbd "M-i") 'hippie-expand)
 (global-set-key (kbd "M-j d") 'xref-find-definitions)
 (global-set-key (kbd "M-j M-d") 'xref-find-definitions)
 (global-set-key  (kbd "M-j r") 'xref-find-references)
@@ -104,7 +105,7 @@
 (set-face-attribute 'default nil
                     :font "JetBrains Mono"
                     :weight 'light
-                    :height 100)
+                    :height 150)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
@@ -133,10 +134,6 @@
 
 ;; add the current column number to the mode bar
 (column-number-mode t)
-
-;; enable repeat-mode
-
-(repeat-mode t)
 
 ;; case insensitive searches
 (set-default 'case-fold-search t)
@@ -189,11 +186,6 @@
 (use-package display-line-numbers
   :hook ((prog-mode conf-mode) . display-line-numbers-mode)
   :custom (display-line-numbers-width 3))
-
-(use-package hl-line
-  :disabled
-  :config
-  (global-hl-line-mode t))
 
 (use-package visual-line-mode
   :hook ((org-mode . visual-line-mode)))
@@ -302,6 +294,7 @@
             (car (project-roots project)))))
 
   :bind (("C-t" . consult-line)
+         ("C-x b" . consult-buffer)
          ("M-g M-g" . consult-goto-line)
          ("C-x C-SPC" . consult-global-mark)
          ("C-c C-SPC" . consult-mark)
@@ -362,58 +355,10 @@
   (setq whitespace-style '(face tabs empty trailing ;; lines-tail
                                 )))
 
-(use-package ligature
-  :straight '(:host github :repo "mickeynp/ligature.el")
-  :disabled
-  :config
-  (ligature-set-ligatures 't
-                          '("-->" "//" "/**" "/*" "*/" "<!--" ":=" "->>" "<<-" "->" "<-"
-                            "<=>" "==" "!=" "<=" ">=" "=:=" "!==" "&&" "||" "..." ".."
-                            "|||" "///" "&&&" "===" "++" "--" "=>" "|>" "<|" "||>" "<||"
-                            "|||>" "<|||" ">>" "<<" "::=" "|]" "[|" "{|" "|}"
-                            "[<" ">]" ":?>" ":?" "/=" "[||]" "!!" "?:" "?." "::"
-                            "+++" "??" "###" "##" ":::" "####" ".?" "?=" "=!=" "<|>"
-                            "<:" ":<" ":>" ">:" "<>" "***" ";;" "/==" ".=" ".-" "__"
-                            "=/=" "<-<" "<<<" ">>>" "<=<" "<<=" "<==" "<==>" "==>" "=>>"
-                            ">=>" ">>=" ">>-" ">-" "<~>" "-<" "-<<" "=<<" "---" "<-|"
-                            "<=|" "/\\" "\\/" "|=>" "|~>" "<~~" "<~" "~~" "~~>" "~>"
-                            "<$>" "<$" "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</>" "</" "/>"
-                            "<->" "..<" "~=" "~-" "-~" "~@" "^=" "-|" "_|_" "|-" "||-"
-                            "|=" "||=" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:" "#!" "#="
-                            "&="))
-  (global-ligature-mode t))
-
 (use-package hl-todo
   :config
   (setq hl-todo-highlight-punctuation ":")
   (global-hl-todo-mode))
-
-(use-package symbol-overlay
-  :disabled
-  :diminish
-  :custom-face
-  (symbol-overlay-default-face ((t (:inherit 'highlight :background "#3d3d3d"))))
-  :config
-  (defun symbol-overlay-ignore-function-clojure (symbol)
-    "Determine whether SYMBOL should be ignored (clojure)."
-    (symbol-overlay-match-keyword-list
-     symbol
-     '(defn def let deftest is)))
-  (add-to-list 'symbol-overlay-ignore-functions
-               '(clojure-mode . symbol-overlay-ignore-function-clojure))
-  ;; overwrite mode local keymap
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "M-o n") 'symbol-overlay-rename)
-    (setq symbol-overlay-map map))
-
-  :bind (("M-u" . nil)
-         ("M-u u". symbol-overlay-put)
-         ("M-u M-u". symbol-overlay-put)
-         ("M-u r" . symbol-overlay-remove-all)
-         ("M-u s" . symbol-overlay-toggle-in-scope))
-  :hook (prog-mode . symbol-overlay-mode))
-
-
 
 (use-package dired
   :config
@@ -532,9 +477,6 @@
               ("M-r" . nil)
               ("C-j" . nil))
   :diminish)
-
-(use-package flycheck-clj-kondo
-  :disabled)
 
 (use-package clojure-mode
   :custom (cider-edit-jack-in-command t)
