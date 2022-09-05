@@ -104,7 +104,7 @@
 (set-face-attribute 'default nil
                     :font "JetBrains Mono"
                     :weight 'light
-                    :height 150)
+                    :height 100)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(undecorated . t))
@@ -617,8 +617,8 @@
   :config (solaire-global-mode +1))
 
 (use-package doom-modeline
-  :config
   :init
+  (setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (doom-modeline-mode 1))
 
 (use-package rainbow-delimiters
