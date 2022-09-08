@@ -48,6 +48,7 @@
       initial-scratch-message nil
       initial-major-mode 'fundamental-mode ;; skip scratch
       mouse-yank-at-point t
+      set-mark-command-repeat-pop t
       hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
                                try-expand-dabbrev-all-buffers
@@ -295,8 +296,8 @@
   :bind (("C-t" . consult-line)
          ("C-x b" . consult-buffer)
          ("M-g M-g" . consult-goto-line)
-         ("C-x C-SPC" . consult-global-mark)
-         ("C-c C-SPC" . consult-mark)
+         ;; ("C-x C-SPC" . consult-global-mark) ; just use default
+         ("C-c C-SPC" . consult-global-mark)
          ("C-x C-g" . consult-git-grep)))
 
 (use-package consult-flycheck
@@ -486,7 +487,8 @@
   (setq nrepl-log-messages t
         cider-font-lock-dynamically nil ; use lsp semantic tokens
         cider-eldoc-display-for-symbol-at-point nil ; use lsp
-        cider-prompt-for-symbol nil)
+        cider-prompt-for-symbol nil
+        cider-use-xref nil)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   ;; use lsp
   (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point))))
