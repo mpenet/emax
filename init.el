@@ -298,7 +298,9 @@
          ("M-g M-g" . consult-goto-line)
          ;; ("C-x C-SPC" . consult-global-mark) ; just use default
          ("C-c C-SPC" . consult-global-mark)
-         ("C-x C-g" . consult-git-grep)))
+         ("C-x C-g" . consult-git-grep)
+         ("C-x C-i" . consult-imenu-multi)
+         ("C-c C-i" . consult-imenu)))
 
 (use-package consult-flycheck
   :after consult
@@ -380,6 +382,11 @@
   :config (diredfl-global-mode 1))
 
 (use-package magit
+  :config
+  ;; fix for https://github.com/magit/magit/issues/4766
+  (defun prevent-whitespace-mode-for-magit ()
+    (not (derived-mode-p 'magit-mode)))
+  (add-function :before-while whitespace-enable-predicate 'prevent-whitespace-mode-for-magit)
   ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
@@ -539,8 +546,8 @@
   :after lsp-mode
   :commands lsp-ui-mode
   :config
-  (setq lsp-ui-peek-list-width 60
-        lsp-ui-doc-max-width 60
+  (setq ;; lsp-ui-peek-list-width 60
+        ;; lsp-ui-doc-max-width 60
         lsp-ui-doc-enable nil
         lsp-ui-peek-fontify 'always
         lsp-ui-sideline-show-code-actions nil))
