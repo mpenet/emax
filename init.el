@@ -479,6 +479,10 @@
 (use-package consult-eglot)
 
 (use-package eglot
+  :straight (eglot :type git
+                   :host nil
+                   :repo "git://git.sv.gnu.org/emacs.git"
+                   :files ("lisp/progmodes/eglot.el"))
   :ensure t
   :commands (eglot eglot-ensure)
   :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
