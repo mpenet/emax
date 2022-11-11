@@ -695,8 +695,3 @@ Saves to a temp file and puts the filename in the kill ring."
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-
-
-
-
-
