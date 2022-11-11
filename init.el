@@ -98,17 +98,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 10"))
-;; (add-to-list 'default-frame-alist '(font . "JetBrainsMono 13"))
-;; (add-to-list 'default-frame-alist '(font . "FiraCode-9"))
 
 (set-face-attribute 'default nil
                     :font "JetBrains Mono"
                     :weight 'light
-                    :height 100)
+                    :height 135)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-(add-to-list 'default-frame-alist '(undecorated . t))
+;; (add-to-list 'default-frame-alist '(undecorated . t))
 
 ;; utf8 only
 (set-language-environment "UTF-8")
@@ -236,11 +233,6 @@
 (use-package vertico
   :init
   (vertico-mode)
-  ;; :config
-  ;; (advice-add #'vertico--setup :after
-  ;;             (lambda (&rest _)
-  ;;               (setq-local completion-auto-help nil
-  ;;                           completion-show-inline-help nil)))
   :bind ((:map minibuffer-local-map
                ("C-c C-o" . embark-export)
                ("C-l" . embark-act))))
@@ -343,22 +335,6 @@
   :init (setq project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
   :bind (("C-x f" . project-find-file)))
 
-;; (use-package whitespace
-;;   :diminish
-;;   :init
-;;   (dolist (hook '(prog-mode-hook text-mode-hook yaml-mode-hook))
-;;     (add-hook hook #'whitespace-mode))
-
-;;   (add-hook 'before-save-hook
-;;             (lambda ()
-;;               (if (member 'lsp-mode local-minor-modes)
-;;                   (lsp-format-buffer)
-;;                 (whitespace-cleanup))))
-
-;;   :config
-;;   (setq whitespace-style '(face tabs empty trailing ;; lines-tail
-;;                                 )))
-
 (use-package hl-todo
   :config
   (setq hl-todo-highlight-punctuation ":")
@@ -384,12 +360,6 @@
   :config (diredfl-global-mode 1))
 
 (use-package magit
-  :config
-  ;; fix for https://github.com/magit/magit/issues/4766
-  (defun prevent-whitespace-mode-for-magit ()
-    (not (derived-mode-p 'magit-mode)))
-  (add-function :before-while whitespace-enable-predicate 'prevent-whitespace-mode-for-magit)
-  ;; :pin "melpa-stable"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
@@ -543,71 +513,6 @@
                     (cons 'flymake-eldoc-function
                           (delq 'flymake-eldoc-function eldoc-documentation-functions))))))
 
-;;;
-
-;; (use-package lsp-mode
-;;   :disabled
-;;   :custom
-;;   (lsp-completion-provider :none) ;; we use Corfu!
-
-;;   :init
-;;   (setq lsp-keymap-prefix "M-l")
-;;   (defun mpenet/lsp-mode-setup-completion ()
-;;     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-;;           '(flex))) ;; Configure flex
-
-;;   :hook
-;;   ((clojure-mode . lsp)
-;;    (clojurec-mode . lsp)
-;;    (clojurescript-mode . lsp)
-;;    (lsp-completion-mode . mpenet/lsp-mode-setup-completion)
-;;    (before-save . lsp-format-buffer))
-
-;;   :bind (:map lsp-mode-map
-;;               ("M-l M-l" . lsp-execute-code-action)
-;;               ("M-j d" . lsp-find-definition)
-;;               ("M-j M-d" . lsp-find-definition)
-;;               ("M-j r" . lsp-find-references)
-;;               ("M-j M-r" . lsp-find-references))
-
-;;   :config
-;;   (dolist (m '(clojure-mode
-;;                clojurec-mode
-;;                clojurescript-mode
-;;                clojurex-mode))
-;;     (add-to-list 'lsp-language-id-configuration `(,m . "clojure")))
-
-;;   (setq cljr-add-ns-to-blank-clj-files nil
-;;         lsp-enable-indentation nil
-;;         lsp-headerline-breadcrumb-enable nil
-;;         lsp-signature-auto-activate nil
-;;         lsp-semantic-tokens-enable t
-;;         ;; after last buffer closed, kill workspace
-;;         lsp-keep-workspace-alive nil)
-
-;;   :custom-face
-;;   (lsp-face-semhl-namespace  ((t :inherit font-lock-type-face :weight normal)))
-;;   (lsp-face-semhl-definition  ((t :inherit font-lock-function-name-face :weight normal))))
-
-;; (use-package lsp-ui
-;;   :disabled
-;;   :after lsp-mode
-;;   :commands lsp-ui-mode
-;;   :config
-;;   (setq ;; lsp-ui-peek-list-width 60
-;;         ;; lsp-ui-doc-max-width 60
-;;         lsp-ui-doc-enable nil
-;;         lsp-ui-peek-fontify 'always
-;;         lsp-ui-sideline-show-code-actions nil))
-
-;; (use-package lsp-treemacs
-;;   :disabled
-;;   :config
-;;   (setq lsp-treemacs-error-list-current-project-only t))
-
-;; (use-package consult-lsp
-;;   :disabled)
-
 (use-package js-mode
   :defer t
   :mode ("\\.json$" . js-mode)
@@ -619,6 +524,8 @@
   :hook (fennel-mode . paredit-mode)
   :bind (:map fennel-mode-map
               ("C-c C-c" . lisp-eval-defun)))
+
+(use-package groovy-mode)
 
 (use-package inferior-lisp
   :hook (inferior-lisp-mode . paredit-mode))
@@ -784,3 +691,8 @@ Saves to a temp file and puts the filename in the kill ring."
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+
+
+
+
