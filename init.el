@@ -368,15 +368,17 @@
 
 (use-package gist)
 
-(use-package yasnippet
-  :diminish
-  :config
-  (yas-global-mode t)
-  (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
-        yas-indent-line nil)
-  :diminish yas-minor-mode)
-
-(use-package clojure-snippets)
+(use-package tempel
+  :bind (("M-t" . tempel-expand) 
+         :map tempel-map 
+         ("M-f" . tempel-next))
+  :init
+  (setq-default tempel-path (expand-file-name "templates/*.eld" (file-name-directory user-emacs-directory)))
+  ;; Setup completion at point
+  (defun tempel-setup-capf ()
+    (add-to-list 'completion-at-point-functions 'tempel-expand))
+  (add-hook 'prog-mode-hook 'tempel-setup-capf)
+  (add-hook 'text-mode-hook 'tempel-setup-capf))
 
 (use-package corfu
   ;; Optional customizations
@@ -521,8 +523,7 @@
   :defer t
   :mode ("\\.json$" . js-mode)
   :config
-  (setq js-indent-level tab-width)
-  (add-hook 'js-mode-hook 'yas-minor-mode))
+  (setq js-indent-level tab-width))
 
 (use-package fennel-mode
   :hook (fennel-mode . paredit-mode)
