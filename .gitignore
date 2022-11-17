@@ -25,3 +25,6 @@ session.*
 /eshell/
 /workspace/
 /.lsp-session-*
+org-*
+emojis
+.cache
