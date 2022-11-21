@@ -506,6 +506,12 @@
   :hook ((clojure-mode . jarchive-setup)
          (clojurec-mode . jarchive-setup)))
 
+(use-package tempel-clojure
+  :straight (tempel-clojure :type git
+                      :host github
+                      :files ("tempel-clojure.el" "templates")
+                      :repo "mpenet/tempel-clojure"))
+
 (use-package eldoc
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
