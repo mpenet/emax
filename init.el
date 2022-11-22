@@ -373,7 +373,6 @@
          :map tempel-map 
          ("M-f" . tempel-next))
   :init
-  (setq-default tempel-path (expand-file-name "templates/*.eld" (file-name-directory user-emacs-directory)))
   ;; Setup completion at point
   (defun tempel-setup-capf ()
     (add-to-list 'completion-at-point-functions 'tempel-expand))

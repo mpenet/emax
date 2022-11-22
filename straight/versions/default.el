@@ -75,6 +75,7 @@
  ("sudo-edit" . "74eb1e6986461baed9a9269566ff838530b4379b")
  ("svg-lib" . "da72b81d8589d045731140a836cfbc2891e4ebf3")
  ("tempel" . "e5f7604a4c3289d4252743fa07c93daeebb1b383")
+ ("tempel-clojure" . "af07a340790d19819f7014490f48d9f505cee54d")
  ("themes" . "b5ff201f4bea4286e9ed015a2043cf2394182232")
  ("transient" . "ad953cc3c5b8a066d3da11a8527c035744f1385f")
  ("use-package" . "f23d1d9a5a11626e2a90c221abf099b57df4b05b")
