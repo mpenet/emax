@@ -28,7 +28,6 @@
 ;;; Code:
 
 (setq load-prefer-newer t
-      auth-sources '("~/.authinfo.gpg")
       warning-minimum-level :error
       gc-cons-threshold 50000000
       read-process-output-max (* 1024 1024)
@@ -147,8 +146,9 @@
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
                                           dired
-                                          js-mode
+                                          eglot
                                           project
+                                          js-mode
                                           uniquify
                                           inferior-lisp
                                           visual-line-mode))
@@ -369,17 +369,6 @@
 
 (use-package gist)
 
-(use-package tempel
-  :bind (("M-t" . tempel-expand) 
-         :map tempel-map 
-         ("M-f" . tempel-next))
-  :init
-  ;; Setup completion at point
-  (defun tempel-setup-capf ()
-    (add-to-list 'completion-at-point-functions 'tempel-expand))
-  (add-hook 'prog-mode-hook 'tempel-setup-capf)
-  (add-hook 'text-mode-hook 'tempel-setup-capf))
-
 (use-package corfu
   ;; Optional customizations
   :custom
@@ -450,6 +439,7 @@
               ;; ("C-h" . my-paredit-delete)
               ("<delete>" . my-paredit-delete)
               ("DEL" . my-paredit-delete)
+              ("RET" . nil)
               ("M-r" . nil)
               ("C-j" . nil))
   :diminish)
@@ -476,12 +466,14 @@
               ("C-c C-d b" )
               ("C-c C-d d")))
 
+;; (use-package clj-refactor)
+
 ;;; eglot
 
 (use-package consult-eglot)
 
 (use-package eglot
-  :straight (eglot :source gnu-elpa-mirror)
+  ;; :straight (eglot :source gnu-elpa-mirror)
   :ensure t
   :commands (eglot eglot-ensure)
   :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
@@ -503,11 +495,11 @@
   :hook ((clojure-mode . jarchive-setup)
          (clojurec-mode . jarchive-setup)))
 
-(use-package tempel-clojure
-  :straight (tempel-clojure :type git
-                      :host github
-                      :files ("tempel-clojure.el" "templates")
-                      :repo "mpenet/tempel-clojure"))
+;; (use-package tempel-clojure
+;;   :straight (tempel-clojure :type git
+;;                       :host github
+;;                       :files ("tempel-clojure.el" "templates")
+;;                       :repo "mpenet/tempel-clojure"))
 
 (use-package eldoc
   :config
@@ -579,6 +571,16 @@
   :mode ("\\.http$". restclient-mode))
 
 (use-package gist)
+
+(use-package yasnippet
+  :diminish
+  :config
+  (yas-global-mode t)
+  (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
+        yas-indent-line nil)
+  :diminish yas-minor-mode)
+
+(use-package clojure-snippets)
 
 (use-package doom-themes
   :config
