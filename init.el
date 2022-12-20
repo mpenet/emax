@@ -48,6 +48,12 @@
       initial-major-mode 'fundamental-mode ;; skip scratch
       mouse-yank-at-point t
       set-mark-command-repeat-pop t
+      completion-cycle-threshold 3
+      ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+      ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+      read-extended-command-predicate #'command-completion-default-include-p
+      ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
+      tab-always-indent 'complete
       hippie-expand-try-functions-list
       '(try-expand-all-abbrevs try-expand-dabbrev
                                try-expand-dabbrev-all-buffers
@@ -98,10 +104,15 @@
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;; (set-face-attribute 'default nil
+;;                     :font "Iosevka"
+;;                     :weight 'normal
+;;                     :height 200)
+
 (set-face-attribute 'default nil
-                    :font "JetBrains Mono"
-                    :weight 'light
-                    :height 135)
+                    :font "PragmataPro Mono Liga"
+                    :weight 'normal
+                    :height 185)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; (add-to-list 'default-frame-alist '(undecorated . t))
@@ -169,6 +180,11 @@
 (straight-use-package 'use-package)
 
 (use-package diminish)
+
+(use-package ligature-pragmatapro
+  :config
+  (ligature-pragmatapro-setup)
+  (global-ligature-mode))
 
 (use-package so-long
   :config (global-so-long-mode 1))
@@ -241,30 +257,28 @@
 (use-package emacs
   :init
   ;; Add prompt indicator to `completing-read-multiple'.
+  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
   (defun crm-indicator (args)
-    (cons (concat "[CRM] " (car args)) (cdr args)))
+    (cons (format "[CRM%s] %s"
+                  (replace-regexp-in-string
+                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                   crm-separator)
+                  (car args))
+          (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Grow and shrink minibuffer
-  ;;(setq resize-mini-windows t)
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
+  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+  ;; Vertico commands are hidden in normal buffers.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t
-        completion-cycle-threshold 3
-
-        ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-        ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-        read-extended-command-predicate
-        #'command-completion-default-include-p
-
-        ;; Enable indentation+completion using the TAB key.
-        ;; `completion-at-point' is often bound to M-TAB.
-        tab-always-indent 'complete))
+  (setq enable-recursive-minibuffers t))
 
 (use-package xref
   :init (setq xref-prompt-for-identifier nil))
@@ -277,7 +291,6 @@
 
   ;; ;; Optionally replace `completing-read-multiple' with an enhanced version.
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
   :hook (completion-list-mode . consult-preview-at-point-mode)
 
   :config
