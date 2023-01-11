@@ -112,7 +112,7 @@
 (set-face-attribute 'default nil
                     :font "PragmataPro Mono Liga"
                     :weight 'normal
-                    :height 185)
+                    :height 150)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; (add-to-list 'default-frame-alist '(undecorated . t))
@@ -160,6 +160,7 @@
                                           eglot
                                           project
                                           js-mode
+                                          flymake
                                           uniquify
                                           inferior-lisp
                                           visual-line-mode))
@@ -278,7 +279,14 @@
   ;;       #'command-completion-default-include-p)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+
+  (defun er-auto-create-missing-dirs ()
+    (let ((target-dir (file-name-directory buffer-file-name)))
+      (unless (file-exists-p target-dir)
+        (make-directory target-dir t))))
+
+  (add-to-list 'find-file-not-found-functions #'er-auto-create-missing-dirs))
 
 (use-package xref
   :init (setq xref-prompt-for-identifier nil))
@@ -508,24 +516,25 @@
   :hook ((clojure-mode . jarchive-setup)
          (clojurec-mode . jarchive-setup)))
 
-;; (use-package tempel-clojure
-;;   :straight (tempel-clojure :type git
-;;                       :host github
-;;                       :files ("tempel-clojure.el" "templates")
-;;                       :repo "mpenet/tempel-clojure"))
-
 (use-package eldoc
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
 
-(use-package flymake
+;; (use-package flymake
+;;    ;; :config
+;;    ;; (setq eldoc-documentation-function 'eldoc-documentation-compose)
+;;    ;; (add-hook 'flymake-mode-hook
+;;    ;;           (lambda ()
+;;    ;;             (setq eldoc-documentation-functions
+;;    ;;                   (cons 'flymake-eldoc-function
+;;    ;;                         (delq 'flymake-eldoc-function eldoc-documentation-functions)))))
+;;    )
+
+(use-package flymake-diagnostic-at-point
+  :after flymake
   :config
-  (setq eldoc-documentation-function 'eldoc-documentation-compose)
-  (add-hook 'flymake-mode-hook
-            (lambda ()
-              (setq eldoc-documentation-functions
-                    (cons 'flymake-eldoc-function
-                          (delq 'flymake-eldoc-function eldoc-documentation-functions))))))
+  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+
 
 (use-package js-mode
   :defer t
