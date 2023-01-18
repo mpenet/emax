@@ -487,8 +487,6 @@
               ("C-c C-d b" )
               ("C-c C-d d")))
 
-;; (use-package clj-refactor)
-
 ;;; eglot
 
 (use-package consult-eglot)
@@ -503,7 +501,7 @@
          (clojurescript-mode . eglot-ensure)
          (before-save . eglot-format-buffer))
   :bind (:map eglot-mode-map
-         ("M-l M-l" . eglot-code-actions))
+              ("M-l M-l" . eglot-code-actions))
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (setq eglot-autoshutdown t
@@ -543,6 +541,7 @@
   (setq js-indent-level tab-width))
 
 (use-package fennel-mode
+  :disabled
   :hook (fennel-mode . paredit-mode)
   :bind (:map fennel-mode-map
               ("C-c C-c" . lisp-eval-defun)))
