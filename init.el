@@ -533,9 +533,6 @@
   :config
   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
 
-(use-package symbol-overlay
-  :bind (("M-o" . symbol-overlay-put)))
-
 (use-package js-mode
   :defer t
   :mode ("\\.json$" . js-mode)
@@ -611,6 +608,22 @@
   (doom-themes-visual-bell-config)
   (set-face-attribute 'doom-themes-visual-bell nil
                       :background (doom-color 'base3)))
+
+(use-package symbol-overlay
+  :custom-face
+  (symbol-overlay-face-1 ((t (:background "dodger blue" :foreground "black"))))
+  (symbol-overlay-face-2 ((t (:background "hot pink" :foreground "black"))))
+  (symbol-overlay-face-3 ((t (:background "yellow" :foreground "black"))))
+  (symbol-overlay-face-4 ((t (:background "orchid" :foreground "black"))))
+  (symbol-overlay-face-5 ((t (:background "red" :foreground "black"))))
+  (symbol-overlay-face-6 ((t (:background "salmon" :foreground "black"))))
+  (symbol-overlay-face-7 ((t (:background "spring green" :foreground "black"))))
+  (symbol-overlay-face-8 ((t (:background "turquoise" :foreground "black"))))
+  :bind (("M-o" . nil)
+         ("M-o o". symbol-overlay-put)
+         ("M-o M-o". symbol-overlay-put)
+         ("M-o r" . symbol-overlay-remove-all)
+         ("M-o s" . symbol-overlay-toggle-in-scope)))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
