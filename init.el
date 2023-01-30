@@ -533,6 +533,8 @@
   :config
   (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
 
+(use-package symbol-overlay
+  :bind (("M-o" . symbol-overlay-put)))
 
 (use-package js-mode
   :defer t
