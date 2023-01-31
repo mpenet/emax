@@ -734,6 +734,16 @@ Saves to a temp file and puts the filename in the kill ring."
     (browse-url filename)
     (message filename)))
 
+(defun save-buffer-as-is ()
+  "Save file \"as is\", that is in read-only-mode. Useful when you
+want to avoid having the hooks run"
+  (interactive)
+  (if buffer-read-only
+      (save-buffer)
+    (read-only-mode 1)
+    (save-buffer)
+    (read-only-mode 0)))
+
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
