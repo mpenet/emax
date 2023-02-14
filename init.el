@@ -137,7 +137,7 @@
 
 (setq-default cursor-in-non-selected-windows nil)
 
-(fset 'yes-or-no-p 'y-or-n-p)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; add the current column number to the mode bar
 (column-number-mode t)
@@ -157,7 +157,7 @@
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
                                           dired
-                                          eglot
+                                          ;; eglot
                                           project
                                           js-mode
                                           flymake
@@ -492,7 +492,7 @@
 (use-package consult-eglot)
 
 (use-package eglot
-  ;; :straight (eglot :source gnu-elpa-mirror)
+  :straight (eglot :source gnu-elpa-mirror)
   :ensure t
   :commands (eglot eglot-ensure)
   :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
@@ -505,7 +505,8 @@
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (setq eglot-autoshutdown t
-        eglot-confirm-server-initiated-edits nil))
+        eglot-confirm-server-initiated-edits nil
+        eglot-extend-to-xref t))
 
 (use-package jarchive
   :straight (jarchive :type git
