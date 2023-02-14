@@ -391,33 +391,24 @@
 (use-package gist)
 
 (use-package corfu
+  :straight (:files (:defaults "extensions/*"))
   ;; Optional customizations
   :custom
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
-  ;; (corfu-commit-predicate nil)   ;; Do not commit selected candidates on next input
   (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
   (corfu-quit-no-match t)        ;; Automatically quit if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
   (corfu-preselect-first nil)    ;; Disable candidate preselection
-  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
   (corfu-scroll-margin 5)        ;; Use scroll margin
-
-  ;; You may want to enable Corfu only for certain modes.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
+  :hook ((corfu-mode . corfu-popupinfo-mode))
   :bind
   (:map corfu-map
         ("TAB" . corfu-next)
         ([tab] . corfu-next)
         ("<C-return>" . corfu-insert))
-  ;; Recommended: Enable Corfu globally.
-  ;; This is recommended since dabbrev can be used globally (M-/).
   :init
   (global-corfu-mode))
 
-;; Add extensions
 (use-package cape
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
