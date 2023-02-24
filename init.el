@@ -392,8 +392,8 @@
 
 (use-package corfu
   :straight (:files (:defaults "extensions/*"))
-  ;; Optional customizations
   :custom
+  (corfu-popupinfo-delay '(0.5 . 0.3))
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
@@ -424,6 +424,7 @@
   :config
   (setq  kind-icon-blend-frac 0.24)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
@@ -615,7 +616,9 @@
          ("M-o o". symbol-overlay-put)
          ("M-o M-o". symbol-overlay-put)
          ("M-o r" . symbol-overlay-remove-all)
-         ("M-o s" . symbol-overlay-toggle-in-scope)))
+         ("M-o M-r" . symbol-overlay-remove-all)         
+         ("M-o s" . symbol-overlay-toggle-in-scope)
+         ("M-o M-s" . symbol-overlay-toggle-in-scope)))
 
 (use-package solaire-mode
   :config (solaire-global-mode +1))
