@@ -476,8 +476,8 @@
   ;; use lsp
   (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point)))
   :bind (:map cider-mode-map
-              ("C-c C-d b" )
-              ("C-c C-d d")))
+              ("C-c C-d" . cider-debug-defun-at-point)
+              ("C-c d" . cider-debug-defun-at-point)))
 
 ;;; eglot
 
