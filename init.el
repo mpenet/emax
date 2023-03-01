@@ -33,6 +33,7 @@
       read-process-output-max (* 1024 1024)
       auto-window-vscroll nil
       large-file-warning-threshold 100000000
+      kill-ring-max 150
       browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome"
       truncate-partial-width-windows nil
@@ -466,6 +467,8 @@
 
 (use-package cider
   :diminish
+  :custom-face (cider-debug-code-overlay-face
+                ((t (:box (:line-width -1 :color "green")))))
   :config
   (setq nrepl-log-messages t
         cider-font-lock-dynamically nil ; use lsp semantic tokens
