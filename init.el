@@ -468,7 +468,7 @@
 (use-package cider
   :diminish
   :custom-face (cider-debug-code-overlay-face
-                ((t (:box (:line-width -1 :color "green")))))
+                ((t (:box (:line-width -1 :color "orange")))))
   :config
   (setq nrepl-log-messages t
         cider-font-lock-dynamically nil ; use lsp semantic tokens
