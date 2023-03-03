@@ -297,6 +297,14 @@
   ;; Use Consult to select xref locations with preview
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+  :config
+  (defun mpenet/xref-find-def ()
+    (interactive)
+    (let ((current-prefix-arg 1))
+      (call-interactively #'xref-find-definitions)))
+  
+  :bind (("M-j M-s" . mpenet/xref-find-def)
+         ("M-j s" . mpenet/xref-find-def))
 
   ;; ;; Optionally replace `completing-read-multiple' with an enhanced version.
   ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
