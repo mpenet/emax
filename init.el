@@ -305,9 +305,9 @@
   
   :bind (("M-j M-s" . mpenet/xref-find-def)
          ("M-j s" . mpenet/xref-find-def))
-
-  ;; ;; Optionally replace `completing-read-multiple' with an enhanced version.
-  ;; (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+  
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
   :hook (completion-list-mode . consult-preview-at-point-mode)
 
   :config
@@ -326,13 +326,6 @@
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
          ("M-j M-f" . consult-flymake)))
-
-(use-package consult-flycheck
-  :after consult
-  :config
-  (setq flycheck-display-errors-delay 0.5)
-  :bind (("C-x C-l" . consult-flycheck)
-         ("C-x l" . consult-flycheck)))
 
 (use-package embark
   :config
@@ -363,7 +356,8 @@
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
 
 (use-package project
-  :init (setq project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
+  :init (setq project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp")
+              project-switch-commands #'project-find-file)
   :bind (("C-x f" . project-find-file)))
 
 (use-package hl-todo
@@ -492,8 +486,6 @@
 
 ;;; eglot
 
-(use-package consult-eglot)
-
 (use-package eglot
   :straight (eglot :source gnu-elpa-mirror)
   :ensure t
@@ -503,10 +495,12 @@
          (clojurec-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
          (before-save . eglot-format-buffer))
+
   :bind (:map eglot-mode-map
               ("M-l M-l" . eglot-code-actions))
   :config
-  ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
+  ;; (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
+
   (setq eglot-autoshutdown t
         eglot-confirm-server-initiated-edits nil
         eglot-extend-to-xref t))
@@ -519,18 +513,11 @@
          (clojurec-mode . jarchive-setup)))
 
 (use-package eldoc
+  :diminish
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
 
-;; (use-package flymake
-;;    ;; :config
-;;    ;; (setq eldoc-documentation-function 'eldoc-documentation-compose)
-;;    ;; (add-hook 'flymake-mode-hook
-;;    ;;           (lambda ()
-;;    ;;             (setq eldoc-documentation-functions
-;;    ;;                   (cons 'flymake-eldoc-function
-;;    ;;                         (delq 'flymake-eldoc-function eldoc-documentation-functions)))))
-;;    )
+;; (use-package flymake)
 
 (use-package flymake-diagnostic-at-point
   :after flymake
@@ -544,11 +531,10 @@
   (setq js-indent-level tab-width))
 
 (use-package fennel-mode
-  :disabled
   :hook (fennel-mode . paredit-mode)
   :bind (:map fennel-mode-map
               ("C-c C-c" . lisp-eval-defun)))
-
+  
 (use-package groovy-mode)
 
 (use-package inferior-lisp
@@ -611,7 +597,8 @@
   (load-theme 'doom-nord t)
   (doom-themes-visual-bell-config)
   (set-face-attribute 'doom-themes-visual-bell nil
-                      :background (doom-color 'base3)))
+                      :background (doom-color 'base3))
+  (set-face-attribute 'compilation-warning nil :slant 'normal))
 
 (use-package symbol-overlay
   :custom-face
@@ -635,6 +622,7 @@
   :config (solaire-global-mode +1))
 
 (use-package doom-modeline
+  :disabled
   :init
   (setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (doom-modeline-mode 1))
@@ -656,12 +644,6 @@
   ;; is over them so we don't mess with the displayed buffer itself
   (setq emojify-point-entered-behaviour 'echo)
   (global-emojify-mode 1))
-
-(use-package flycheck
-  :bind (("C-c C-l" . flycheck-list-errors))
-  :config
-  (flycheck-pos-tip-mode)
-  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package flyspell
   :config
