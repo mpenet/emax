@@ -592,12 +592,34 @@
 
 (use-package clojure-snippets)
 
+(use-package solaire-mode
+  :config (solaire-global-mode +1))
+
+(defun mpenet/mode-line (theme)
+  (let ((padding 3))
+    (custom-theme-set-faces
+     theme
+     `(mode-line ((t (:background ,(doom-lighten (doom-color 'bg) 0.05)
+                                  :foreground ,(doom-color 'fg)
+                                  :distant-foreground ,(doom-color 'bg)
+                                  :box (:line-width ,padding :color ,(doom-lighten (doom-color 'bg) 0.05))))))
+     `(mode-line-active ((t (:inherit 'mode-line))))
+     `(mode-line-inactive
+       ((t (:background ,(doom-color 'bg-alt)
+                        :foreground ,(doom-color 'fg-alt)
+                        :distant-foreground ,(doom-color 'bg-alt)
+                        :box (:line-width ,padding :color ,(doom-color 'bg-alt))))))
+
+     `(solaire-mode-line-face ((t (:inherit 'mode-line))))
+     `(solaire-mode-line-active-face ((t (:inherit 'mode-line-active))))
+     `(solaire-mode-line-inactive-face ((t (:inherit 'mode-line-inactive)))))))
+
 (use-package doom-themes
   :config
-  (load-theme 'doom-nord t)
-  (doom-themes-visual-bell-config)
-  (set-face-attribute 'doom-themes-visual-bell nil
-                      :background (doom-color 'base3))
+  (let ((theme 'doom-nord))
+    (load-theme theme t)
+    (mpenet/mode-line theme)
+    (enable-theme theme))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
 
 (use-package symbol-overlay
@@ -617,9 +639,6 @@
          ("M-o M-r" . symbol-overlay-remove-all)         
          ("M-o s" . symbol-overlay-toggle-in-scope)
          ("M-o M-s" . symbol-overlay-toggle-in-scope)))
-
-(use-package solaire-mode
-  :config (solaire-global-mode +1))
 
 (use-package doom-modeline
   :disabled
