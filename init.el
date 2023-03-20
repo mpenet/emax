@@ -101,6 +101,12 @@
 (global-set-key  (kbd "M-j r") 'xref-find-references)
 (global-set-key (kbd "M-j M-r") 'xref-find-references)
 
+(global-set-key (kbd "C-<prior>") 'text-scale-decrease)
+(global-set-key (kbd "M-<next>") 'text-scale-increase)
+(global-set-key (kbd "M-j M-r") 'xref-find-references)
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -190,6 +196,9 @@
 
 (use-package so-long
   :config (global-so-long-mode 1))
+
+(use-package hl-line
+  :hook ((prog-mode conf-mode) . hl-line-mode))
 
 (use-package elec-pair
   :config
