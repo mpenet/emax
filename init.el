@@ -101,8 +101,8 @@
 (global-set-key  (kbd "M-j r") 'xref-find-references)
 (global-set-key (kbd "M-j M-r") 'xref-find-references)
 
-(global-set-key (kbd "C-<prior>") 'text-scale-decrease)
-(global-set-key (kbd "M-<next>") 'text-scale-increase)
+(global-set-key (kbd "C-<next>") 'text-scale-increase)
+(global-set-key (kbd "M-<prior>") 'text-scale-decrease)
 (global-set-key (kbd "M-j M-r") 'xref-find-references)
 
 
