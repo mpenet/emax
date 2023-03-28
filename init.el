@@ -197,9 +197,6 @@
 (use-package so-long
   :config (global-so-long-mode 1))
 
-(use-package hl-line
-  :hook ((prog-mode conf-mode) . hl-line-mode))
-
 (use-package elec-pair
   :config
   (electric-pair-mode +1))
@@ -602,6 +599,7 @@
 (use-package clojure-snippets)
 
 (use-package solaire-mode
+  :disabled
   :config (solaire-global-mode +1))
 
 (defun mpenet/mode-line (theme)
