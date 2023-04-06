@@ -504,9 +504,8 @@
   (company-minimum-prefix-length 1)
   (company-require-match nil)
   (company-idle-delay 0.1)
-  
-  :config
-  (global-company-mode t))
+
+  :hook (prog-mode . company-mode))
 
 (use-package company-quickhelp
   :custom (company-quickhelp-use-propertized-text t)
