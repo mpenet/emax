@@ -50,9 +50,6 @@
       mouse-yank-at-point t
       set-mark-command-repeat-pop t
       completion-cycle-threshold 3
-      ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
-      ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
-      read-extended-command-predicate #'command-completion-default-include-p
       ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
       tab-always-indent 'complete
       hippie-expand-try-functions-list
@@ -399,41 +396,12 @@
 
 (use-package gist)
 
-(use-package corfu
-  :straight (:files (:defaults "extensions/*"))
-  :custom
-  (corfu-popupinfo-delay '(0.5 . 0.3))
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
-  (corfu-quit-no-match t)        ;; Automatically quit if there is no match
-  (corfu-preselect-first nil)    ;; Disable candidate preselection
-  (corfu-scroll-margin 5)        ;; Use scroll margin
-  :hook ((corfu-mode . corfu-popupinfo-mode))
-  :bind
-  (:map corfu-map
-        ("TAB" . corfu-next)
-        ([tab] . corfu-next)
-        ("<C-return>" . corfu-insert))
-  :init
-  (global-corfu-mode))
-
 (use-package cape
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
-
-(use-package kind-icon
-  :ensure t
-  :after corfu
-  :custom
-  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
-  :config
-  (setq  kind-icon-blend-frac 0.24)
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
 
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
@@ -479,7 +447,7 @@
                 ((t (:box (:line-width -1 :color "orange")))))
   :config
   (setq nrepl-log-messages t
-        cider-font-lock-dynamically nil ; use lsp semantic tokens
+        ;; cider-font-lock-dynamically nil ; use lsp semantic tokens
         cider-eldoc-display-for-symbol-at-point nil ; use lsp
         cider-prompt-for-symbol nil
         cider-use-xref nil)
@@ -519,9 +487,30 @@
          (clojurec-mode . jarchive-setup)))
 
 (use-package eldoc
+  :straight (eldoc :source gnu-elpa-mirror)
   :diminish
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
+
+(use-package company
+  :diminish
+  :bind (:map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("TAB" . company-complete-selection))
+  
+  :custom
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-length 1)
+  (company-require-match nil)
+  (company-idle-delay 0.1)
+  
+  :config
+  (global-company-mode t))
+
+(use-package company-quickhelp
+  :custom (company-quickhelp-use-propertized-text t)
+  :config (company-quickhelp-mode))
 
 ;; (use-package flymake)
 
@@ -730,12 +719,6 @@
                                  (clojure . t)
                                  (python . t))))
 
-;; config changes made through the customize UI will be stored here
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-
-(when (file-exists-p custom-file)
-  (load custom-file))
-
 (defun screenshot ()
   "Save a screenshot of the current frame as an SVG image.
 Saves to a temp file and puts the filename in the kill ring."
@@ -757,6 +740,13 @@ want to avoid having the hooks run"
     (read-only-mode 1)
     (save-buffer)
     (read-only-mode 0)))
+
+;; config changes made through the customize UI will be stored here
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+(when (file-exists-p custom-file)
+  (load custom-file))
+
 
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
