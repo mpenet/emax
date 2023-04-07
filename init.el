@@ -359,6 +359,11 @@
   :bind (("C-o" . er/expand-region)
          ("C-M-o" . er/contract-region)))
 
+(use-package eldoc
+  :straight (eldoc :source gnu-elpa-mirror)
+  :diminish
+  (setq eldoc-echo-area-use-multiline-p nil))
+
 (use-package paredit
   :init
   (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
@@ -426,7 +431,7 @@
               ("M-l M-l" . eglot-code-actions))
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
-  
+  (diminish 'eldoc-mode)
   (advice-add 'eglot--format-markup
               :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args))))
 
@@ -441,12 +446,6 @@
                       :repo "https://git.sr.ht/~dannyfreeman/jarchive")
   :hook ((clojure-mode . jarchive-setup)
          (clojurec-mode . jarchive-setup)))
-
-(use-package eldoc
-  :straight (eldoc :source gnu-elpa-mirror)
-  :diminish
-  :config
-  (setq eldoc-echo-area-use-multiline-p nil))
 
 (use-package company
   :diminish
@@ -667,6 +666,7 @@
                                  (clojure . t)
                                  (python . t))))
 (use-package beacon
+  :diminish
   :config (beacon-mode 1))
 
 (defun screenshot ()
