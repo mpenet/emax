@@ -541,10 +541,6 @@
 
 (use-package clojure-snippets)
 
-(use-package solaire-mode
-  :disabled
-  :config (solaire-global-mode +1))
-
 (use-package doom-themes
   :config
   (defun mpenet/mode-line (theme)
