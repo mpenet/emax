@@ -27,130 +27,9 @@
 
 ;;; Code:
 
-(setq load-prefer-newer t
-      warning-minimum-level :error
-      gc-cons-threshold 50000000
-      read-process-output-max (* 1024 1024)
-      auto-window-vscroll nil
-      large-file-warning-threshold 100000000
-      kill-ring-max 150
-      browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome"
-      truncate-partial-width-windows nil
-      backup-inhibited t
-      make-backup-files nil
-      auto-save-default nil
-      auto-save-list-file-prefix nil
-      save-place nil
-      vc-follow-symlinks nil
-      inhibit-startup-message t
-      frame-inhibit-implied-resize t
-      initial-scratch-message nil
-      initial-major-mode 'fundamental-mode ;; skip scratch
-      mouse-yank-at-point t
-      set-mark-command-repeat-pop t
-      completion-cycle-threshold 3
-      ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
-      tab-always-indent 'complete
-      hippie-expand-try-functions-list
-      '(try-expand-all-abbrevs try-expand-dabbrev
-                               try-expand-dabbrev-all-buffers
-                               try-expand-dabbrev-from-kill
-                               try-complete-file-name-partially
-                               try-complete-file-name
-                               try-expand-all-abbrevs
-                               try-expand-list
-                               try-expand-line
-                               try-complete-lisp-symbol-partially
-                               try-complete-lisp-symbol))
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; GLOBAL BINDINGS
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(global-set-key (kbd "C-x m") 'execute-extended-command)
-(global-set-key (kbd "C-x C-m") 'execute-extended-command)
-
-(global-unset-key (kbd "M-r"))
-(global-unset-key (kbd "M-j"))
-
-;; (global-set-key (kbd "C-h") 'backward-delete-char)
-(global-set-key (kbd "C-M-h") 'backward-kill-word)
-(global-set-key (kbd "C-M-<backspace>") 'backward-kill-word)
-(global-set-key (kbd "RET") 'newline-and-indent)
-(global-set-key (kbd "<C-return>") 'newline-and-indent)
-(global-set-key (kbd "<M-return>") 'comment-or-uncomment-region)
-(global-set-key "\C-x\C-o" 'other-window)
-(global-set-key "\C-x\C-k" 'kill-buffer)
-(global-set-key (kbd "C-x '") 'delete-other-windows)
-(global-set-key (kbd "C-x ,") 'split-window-below)
-(global-set-key (kbd "C-x .") 'split-window-right)
-(global-set-key (kbd "C-x l") 'delete-window)
-(global-set-key (kbd "<prior>") 'shrink-window)
-(global-set-key (kbd "<next>") 'enlarge-window)
-(global-set-key (kbd "C-x r") 'query-replace)
-(global-set-key (kbd "C-x r") 'query-replace)
-(global-set-key "\C-x\C-r" 'query-replace)
-(global-set-key (kbd "M-i") 'hippie-expand)
-(global-set-key (kbd "M-i") 'hippie-expand)
-(global-set-key (kbd "M-j d") 'xref-find-definitions)
-(global-set-key (kbd "M-j M-d") 'xref-find-definitions)
-(global-set-key  (kbd "M-j r") 'xref-find-references)
-(global-set-key (kbd "M-j M-r") 'xref-find-references)
-
-(global-set-key (kbd "C-<next>") 'text-scale-increase)
-(global-set-key (kbd "M-<prior>") 'text-scale-decrease)
-(global-set-key (kbd "M-j M-r") 'xref-find-references)
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; LOOK & FEEL
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; (set-face-attribute 'default nil
-;;                     :font "Iosevka"
-;;                     :weight 'normal
-;;                     :height 200)
-
-(set-face-attribute 'default nil
-                    :font "PragmataPro Mono Liga"
-                    :weight 'normal
-                    :height 150)
-
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-;; (add-to-list 'default-frame-alist '(undecorated . t))
-
-;; utf8 only
-(set-language-environment "UTF-8")
-
-
-;; TAB => 4*'\b'
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-
-(setq-default fill-column 80)
-
-;; ui
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-
-(when (fboundp 'pixel-scroll-precision-mode)
-  (pixel-scroll-precision-mode t))
-
-(setq-default cursor-in-non-selected-windows nil)
-
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; add the current column number to the mode bar
-(column-number-mode t)
-
-;; case insensitive searches
-(set-default 'case-fold-search t)
-
-;; typed text replaces the selection if the selection is active
-(delete-selection-mode t)
 
 ;;; Packages
 ;;; via straight el
@@ -183,6 +62,112 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+
+(use-package emacs
+  :custom
+  (load-prefer-newer t)
+  (warning-minimum-level :error)
+  (gc-cons-threshold 50000000)
+  (read-process-output-max (* 1024 1024))
+  (auto-window-vscroll nil)
+  (large-file-warning-threshold 100000000)
+  (kill-ring-max 150)
+  (browse-url-browser-function 'browse-url-generic)
+  (browse-url-generic-program "google-chrome")
+  (truncate-partial-width-windows nil)
+  (backup-inhibited t)
+  (make-backup-files nil)
+  (auto-save-default nil)
+  (auto-save-list-file-prefix nil)
+  (save-place nil)
+  (vc-follow-symlinks nil)
+  (inhibit-startup-message t)
+  (frame-inhibit-implied-resize t)
+  (initial-scratch-message nil)
+  (initial-major-mode 'fundamental-mode)  ;; skip scratch
+  (mouse-yank-at-point t)
+  (set-mark-command-repeat-pop t)
+  (completion-cycle-threshold 3)
+  ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
+  (hippie-expand-try-functions-list
+   '(try-expand-all-abbrevs try-expand-dabbrev
+                            try-expand-dabbrev-all-buffers
+                            try-expand-dabbrev-from-kill
+                            try-complete-file-name-partially
+                            try-complete-file-name
+                            try-expand-all-abbrevs
+                            try-expand-list
+                            try-expand-line
+                            try-complete-lisp-symbol-partially
+                            try-complete-lisp-symbol))
+  
+  (indent-tabs-mode nil)
+  (tab-width 4)
+  (fill-column 80)
+  
+  ;; add the current column number to the mode bar
+  (column-number-mode t)
+  ;; typed text replaces the selection if the selection is active
+  (delete-selection-mode t)
+  (scroll-bar-mode nil)
+  (tool-bar-mode nil)
+  (menu-bar-mode nil)
+  (pixel-scroll-precision-mode t)
+  (set-language-environment "UTF-8")
+  (cursor-in-non-selected-windows nil)
+  ;; case insensitive searches
+  (case-fold-search t)
+  (minibuffer-prompt-properties
+   '(read-only t cursor-intangible t face minibuffer-prompt))
+  (enable-recursive-minibuffers t)
+
+  :bind
+  (("M-j" . nil)
+   ("M-r" . nil)
+   ("C-x m" . execute-extended-command)
+   ("C-x C-m" . execute-extended-command)
+   ("C-M-h" . backward-kill-word)
+   ("C-M-<backspace>" . backward-kill-word)
+   ("RET" . newline-and-indent)
+   ("<C-return>" . newline-and-indent)
+   ("<M-return>" . comment-or-uncomment-region)
+   ("C-x C-o" . other-window)
+   ("C-x C-k" . kill-buffer)
+   ("C-x . " . delete-other-windows)
+   ("C-x ," . split-window-below)
+   ("C-x ." . split-window-right)
+   ("C-x l" . delete-window)
+   ("C-x r" . query-replace)
+   ("C-x r" . query-replace)
+   ("C-x C-r" . query-replace)
+   ("M-i" . hippie-expand)
+   ("M-i" . hippie-expand)
+   ("M-j d" . xref-find-definitions)
+   ("M-j M-d" . xref-find-definitions)
+   ("M-j r" . xref-find-references)
+   ("M-j M-r" . xref-find-references)
+   ("C-<next>" . text-scale-increase)
+   ("M-<prior>" . text-scale-decrease)
+   ("M-j M-r" . xref-find-references))
+  
+  :init
+  (set-face-attribute 'default nil
+                      :font "PragmataPro Mono Liga"
+                      :weight 'normal
+                      :height 150)
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  ;; (add-to-list 'default-frame-alist '(undecorated . t))
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  ;; Do not allow the cursor in the minibuffer prompt
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  (defun er-auto-create-missing-dirs ()
+    (let ((target-dir (file-name-directory buffer-file-name)))
+      (unless (file-exists-p target-dir)
+        (make-directory target-dir t))))
+
+  (add-to-list 'find-file-not-found-functions #'er-auto-create-missing-dirs))
 
 (use-package diminish)
 
@@ -258,39 +243,6 @@
   :bind ((:map minibuffer-local-map
                ("C-c C-o" . embark-export)
                ("C-l" . embark-act))))
-
-(use-package emacs
-  :init
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; We display [CRM<separator>], e.g., [CRM,] if the separator is a comma.
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-  ;; Vertico commands are hidden in normal buffers.
-  ;; (setq read-extended-command-predicate
-  ;;       #'command-completion-default-include-p)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t)
-
-  (defun er-auto-create-missing-dirs ()
-    (let ((target-dir (file-name-directory buffer-file-name)))
-      (unless (file-exists-p target-dir)
-        (make-directory target-dir t))))
-
-  (add-to-list 'find-file-not-found-functions #'er-auto-create-missing-dirs))
 
 (use-package xref
   :init (setq xref-prompt-for-identifier nil))
@@ -474,6 +426,10 @@
               ("M-l M-l" . eglot-code-actions))
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
+  
+  (advice-add 'eglot--format-markup
+              :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args))))
+
 
   (setq eglot-autoshutdown t
         eglot-confirm-server-initiated-edits nil
@@ -717,6 +673,8 @@
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
+(use-package beacon
+  :config (beacon-mode 1))
 
 (defun screenshot ()
   "Save a screenshot of the current frame as an SVG image.
