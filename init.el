@@ -27,8 +27,7 @@
 
 ;;; Code:
 
-;;; Packages
-;;; via straight el
+;;; bootstrap via straight el
 (setq straight-use-package-by-default t
       straight-repository-branch "develop"
       straight-recipes-gnu-elpa-use-mirror t
@@ -57,6 +56,9 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+
+
+;;; Packages
 
 (use-package emacs
   :custom
