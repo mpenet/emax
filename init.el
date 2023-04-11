@@ -417,7 +417,9 @@ want to avoid having the hooks run"
   :config
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   ;; use lsp
-  (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point)))
+  (add-hook 'cider-mode-hook
+            (lambda ()
+              (remove-hook 'completion-at-point-functions #'cider-complete-at-point t)))
   :bind (:map cider-mode-map
               ("C-c C-d" . cider-debug-defun-at-point)
               ("C-c d" . cider-debug-defun-at-point)))
@@ -698,13 +700,6 @@ want to avoid having the hooks run"
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
-(use-package beacon
-  :diminish
-  :custom
-  (beacon-size 80)
-  (beacon-blink-duration 0.2)
-  (beacon-blink-delay 0.2)
-  :config (beacon-mode 1))
 
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
