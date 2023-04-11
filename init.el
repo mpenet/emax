@@ -120,6 +120,7 @@
   ;; Vertico commands are hidden in normal buffers.
   (read-extended-command-predicate
    #'command-completion-default-include-p)
+  (custom-file (expand-file-name "custom.el" user-emacs-directory))
 
   :bind
   (("M-j" . nil)
@@ -155,6 +156,7 @@
                       :font "PragmataPro Mono Liga"
                       :weight 'normal
                       :height 150)
+  
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; (add-to-list 'default-frame-alist '(undecorated . t))
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -166,7 +168,21 @@
       (unless (file-exists-p target-dir)
         (make-directory target-dir t))))
 
-  (add-to-list 'find-file-not-found-functions #'er-auto-create-missing-dirs))
+  (add-to-list 'find-file-not-found-functions #'er-auto-create-missing-dirs)
+
+  (defun save-buffer-as-is ()
+    "Save file \"as is\", that is in read-only-mode. Useful when you
+want to avoid having the hooks run"
+    (interactive)
+    (if buffer-read-only
+        (save-buffer)
+      (read-only-mode 1)
+      (save-buffer)
+      (read-only-mode 0)))
+
+  ;; config changes made through the customize UI will be stored here
+  (when (file-exists-p custom-file)
+    (load custom-file)))
 
 (use-package diminish)
 
@@ -687,33 +703,6 @@
   (beacon-blink-duration 0.2)
   (beacon-blink-delay 0.2)
   :config (beacon-mode 1))
-
-(defun screenshot ()
-  "Save a screenshot of the current frame as an SVG image.
-Saves to a temp file and puts the filename in the kill ring."
-  (interactive)
-  (let* ((filename (make-temp-file "emacs-screenshot-" nil ".svg"))
-         (data (x-export-frames nil 'svg)))
-    (with-temp-file filename
-      (insert data))
-    (kill-new filename)
-    (browse-url filename)
-    (message filename)))
-
-(defun save-buffer-as-is ()
-  "Save file \"as is\", that is in read-only-mode. Useful when you
-want to avoid having the hooks run"
-  (interactive)
-  (if buffer-read-only
-      (save-buffer)
-    (read-only-mode 1)
-    (save-buffer)
-    (read-only-mode 0)))
-
-;; config changes made through the customize UI will be stored here
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
 
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
