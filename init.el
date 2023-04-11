@@ -27,13 +27,8 @@
 
 ;;; Code:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; LOOK & FEEL
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;; Packages
 ;;; via straight el
-
 (setq straight-use-package-by-default t
       straight-repository-branch "develop"
       straight-recipes-gnu-elpa-use-mirror t
@@ -71,6 +66,9 @@
   (read-process-output-max (* 1024 1024))
   (auto-window-vscroll nil)
   (large-file-warning-threshold 100000000)
+  (scroll-bar-mode nil)
+  (tool-bar-mode nil)
+  (menu-bar-mode nil)
   (kill-ring-max 150)
   (browse-url-browser-function 'browse-url-generic)
   (browse-url-generic-program "google-chrome")
@@ -110,9 +108,6 @@
   (column-number-mode t)
   ;; typed text replaces the selection if the selection is active
   (delete-selection-mode t)
-  (scroll-bar-mode nil)
-  (tool-bar-mode nil)
-  (menu-bar-mode nil)
   (pixel-scroll-precision-mode t)
   (set-language-environment "UTF-8")
   (cursor-in-non-selected-windows nil)
@@ -189,7 +184,7 @@
 
 ;; uniquify buffer names: append path if buffer names are identical
 (use-package uniquify
-  :init (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
+  :custom (uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 (use-package display-line-numbers
   :hook ((prog-mode conf-mode) . display-line-numbers-mode)
@@ -199,8 +194,9 @@
   :hook ((org-mode . visual-line-mode)))
 
 (use-package visual-fill-column
-  :init (setq visual-fill-column-width 110
-              visual-fill-column-center-text t)
+  :custom
+  (visual-fill-column-width 110)
+  (visual-fill-column-center-text t)
   :hook ((org-mode . visual-fill-column-mode)))
 
 (use-package which-function-mode
@@ -208,8 +204,9 @@
   :hook ((lisp-mode . which-function-mode)))
 
 (use-package winner
-  :init
-  (setq winner-dont-bind-my-keys t)
+  :custom 
+  (winner-dont-bind-my-keys t)
+  :config
   (winner-mode)
   :bind (("C-x C-u" . winner-undo)
          ("C-x u" . winner-undo)
@@ -217,11 +214,11 @@
          ("C-x j" . winner-redo)))
 
 (use-package isearch
-  :config
-  (setq isearch-lazy-count t
-        lazy-count-prefix-format "(%s/%s) "
-        lazy-count-suffix-format nil
-        isearch-allow-scroll 'unlimited)
+  :custom
+  (isearch-lazy-count t)
+  (lazy-count-prefix-format "(%s/%s) ")
+  (lazy-count-suffix-format nil)
+  (isearch-allow-scroll 'unlimited)
   :bind (:map isearch-mode-map
               ("C-c C-o" . isearch-occur)))
 
@@ -231,10 +228,10 @@
 ;; Enable `partial-completion' for files to allow path expansion.
 ;; You may prefer to use `initials' instead of `partial-completion'.
 (use-package orderless
-  :init
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles . (partial-completion))))))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -249,32 +246,17 @@
                ("C-l" . embark-act))))
 
 (use-package xref
-  :init (setq xref-prompt-for-identifier nil))
+  :custom (xref-prompt-for-identifier nil))
 
 (use-package consult
-  :init
+  :custom 
   ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-  :config
-  (defun mpenet/xref-find-def ()
-    (interactive)
-    (let ((current-prefix-arg 1))
-      (call-interactively #'xref-find-definitions)))
-  
-  :bind (("M-j M-s" . mpenet/xref-find-def)
-         ("M-j s" . mpenet/xref-find-def))
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
   
   ;; Enable automatic preview at point in the *Completions* buffer. This is
   ;; relevant when you use the default completion UI.
   :hook (completion-list-mode . consult-preview-at-point-mode)
-
-  :config
-  ;; Optionally configure a function which returns the project root directory
-  (setq consult-project-root-function
-        (lambda ()
-          (when-let (project (project-current))
-            (car (project-roots project)))))
 
   :bind (("C-t" . consult-line)
          ("C-x b" . consult-buffer)
@@ -315,27 +297,29 @@
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
 
 (use-package project
-  :init (setq project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp")
-              project-switch-commands #'project-find-file)
+  :custom
+  (project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
+  (project-switch-commands #'project-find-file)
+  
   :bind (("C-x f" . project-find-file)))
 
 (use-package hl-todo
-  :config
-  (setq hl-todo-highlight-punctuation ":")
+  :custom (hl-todo-highlight-punctuation ":")
   (global-hl-todo-mode))
 
 (use-package dired
+  :custom
+  (dired-recursive-deletes 'always)
+  (dired-recursive-copies 'always)
+  ;; if there is a dired buffer displayed in the next window, use its
+  ;; current subdir, instead of the current subdir of this dired buffer
+  (dired-dwim-target nil)
+  
   :config
   ;; dired - reuse current buffer by pressing 'a'
   (put 'dired-find-alternate-file 'disabled nil)
 
-  ;; always delete and copy recursively
-  (setq dired-recursive-deletes 'always)
-  (setq dired-recursive-copies 'always)
 
-  ;; if there is a dired buffer displayed in the next window, use its
-  ;; current subdir, instead of the current subdir of this dired buffer
-  (setq dired-dwim-target nil)
 
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
@@ -364,9 +348,9 @@
          ("C-M-o" . er/contract-region)))
 
 (use-package eldoc
+  :custom (eldoc-echo-area-use-multiline-p nil)
   :straight (eldoc :source gnu-elpa-mirror)
-  :diminish
-  (setq eldoc-echo-area-use-multiline-p nil))
+  :diminish)
 
 (use-package paredit
   :init
@@ -404,14 +388,15 @@
 
 (use-package cider
   :diminish
+  :custom
+  ;; cider-font-lock-dynamically nil ; use lsp semantic tokens
+  (nrepl-log-messages t)
+  (cider-eldoc-display-for-symbol-at-point nil) ; use lsp
+  (cider-prompt-for-symbol nil)
+  (cider-use-xref nil)
   :custom-face (cider-debug-code-overlay-face
                 ((t (:box (:line-width -1 :color "orange")))))
   :config
-  (setq nrepl-log-messages t
-        ;; cider-font-lock-dynamically nil ; use lsp semantic tokens
-        cider-eldoc-display-for-symbol-at-point nil ; use lsp
-        cider-prompt-for-symbol nil
-        cider-use-xref nil)
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   ;; use lsp
   (add-hook 'cider-mode-hook (lambda () (remove-hook 'completion-at-point-functions #'cider-complete-at-point)))
@@ -426,6 +411,10 @@
   :ensure t
   :commands (eglot eglot-ensure)
   :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-confirm-server-initiated-edits nil)
+  (eglot-extend-to-xref t)
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
@@ -437,12 +426,7 @@
   ;; (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
   (diminish 'eldoc-mode)
   (advice-add 'eglot--format-markup
-              :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args))))
-
-
-  (setq eglot-autoshutdown t
-        eglot-confirm-server-initiated-edits nil
-        eglot-extend-to-xref t))
+              :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args)))))
 
 (use-package jarchive
   :straight (jarchive :type git
@@ -460,7 +444,7 @@
   
   :custom
   (company-tooltip-align-annotations t)
-  (company-minimum-prefix-length 1)
+  (company-minimum-prefix-length 3)
   (company-require-match nil)
   (company-idle-delay 0.1)
 
@@ -496,8 +480,7 @@
   :after corfu
   :custom
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
-  :config
-  (setq  kind-icon-blend-frac 0.24)
+  (kind-icon-blend-frac 0.24)
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;; (use-package flymake)
@@ -510,8 +493,8 @@
 (use-package js-mode
   :defer t
   :mode ("\\.json$" . js-mode)
-  :config
-  (setq js-indent-level tab-width))
+  :custom
+  (js-indent-level tab-width))
 
 (use-package fennel-mode
   :hook (fennel-mode . paredit-mode)
@@ -531,23 +514,23 @@
   :diminish)
 
 (use-package css-mode
+  :custom (css-indent-offset tab-width)
   :config
-  (progn (add-hook 'css-mode-hook 'rainbow-mode)
-         (setq css-indent-offset tab-width)))
+  (add-hook 'css-mode-hook 'rainbow-mode))
 
 (use-package zencoding-mode
+  :custom (zencoding-preview-default nil)
   :config
-  (setq zencoding-preview-default nil)
   (add-hook 'sgml-mode-hook 'zencoding-mode))
 
 (use-package htmlize
-  :config (setq org-export-htmlize-output-type 'css))
+  :custom (org-export-htmlize-output-type 'css))
 
 (use-package markdown-mode
+  :custom (markdown-fontify-code-blocks-natively t)
   :mode (("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :config
-  (setq markdown-fontify-code-blocks-natively t)
   (add-to-list 'markdown-code-lang-modes '("clj" . clojure-mode)))
 
 (use-package yaml-mode
@@ -566,11 +549,11 @@
 (use-package gist)
 
 (use-package yasnippet
-  :diminish
+  :custom
+  (yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt))
+  (yas-indent-line nil)
   :config
   (yas-global-mode t)
-  (setq yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt)
-        yas-indent-line nil)
   :diminish yas-minor-mode)
 
 (use-package clojure-snippets)
@@ -628,19 +611,22 @@
   (set-face-foreground 'show-paren-match "red"))
 
 (use-package emojify
-  :config
-  (setq emojify-display-style 'image)
+  :custom
+  (emojify-display-style 'image)
   ;; only replace unicode and github, no ascii)
-  (setq emojify-emoji-styles '(unicode github))
+  (emojify-emoji-styles '(unicode github))
   ;; echo the actual underlying character to the minibuffer when point
   ;; is over them so we don't mess with the displayed buffer itself
-  (setq emojify-point-entered-behaviour 'echo)
+  (emojify-point-entered-behaviour 'echo)
+  :config
+
   (global-emojify-mode 1))
 
 (use-package flyspell
+  :custom
+  (ispell-program-name "aspell")
+  (ispell-extra-args '("--sug-mode=ultra"))
   :config
-  (setq ispell-program-name "aspell" ; use aspell instead of ispell
-        ispell-extra-args '("--sug-mode=ultra"))
   (add-hook 'text-mode-hook #'flyspell-mode)
   (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :bind (:map flyspell-mode-map
@@ -663,14 +649,13 @@
 (use-package sudo-edit)
 
 (use-package org-modern
+  :custom (org-startup-indented t)
   :after org-roam
-  :init (setq org-startup-indented t)
   :hook (org-mode . org-modern-mode))
 
 (use-package org-roam
-  :init
-  (setq org-roam-v2-ack t)
   :custom
+  (org-roam-v2-ack t)
   (org-roam-directory "~/.roam")
   (org-roam-completion-everywhere t)
   :bind (("M-r M-r" . org-roam-node-find)
@@ -683,11 +668,11 @@
   (org-roam-setup))
 
 (use-package org
-  :init
-  (setq org-confirm-babel-evaluate nil
-        org-src-fontify-natively t
-        org-src-tab-acts-natively t
-        org-babel-clojure-backend 'cider)
+  :custom
+  (org-babel-clojure-backend 'cider)
+  (org-src-tab-acts-natively t)
+  (org-confirm-babel-evaluate nil)
+  (org-src-fontify-natively t)
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell . t)
@@ -697,6 +682,10 @@
                                  (python . t))))
 (use-package beacon
   :diminish
+  :custom
+  (beacon-size 80)
+  (beacon-blink-duration 0.2)
+  (beacon-blink-delay 0.2)
   :config (beacon-mode 1))
 
 (defun screenshot ()
