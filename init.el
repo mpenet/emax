@@ -593,11 +593,7 @@ want to avoid having the hooks run"
          ((t (:background ,(doom-color 'bg-alt)
                           :foreground ,(doom-color 'fg-alt)
                           :distant-foreground ,(doom-color 'bg-alt)
-                          :box (:line-width ,padding :color ,(doom-color 'bg-alt))))))
-
-       `(solaire-mode-line-face ((t (:inherit 'mode-line))))
-       `(solaire-mode-line-active-face ((t (:inherit 'mode-line-active))))
-       `(solaire-mode-line-inactive-face ((t (:inherit 'mode-line-inactive)))))))
+                          :box (:line-width ,padding :color ,(doom-color 'bg-alt)))))))))
   (let ((theme 'doom-nord))
     (load-theme theme t)
     (mpenet/mode-line theme)
@@ -700,7 +696,3 @@ want to avoid having the hooks run"
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
-
-(put 'set-goal-column 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
