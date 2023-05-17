@@ -86,6 +86,7 @@
   (initial-scratch-message nil)
   (initial-major-mode 'fundamental-mode)  ;; skip scratch
   (mouse-yank-at-point t)
+  (which-function-mode t)
   (set-mark-command-repeat-pop t)
   (completion-cycle-threshold 3)
   ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
@@ -152,7 +153,7 @@
    ("C-<next>" . text-scale-increase)
    ("M-<prior>" . text-scale-decrease)
    ("M-j M-r" . xref-find-references))
-  
+  :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
   :init
   (set-face-attribute 'default nil
                       :font "PragmataPro Mono Liga"
@@ -216,10 +217,6 @@ want to avoid having the hooks run"
   (visual-fill-column-width 110)
   (visual-fill-column-center-text t)
   :hook ((org-mode . visual-fill-column-mode)))
-
-(use-package which-function-mode
-  :defer t
-  :hook ((lisp-mode . which-function-mode)))
 
 (use-package winner
   :custom 
@@ -424,6 +421,13 @@ want to avoid having the hooks run"
               ("C-c C-d" . cider-debug-defun-at-point)
               ("C-c d" . cider-debug-defun-at-point)))
 
+(use-package breadcrumb
+  :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
+  :config
+  (breadcrumb-mode)
+  ;; (setq which-func-functions #'(breadcrumb-imenu-crumbs))
+  )
+
 ;;; eglot
 
 (use-package eglot
@@ -435,6 +439,7 @@ want to avoid having the hooks run"
   (eglot-autoshutdown t)
   (eglot-confirm-server-initiated-edits nil)
   (eglot-extend-to-xref t)
+  (eglot-events-buffer 0)
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
@@ -581,7 +586,7 @@ want to avoid having the hooks run"
 (use-package doom-themes
   :config
   (defun mpenet/mode-line (theme)
-    (let ((padding 3))
+    (let ((padding 4))
       (custom-theme-set-faces
        theme
        `(mode-line ((t (:background ,(doom-lighten (doom-color 'bg) 0.05)
@@ -599,6 +604,9 @@ want to avoid having the hooks run"
     (mpenet/mode-line theme)
     (enable-theme theme))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
+
+(use-package hl-line
+  :config (global-hl-line-mode))
 
 (use-package symbol-overlay
   :custom-face
