@@ -14,7 +14,7 @@
  ("diminish.el" . "fbd5d846611bad828e336b25d2e131d1bc06b83d")
  ("diredfl" . "17e805763d57370c4eff2c92ed257b72eeb9f94a")
  ("dockerfile-mode" . "52c6c00da1d31c0b6c29c74335b3af63ed6bf06c")
- ("eglot" . "ee13c9e73476810d4b48f135b394051ff364067b")
+ ("eglot" . "f1c1b403719fc975f26f8ef2c307eba95db8c469")
  ("el-get" . "22c83206bab10100fdee03cb2d5b97c8c24eff0e")
  ("eldoc" . "2cb9b9b18afd0afb4ceac3d53fb416b74c21a75b")
  ("emacs-emojify" . "1b726412f19896abf5e4857d4c32220e33400b55")
