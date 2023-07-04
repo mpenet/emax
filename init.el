@@ -35,6 +35,7 @@
                                           isearch
                                           dired
                                           ;; eglot
+                                          repeat
                                           project
                                           js-mode
                                           flymake
@@ -159,9 +160,11 @@
                       :font "PragmataPro Mono Liga"
                       :weight 'normal
                       :height 150)
-  
+
+  ;; full screen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  ;; (add-to-list 'default-frame-alist '(undecorated . t))
+  (add-to-list 'default-frame-alist '(undecorated . t))
+
   (defalias 'yes-or-no-p 'y-or-n-p)
   ;; Do not allow the cursor in the minibuffer prompt
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
@@ -462,7 +465,8 @@ want to avoid having the hooks run"
 
 (use-package company
   :diminish
-  :bind (:map company-active-map
+  :bind (("TAB" . company-indent-or-complete-common)
+         :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
          ("TAB" . company-complete-selection))
@@ -704,3 +708,6 @@ want to avoid having the hooks run"
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
+
+(use-package repeat
+  :custom (repeat-mode t))
