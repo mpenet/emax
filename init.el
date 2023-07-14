@@ -650,16 +650,10 @@ want to avoid having the hooks run"
 
   (global-emojify-mode 1))
 
-(use-package flyspell
-  :custom
-  (ispell-program-name "aspell")
-  (ispell-extra-args '("--sug-mode=ultra"))
-  :config
-  (add-hook 'text-mode-hook #'flyspell-mode)
-  (add-hook 'prog-mode-hook #'flyspell-prog-mode)
-  :bind (:map flyspell-mode-map
-              ("<M-return>" . comment-or-uncomment-region))
-  :diminish)
+(use-package jinx
+  :hook ((text-mode prog-mode conf-mode) . jinx-mode)
+  :bind (("M-j c" . jinx-correct)
+         ("M-j l" . jinx-languages)))
 
 (use-package scratch)
 
@@ -708,6 +702,3 @@ want to avoid having the hooks run"
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
-
-(use-package repeat
-  :custom (repeat-mode t))
