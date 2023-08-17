@@ -589,24 +589,14 @@ want to avoid having the hooks run"
 
 (use-package doom-themes
   :config
-  (defun mpenet/mode-line (theme)
-    (let ((padding 4))
-      (custom-theme-set-faces
-       theme
-       `(mode-line ((t (:background ,(doom-lighten (doom-color 'bg) 0.05)
-                                    :foreground ,(doom-color 'fg)
-                                    :distant-foreground ,(doom-color 'bg)
-                                    :box (:line-width ,padding :color ,(doom-lighten (doom-color 'bg) 0.05))))))
-       `(mode-line-active ((t (:inherit 'mode-line))))
-       `(mode-line-inactive
-         ((t (:background ,(doom-color 'bg-alt)
-                          :foreground ,(doom-color 'fg-alt)
-                          :distant-foreground ,(doom-color 'bg-alt)
-                          :box (:line-width ,padding :color ,(doom-color 'bg-alt)))))))))
+  (defun mpenet/mode-line (padding)
+    (set-face-attribute 'mode-line nil :box `(:line-width ,padding :color ,(face-attribute 'mode-line :background)))
+    (set-face-attribute 'mode-line-inactive nil :box `(:line-width ,padding :color ,(face-attribute 'mode-line-active :background nil 'mode-line-inactive) bg))
+    (set-face-attribute 'mode-line-active nil :box `(:line-width ,padding :color ,(face-attribute 'mode-line-active :background nil 'mode-line))))
   (let ((theme 'doom-nord))
     (load-theme theme t)
-    (mpenet/mode-line theme)
-    (enable-theme theme))
+    (enable-theme theme)
+    (mpenet/mode-line 4))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
 
 (use-package hl-line
@@ -651,6 +641,8 @@ want to avoid having the hooks run"
   (global-emojify-mode 1))
 
 (use-package jinx
+  :disabled
+  :diminish
   :hook ((text-mode prog-mode conf-mode) . jinx-mode)
   :bind (("M-j c" . jinx-correct)
          ("M-j l" . jinx-languages)))
@@ -702,3 +694,8 @@ want to avoid having the hooks run"
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
+(use-package repeat
+  :custom (repeat-mode t))
+
+
+
