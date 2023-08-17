@@ -483,37 +483,6 @@ want to avoid having the hooks run"
   :custom (company-quickhelp-use-propertized-text t)
   :config (company-quickhelp-mode))
 
-(use-package corfu
-  :disabled
-  :straight (:files (:defaults "extensions/*"))
-  :custom
-  (corfu-popupinfo-delay '(0.5 . 0.3))
-  (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  (corfu-auto t)                 ;; Enable auto completion
-  (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
-  (corfu-quit-no-match t)        ;; Automatically quit if there is no match
-  (corfu-preselect-first nil)    ;; Disable candidate preselection
-  (corfu-scroll-margin 5)        ;; Use scroll margin
-  :hook ((corfu-mode . corfu-popupinfo-mode))
-  :bind
-  (:map corfu-map
-        ("TAB" . corfu-next)
-        ([tab] . corfu-next)
-        ("<C-return>" . corfu-insert))
-  :init
-  (global-corfu-mode))
-
-(use-package kind-icon
-  :disabled
-  :ensure t
-  :after corfu
-  :custom
-  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
-  (kind-icon-blend-frac 0.24)
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-;; (use-package flymake)
-
 (use-package flymake-diagnostic-at-point
   :after flymake
   :config
