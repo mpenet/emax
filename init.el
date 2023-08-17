@@ -610,7 +610,6 @@ want to avoid having the hooks run"
   (global-emojify-mode 1))
 
 (use-package jinx
-  :disabled
   :diminish
   :hook ((text-mode prog-mode conf-mode) . jinx-mode)
   :bind (("M-j c" . jinx-correct)
