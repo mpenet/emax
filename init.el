@@ -35,7 +35,6 @@
                                           isearch
                                           dired
                                           ;; eglot
-                                          repeat
                                           project
                                           js-mode
                                           flymake
@@ -558,15 +557,18 @@ want to avoid having the hooks run"
 
 (use-package doom-themes
   :config
-  (defun mpenet/mode-line (padding)
-    (set-face-attribute 'mode-line nil :box `(:line-width ,padding :color ,(face-attribute 'mode-line :background)))
-    (set-face-attribute 'mode-line-inactive nil :box `(:line-width ,padding :color ,(face-attribute 'mode-line-active :background nil 'mode-line-inactive) bg))
-    (set-face-attribute 'mode-line-active nil :box `(:line-width ,padding :color ,(face-attribute 'mode-line-active :background nil 'mode-line))))
   (let ((theme 'doom-nord))
     (load-theme theme t)
-    (enable-theme theme)
-    (mpenet/mode-line 4))
+    (enable-theme theme))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
+
+(use-package padded-modeline
+  :straight (padded-modeline :type git
+                             :host github
+                             :repo "mpenet/padded-modeline"
+                             :branch "main")
+  :config
+  (padded-modeline-mode t))
 
 (use-package hl-line
   :config (global-hl-line-mode))
@@ -662,8 +664,5 @@ want to avoid having the hooks run"
                                  (emacs-lisp . t)
                                  (clojure . t)
                                  (python . t))))
-(use-package repeat
-  :custom (repeat-mode t))
-
 
 
