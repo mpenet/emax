@@ -2,7 +2,6 @@
 ;; Author: Max Penet <m@qbits.cc>
 ;; URL: https://github.com/mpenet/emax
 ;; Keywords: emacs config
-
 ;;; Commentary:
 
 ;; Just my Emacs config
@@ -73,7 +72,7 @@
   (menu-bar-mode nil)
   (kill-ring-max 150)
   (browse-url-browser-function 'browse-url-generic)
-  (browse-url-generic-program "google-chrome")
+  (browse-url-generic-program "open")
   (truncate-partial-width-windows nil)
   (backup-inhibited t)
   (make-backup-files nil)
@@ -85,6 +84,7 @@
   (frame-inhibit-implied-resize t)
   (initial-scratch-message nil)
   (initial-major-mode 'fundamental-mode)  ;; skip scratch
+  (package-install-upgrade-built-in t)
   (mouse-yank-at-point t)
   (which-function-mode t)
   (set-mark-command-repeat-pop t)
@@ -106,7 +106,7 @@
   (indent-tabs-mode nil)
   (tab-width 4)
   (fill-column 80)
-  
+
   ;; add the current column number to the mode bar
   (column-number-mode t)
   ;; typed text replaces the selection if the selection is active
@@ -128,6 +128,7 @@
   :bind
   (("M-j" . nil)
    ("M-r" . nil)
+   ("M-c" . nil)   
    ("C-x m" . execute-extended-command)
    ("C-x C-m" . execute-extended-command)
    ("C-M-h" . backward-kill-word)
@@ -196,9 +197,6 @@ want to avoid having the hooks run"
   (ligature-pragmatapro-setup)
   (global-ligature-mode))
 
-(use-package so-long
-  :config (global-so-long-mode 1))
-
 (use-package elec-pair
   :config
   (electric-pair-mode +1))
@@ -238,6 +236,11 @@ want to avoid having the hooks run"
   (isearch-allow-scroll 'unlimited)
   :bind (:map isearch-mode-map
               ("C-c C-o" . isearch-occur)))
+
+(use-package which-key
+  :diminish
+  :config
+  (which-key-mode +1))
 
 (use-package wgrep)
 
@@ -626,6 +629,9 @@ want to avoid having the hooks run"
   :bind (:map eshell-mode-map
               ("C-r" . consult-history)))
 
+(use-package esh-autosuggest
+  :hook (eshell-mode . esh-autosuggest-mode))
+
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
@@ -665,4 +671,13 @@ want to avoid having the hooks run"
                                  (clojure . t)
                                  (python . t))))
 
+(use-package copilot
+  :disabled
+  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
+  :bind (("M-c" . nil)
+         ("M-c M-c" . copilot-complete)         
+         ("M-c M-a" . copilot-accept-completion)         
+         ("M-c M-p" . copilot-next-completion)         
+         ("M-c M-n" . copilot-previous-completion)                                       
+         ("M-c M-g" . copilot-clear-overlay)))
 
