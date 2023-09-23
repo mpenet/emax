@@ -84,7 +84,6 @@
   (frame-inhibit-implied-resize t)
   (initial-scratch-message nil)
   (initial-major-mode 'fundamental-mode)  ;; skip scratch
-  (package-install-upgrade-built-in t)
   (mouse-yank-at-point t)
   (which-function-mode t)
   (set-mark-command-repeat-pop t)
@@ -320,7 +319,6 @@ want to avoid having the hooks run"
   :custom
   (project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
   (project-switch-commands #'project-find-file)
-  
   :bind (("C-x f" . project-find-file)))
 
 (use-package hl-todo
@@ -441,6 +439,7 @@ want to avoid having the hooks run"
   :commands (eglot eglot-ensure)
   :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
   :custom
+  (eglot-sync-connect nil)
   (eglot-autoshutdown t)
   (eglot-confirm-server-initiated-edits nil)
   (eglot-extend-to-xref t)
@@ -566,10 +565,12 @@ want to avoid having the hooks run"
   (set-face-attribute 'compilation-warning nil :slant 'normal))
 
 (use-package padded-modeline
-  :straight (padded-modeline :type git
-                             :host github
-                             :repo "mpenet/padded-modeline"
-                             :branch "main")
+  :straight
+  (padded-modeline :type git
+                   :host github
+                   :repo "mpenet/padded-modeline"
+                   :branch "main")
+  :custom (padded-modeline-padding 6)
   :config
   (padded-modeline-mode t))
 
