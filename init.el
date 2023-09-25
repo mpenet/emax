@@ -321,6 +321,10 @@ want to avoid having the hooks run"
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
+(use-package nerd-icons-ibuffer
+  :straight (nerd-icons-ibuffer :type git :host github :repo "seagle0128/nerd-icons-ibuffer")  
+  :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
+
 (use-package project
   :custom
   (project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
@@ -566,6 +570,8 @@ want to avoid having the hooks run"
 (use-package doom-modeline
   :custom
   (doom-modeline-checker-simple-format nil) ; show full flymake info
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-indent-info nil)
   :init (doom-modeline-mode 1))
 
 (use-package minions
