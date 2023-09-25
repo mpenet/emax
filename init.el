@@ -437,9 +437,7 @@ want to avoid having the hooks run"
 (use-package breadcrumb
   :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
   :config
-  (breadcrumb-mode)
-  ;; (setq which-func-functions #'(breadcrumb-imenu-crumbs))
-  )
+  (breadcrumb-mode))
 
 ;;; eglot
 
