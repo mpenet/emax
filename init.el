@@ -308,12 +308,18 @@ want to avoid having the hooks run"
   :init
   (marginalia-mode))
 
-(use-package all-the-icons)
+(use-package nerd-icons)
 
-(use-package all-the-icons-completion
+(use-package nerd-icons-completion
+  :straight (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
   :config
-  (all-the-icons-completion-mode)
-  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
+  (nerd-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-dired
+  :straight (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
 
 (use-package project
   :custom
@@ -557,6 +563,16 @@ want to avoid having the hooks run"
 
 (use-package clojure-snippets)
 
+(use-package doom-modeline
+  :custom
+  (doom-modeline-checker-simple-format nil) ; show full flymake info
+  :init (doom-modeline-mode 1))
+
+(use-package minions
+  :disabled
+  :custom (minions-prominent-modes '(flymake-mode))
+  :config (minions-mode 1))
+    
 (use-package doom-themes
   :config
   (let ((theme 'doom-nord))
@@ -565,6 +581,7 @@ want to avoid having the hooks run"
   (set-face-attribute 'compilation-warning nil :slant 'normal))
 
 (use-package padded-modeline
+  :disabled   
   :straight
   (padded-modeline :type git
                    :host github
