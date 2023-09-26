@@ -141,8 +141,6 @@
    ("C-x ," . split-window-below)
    ("C-x ." . split-window-right)
    ("C-x l" . delete-window)
-   ("C-x r" . query-replace)
-   ("C-x r" . query-replace)
    ("C-x C-r" . query-replace)
    ("M-i" . hippie-expand)
    ("M-i" . hippie-expand)
@@ -280,8 +278,6 @@ want to avoid having the hooks run"
   :bind (("C-t" . consult-line)
          ("C-x b" . consult-buffer)
          ("M-g M-g" . consult-goto-line)
-         ;; ("C-x C-SPC" . consult-global-mark) ; just use default
-         ("C-c C-SPC" . consult-global-mark)
          ("C-x C-g" . consult-git-grep)
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
