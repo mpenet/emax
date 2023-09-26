@@ -223,8 +223,9 @@ want to avoid having the hooks run"
   (winner-mode)
   :bind (("C-x C-u" . winner-undo)
          ("C-x u" . winner-undo)
-         ("C-x C-j" . winner-redo)
-         ("C-x j" . winner-redo)))
+         ;; ("C-x C-j" . winner-redo)
+         ;; ("C-x j" . winner-redo)
+         ))
 
 (use-package isearch
   :custom
@@ -283,7 +284,7 @@ want to avoid having the hooks run"
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
          ("M-j M-f" . consult-flymake)
-         ("C-x r l" . consult-bookmark)))
+         ("C-x j" . consult-bookmark)))
 
 (use-package embark
   :config
