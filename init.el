@@ -222,10 +222,7 @@ want to avoid having the hooks run"
   :config
   (winner-mode)
   :bind (("C-x C-u" . winner-undo)
-         ("C-x u" . winner-undo)
-         ;; ("C-x C-j" . winner-redo)
-         ;; ("C-x j" . winner-redo)
-         ))
+         ("C-x u" . winner-undo)))
 
 (use-package isearch
   :custom
