@@ -33,6 +33,7 @@
       straight-built-in-pseudo-packages '(which-function-mode
                                           isearch
                                           dired
+                                          bookmark
                                           ;; eglot
                                           project
                                           js-mode
@@ -281,7 +282,8 @@ want to avoid having the hooks run"
          ("C-x C-g" . consult-git-grep)
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
-         ("M-j M-f" . consult-flymake)))
+         ("M-j M-f" . consult-flymake)
+         ("C-x r l" . consult-bookmark)))
 
 (use-package embark
   :config
@@ -434,6 +436,19 @@ want to avoid having the hooks run"
   :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
   :config
   (breadcrumb-mode))
+
+(use-package bookmark
+  :config
+  (defun mpenet--bookmark-set ()
+    (interactive)
+    (bookmark-set-internal nil
+                           (concat (buffer-name) " "
+                                   (which-function) " "
+                                   (number-to-string (line-number-at-pos)) ":"
+                                   (number-to-string (current-column)))
+                           'overwrite))
+  :bind (("C-x r r" . mpenet--bookmark-set)
+         ("C-x r d" . bookmark-delete)))
 
 ;;; eglot
 
