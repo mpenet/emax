@@ -224,6 +224,9 @@ want to avoid having the hooks run"
   :bind (("C-x C-u" . winner-undo)
          ("C-x u" . winner-undo)))
 
+(use-package ws-butler
+  :hook ((prog-mode . ws-butler-mode)))
+
 (use-package isearch
   :custom
   (isearch-lazy-count t)
@@ -240,14 +243,11 @@ want to avoid having the hooks run"
 
 (use-package wgrep)
 
-;; Use the `orderless' completion style.
-;; Enable `partial-completion' for files to allow path expansion.
-;; You may prefer to use `initials' instead of `partial-completion'.
 (use-package orderless
   :custom
-  (completion-styles '(orderless))
+  (completion-styles '(orderless basic))
   (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles . (partial-completion))))))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -360,12 +360,6 @@ want to avoid having the hooks run"
 
 (use-package gist)
 
-(use-package cape
-  :init
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
@@ -375,6 +369,24 @@ want to avoid having the hooks run"
   :custom (eldoc-echo-area-use-multiline-p nil)
   :straight (eldoc :source gnu-elpa-mirror)
   :diminish)
+
+(use-package breadcrumb
+  :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
+  :config
+  (breadcrumb-mode))
+
+(use-package bookmark
+  :config
+  (defun mpenet--bookmark-set ()
+    (interactive)
+    (bookmark-set-internal nil
+                           (concat (buffer-name) " "
+                                   (which-function) " "
+                                   (number-to-string (line-number-at-pos)) ":"
+                                   (number-to-string (current-column)))
+                           'overwrite))
+  :bind (("C-x r r" . mpenet--bookmark-set)
+         ("C-x r d" . bookmark-delete)))
 
 (use-package paredit
   :init
@@ -410,6 +422,13 @@ want to avoid having the hooks run"
   :config
   (add-hook 'clojure-mode-hook #'paredit-mode))
 
+(use-package cape
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword))
+
 (use-package cider
   :diminish
   :custom
@@ -423,30 +442,27 @@ want to avoid having the hooks run"
   :config
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   ;; use lsp
-  (add-hook 'cider-mode-hook
-            (lambda ()
-              (remove-hook 'completion-at-point-functions #'cider-complete-at-point t)))
+  ;; (add-hook 'cider-mode-hook
+  ;;           (lambda ()
+  ;;             (remove-hook 'completion-at-point-functions #'cider-complete-at-point t)))
+  (defun +eglot-completion-at-point ()
+    (when (boundp 'eglot-completion-at-point)
+      (funcall 'eglot-completion-at-point)))
+  
+  (defalias 'cape-cider-eglot
+    (cape-super-capf #'cider-complete-at-point
+                     #'+eglot-completion-at-point))
+
+  (defun mpenet/cider-capf ()
+    (add-to-list 'completion-at-point-functions
+                 #'cape-cider-eglot))
+ 
+  :hook ((cider-mode . mpenet/cider-capf)
+         (cider-repl-mode . mpenet/cider-capf)
+         (cider-repl-mode . company-mode))
   :bind (:map cider-mode-map
               ("C-c C-d" . cider-debug-defun-at-point)
               ("C-c d" . cider-debug-defun-at-point)))
-
-(use-package breadcrumb
-  :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
-  :config
-  (breadcrumb-mode))
-
-(use-package bookmark
-  :config
-  (defun mpenet--bookmark-set ()
-    (interactive)
-    (bookmark-set-internal nil
-                           (concat (buffer-name) " "
-                                   (which-function) " "
-                                   (number-to-string (line-number-at-pos)) ":"
-                                   (number-to-string (current-column)))
-                           'overwrite))
-  :bind (("C-x r r" . mpenet--bookmark-set)
-         ("C-x r d" . bookmark-delete)))
 
 ;;; eglot
 
