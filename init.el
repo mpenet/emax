@@ -37,7 +37,6 @@
                                           ;; eglot
                                           project
                                           js-mode
-                                          flymake
                                           uniquify
                                           inferior-lisp
                                           visual-line-mode))
@@ -517,10 +516,9 @@ want to avoid having the hooks run"
   :custom (company-quickhelp-use-propertized-text t)
   :config (company-quickhelp-mode))
 
-(use-package flymake-diagnostic-at-point
-  :after flymake
-  :config
-  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode))
+(use-package flymake
+  :custom-face (flymake-end-of-line-diagnostics-face ((t :height 0.8 :box nil :slant italic)))
+  :custom (flymake-show-diagnostics-at-end-of-line t))
 
 (use-package js-mode
   :defer t
@@ -601,7 +599,7 @@ want to avoid having the hooks run"
   :disabled
   :custom (minions-prominent-modes '(flymake-mode))
   :config (minions-mode 1))
-    
+
 (use-package doom-themes
   :config
   (let ((theme 'doom-nord))
@@ -684,6 +682,18 @@ want to avoid having the hooks run"
   (exec-path-from-shell-initialize))
 
 (use-package sudo-edit)
+
+(use-package eat
+  :straight (:type git
+                   :host codeberg
+                   :repo "akib/emacs-eat"
+                   :files ("*.el" ("term" "term/*.el") "*.texi"
+                           "*.ti" ("terminfo/e" "terminfo/e/*")
+                           ("terminfo/65" "terminfo/65/*")
+                           ("integration" "integration/*")
+                           (:exclude ".dir-locals.el" "*-tests.el")))
+  :hook ((eshell-mode . eat-eshell-mode)
+         (eshell-mode . eat-eshell-visual-command-mode)))
 
 (use-package org-modern
   :custom (org-startup-indented t)
