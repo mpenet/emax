@@ -518,7 +518,7 @@ want to avoid having the hooks run"
 
 (use-package flymake
   :custom-face (flymake-end-of-line-diagnostics-face ((t :height 0.8 :box nil :slant italic)))
-  :custom (flymake-show-diagnostics-at-end-of-line t))
+  :custom (flymake-show-diagnostics-at-end-of-line 'short))
 
 (use-package js-mode
   :defer t
