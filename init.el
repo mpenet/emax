@@ -237,6 +237,9 @@ want to avoid having the hooks run"
 
 (use-package which-key
   :diminish
+  :custom
+  (which-key-idle-delay 3000)
+  (which-key-idle-secondary-delay 0.05)
   :config
   (which-key-mode +1))
 
@@ -682,18 +685,6 @@ want to avoid having the hooks run"
   (exec-path-from-shell-initialize))
 
 (use-package sudo-edit)
-
-(use-package eat
-  :straight (:type git
-                   :host codeberg
-                   :repo "akib/emacs-eat"
-                   :files ("*.el" ("term" "term/*.el") "*.texi"
-                           "*.ti" ("terminfo/e" "terminfo/e/*")
-                           ("terminfo/65" "terminfo/65/*")
-                           ("integration" "integration/*")
-                           (:exclude ".dir-locals.el" "*-tests.el")))
-  :hook ((eshell-mode . eat-eshell-mode)
-         (eshell-mode . eat-eshell-visual-command-mode)))
 
 (use-package org-modern
   :custom (org-startup-indented t)
