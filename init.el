@@ -63,7 +63,7 @@
   :custom
   (load-prefer-newer t)
   (warning-minimum-level :error)
-  (gc-cons-threshold 50000000)
+  (gc-cons-threshold 100000000)
   (read-process-output-max (* 1024 1024))
   (auto-window-vscroll nil)
   (large-file-warning-threshold 100000000)
@@ -110,7 +110,6 @@
   (column-number-mode t)
   ;; typed text replaces the selection if the selection is active
   (delete-selection-mode t)
-  (pixel-scroll-precision-mode t)
   (set-language-environment "UTF-8")
   (cursor-in-non-selected-windows nil)
   ;; case insensitive searches
@@ -331,7 +330,7 @@ want to avoid having the hooks run"
 
 (use-package hl-todo
   :custom (hl-todo-highlight-punctuation ":")
-  (global-hl-todo-mode))
+  :config (global-hl-todo-mode))
 
 (use-package dired
   :custom
@@ -452,7 +451,7 @@ want to avoid having the hooks run"
       (funcall 'eglot-completion-at-point)))
   
   (defalias 'cape-cider-eglot
-    (cape-super-capf #'cider-complete-at-point
+    (cape-capf-super #'cider-complete-at-point
                      #'+eglot-completion-at-point))
 
   (defun mpenet/cider-capf ()
@@ -482,7 +481,9 @@ want to avoid having the hooks run"
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
-         (before-save . eglot-format-buffer))
+         (before-save . (lambda ()
+                          (when (eglot-managed-p)
+                            (eglot-format-buffer)))))
 
   :bind (:map eglot-mode-map
               ("M-l M-l" . eglot-code-actions))
@@ -622,6 +623,7 @@ want to avoid having the hooks run"
   (padded-modeline-mode t))
 
 (use-package hl-line
+  :disabled true
   :config (global-hl-line-mode))
 
 (use-package symbol-overlay
@@ -688,22 +690,8 @@ want to avoid having the hooks run"
 
 (use-package org-modern
   :custom (org-startup-indented t)
-  :after org-roam
+  :after org
   :hook (org-mode . org-modern-mode))
-
-(use-package org-roam
-  :custom
-  (org-roam-v2-ack t)
-  (org-roam-directory "~/.roam")
-  (org-roam-completion-everywhere t)
-  :bind (("M-r M-r" . org-roam-node-find)
-         ("M-r l" . org-roam-buffer-toggle)
-         ("M-r i" . org-roam-node-insert)
-         ("M-r c" . org-roam-capture)
-         :map org-mode-map
-         ("C-M-i"    . completion-at-point))
-  :config
-  (org-roam-setup))
 
 (use-package org
   :custom
@@ -728,4 +716,21 @@ want to avoid having the hooks run"
          ("M-c M-p" . copilot-next-completion)         
          ("M-c M-n" . copilot-previous-completion)                                       
          ("M-c M-g" . copilot-clear-overlay)))
+
+(use-package rustic
+  :init
+  (defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
+  )
+  :config
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+
 
