@@ -155,7 +155,10 @@
   (set-face-attribute 'default nil
                       :font "PragmataPro Mono Liga"
                       :weight 'normal
-                      :height 150)
+                      :height (let ((w (x-display-pixel-width)))
+                                (cond ((>= w 3456) 180) ; mbp screen
+                                      ((>= w 3272) 160) ; plugged
+                                      (t 180)))) ;; default
 
   ;; full screen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -218,7 +221,7 @@ want to avoid having the hooks run"
   :custom 
   (winner-dont-bind-my-keys t)
   :config
-  (winner-mode)
+  (winner-mode +1)
   :bind (("C-x C-u" . winner-undo)
          ("C-x u" . winner-undo)))
 
@@ -732,5 +735,22 @@ want to avoid having the hooks run"
   (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
+(use-package slime
+  :config
+  (setq slime-lisp-implementations
+        '((sbcl  ("/opt/homebrew/bin/sbcl" "--dynamic-space-size" "2GB")
+                 :coding-system utf-8-unix))
+        inferior-lisp-program "sbcl")
+  :custom
+  (slime-contribs '(slime-fancy slime-company slime-asdf slime-repl
+                                slime-scratch slime-trace-dialog))
+  (slime-complete-symbol*-fancy t)
+  (slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
+
+(use-package slime-company
+  :defer t ; important, slime does it for us
+  :custom
+  (slime-company-completion 'fuzzy)
+  (slime-company-after-completion 'slime-company-just-one-space))
 
 
