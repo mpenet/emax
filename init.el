@@ -122,6 +122,8 @@
   (read-extended-command-predicate
    #'command-completion-default-include-p)
   (custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (inferior-lisp-program "/opt/homebrew/bin/sbcl")
+
 
   :bind
   (("M-j" . nil)
@@ -375,6 +377,7 @@ want to avoid having the hooks run"
   :diminish)
 
 (use-package breadcrumb
+  :disabled
   :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
   :config
   (breadcrumb-mode))
@@ -464,9 +467,13 @@ want to avoid having the hooks run"
   :hook ((cider-mode . mpenet/cider-capf)
          (cider-repl-mode . mpenet/cider-capf)
          (cider-repl-mode . company-mode))
-  :bind (:map cider-mode-map
-              ("C-c C-d" . cider-debug-defun-at-point)
-              ("C-c d" . cider-debug-defun-at-point)))
+  :bind (:map
+         cider-mode-map
+         ("C-c C-d" . cider-debug-defun-at-point)
+         ("C-c d" . cider-debug-defun-at-point)
+         :map
+         cider-repl-mode-map
+         ("C-j" . nil)))
 
 ;;; eglot
 
@@ -625,10 +632,6 @@ want to avoid having the hooks run"
   :config
   (padded-modeline-mode t))
 
-(use-package hl-line
-  :disabled true
-  :config (global-hl-line-mode))
-
 (use-package symbol-overlay
   :custom-face
   (symbol-overlay-face-1 ((t (:background "dodger blue" :foreground "black"))))
@@ -735,22 +738,28 @@ want to avoid having the hooks run"
   (setq rustic-format-on-save t)
   (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
 
-(use-package slime
-  :config
-  (setq slime-lisp-implementations
-        '((sbcl  ("/opt/homebrew/bin/sbcl" "--dynamic-space-size" "2GB")
-                 :coding-system utf-8-unix))
-        inferior-lisp-program "sbcl")
-  :custom
-  (slime-contribs '(slime-fancy slime-company slime-asdf slime-repl
-                                slime-scratch slime-trace-dialog))
-  (slime-complete-symbol*-fancy t)
-  (slime-complete-symbol-function 'slime-fuzzy-complete-symbol))
+(use-package sly)
 
-(use-package slime-company
-  :defer t ; important, slime does it for us
-  :custom
-  (slime-company-completion 'fuzzy)
-  (slime-company-after-completion 'slime-company-just-one-space))
+(use-package popper
+  :bind (("C-h"   . popper-toggle)
+         ("C-j"   . popper-cycle)
+         ("C-M-j" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers '("\\*Messages\\*"
+                                   "\\*eshell\\*"
+                                   "Output\\*$"
+                                   "\\*Async Shell Command\\*"
+                                   sly-mrepl-mode
+                                   cider-repl-mode
+                                   help-mode
+                                   compilation-mode)
+        popper-group-function #'popper-group-by-project
+        ;; popper-display-control 'user
+        popper-echo-dispatch-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)
+        popper-echo-dispatch-actions t)
+  (popper-mode +1)
+  (popper-echo-mode +1))
+
+(use-package gptel)
 
 
