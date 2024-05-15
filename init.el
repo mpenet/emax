@@ -485,9 +485,9 @@ want to avoid having the hooks run"
   :custom
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
-  (eglot-confirm-server-initiated-edits nil)
+  (eglot-confirm-server-edits nil)
   (eglot-extend-to-xref t)
-  (eglot-events-buffer 0)
+  (eglot-events-buffer-config '(:size 0))
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
@@ -501,7 +501,8 @@ want to avoid having the hooks run"
   ;; (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
   (diminish 'eldoc-mode)
   (advice-add 'eglot--format-markup
-              :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args)))))
+              :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args))))
+  (fset #'jsonrpc--log-event #'ignore))
 
 (use-package jarchive
   :straight (jarchive :type git
@@ -509,6 +510,11 @@ want to avoid having the hooks run"
                       :repo "https://git.sr.ht/~dannyfreeman/jarchive")
   :hook ((clojure-mode . jarchive-setup)
          (clojurec-mode . jarchive-setup)))
+
+(use-package eglot-booster
+    :straight (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
+	:after eglot
+	:config	(eglot-booster-mode))
 
 (use-package company
   :diminish
@@ -604,7 +610,7 @@ want to avoid having the hooks run"
 
 (use-package doom-modeline
   :custom
-  (doom-modeline-checker-simple-format nil) ; show full flymake info
+  (doom-modeline-check-simple-format t) ; show full flymake info
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-indent-info nil)
   :init (doom-modeline-mode 1))
@@ -671,6 +677,7 @@ want to avoid having the hooks run"
   (global-emojify-mode 1))
 
 (use-package jinx
+  :disabled
   :diminish
   :hook ((text-mode prog-mode conf-mode) . jinx-mode)
   :bind (("M-j c" . jinx-correct)
@@ -754,12 +761,9 @@ want to avoid having the hooks run"
                                    help-mode
                                    compilation-mode)
         popper-group-function #'popper-group-by-project
-        ;; popper-display-control 'user
         popper-echo-dispatch-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9)
         popper-echo-dispatch-actions t)
   (popper-mode +1)
   (popper-echo-mode +1))
 
 (use-package gptel)
-
-
