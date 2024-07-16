@@ -337,6 +337,9 @@ want to avoid having the hooks run"
   :custom (hl-todo-highlight-punctuation ":")
   :config (global-hl-todo-mode))
 
+(use-package solaire-mode
+  :config (solaire-global-mode))
+
 (use-package dired
   :custom
   (dired-recursive-deletes 'always)
@@ -414,12 +417,13 @@ want to avoid having the hooks run"
   ;; (define-key paredit-mode-map (kbd "C-j") nil)
   :bind (:map paredit-mode-map
               ("C-M-h" . paredit-backward-kill-word)
-              ;; ("C-h" . my-paredit-delete)
+              ("C-h" . my-paredit-delete)
               ("<delete>" . my-paredit-delete)
               ("DEL" . my-paredit-delete)
               ("RET" . nil)
               ("M-r" . nil)
-              ("C-j" . nil))
+              ("C-j" . nil)
+              ("C-M-j"))
   :diminish)
 
 (use-package clojure-mode
@@ -627,17 +631,6 @@ want to avoid having the hooks run"
     (enable-theme theme))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
 
-(use-package padded-modeline
-  :disabled   
-  :straight
-  (padded-modeline :type git
-                   :host github
-                   :repo "mpenet/padded-modeline"
-                   :branch "main")
-  :custom (padded-modeline-padding 6)
-  :config
-  (padded-modeline-mode t))
-
 (use-package symbol-overlay
   :custom-face
   (symbol-overlay-face-1 ((t (:background "dodger blue" :foreground "black"))))
@@ -730,27 +723,13 @@ want to avoid having the hooks run"
          ("M-c M-n" . copilot-previous-completion)                                       
          ("M-c M-g" . copilot-clear-overlay)))
 
-(use-package rustic
-  :init
-  (defun rk/rustic-mode-hook ()
-  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
-  ;; save rust buffers that are not file visiting. Once
-  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
-  ;; no longer be necessary.
-  (when buffer-file-name
-    (setq-local buffer-save-without-query t))
-  ;; (add-hook 'before-save-hook 'lsp-format-buffer nil t)
-  )
-  :config
-  (setq rustic-format-on-save t)
-  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
-
 (use-package sly)
+(use-package sly-overlay)
 
 (use-package popper
-  :bind (("C-h"   . popper-toggle)
-         ("C-j"   . popper-cycle)
-         ("C-M-j" . popper-toggle-type))
+  :bind (("C-j"   . popper-toggle)
+         ("C-M-j"   . popper-cycle)
+         ("C-M-t" . popper-toggle-type))
   :init
   (setq popper-reference-buffers '("\\*Messages\\*"
                                    "\\*eshell\\*"
