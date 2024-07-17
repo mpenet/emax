@@ -35,6 +35,7 @@
                                           dired
                                           bookmark
                                           ;; eglot
+                                          org
                                           project
                                           js-mode
                                           uniquify
@@ -369,7 +370,6 @@ want to avoid having the hooks run"
 
 (use-package gist)
 
-
 (use-package expand-region
   :bind (("C-o" . er/expand-region)
          ("C-M-o" . er/contract-region)))
@@ -378,12 +378,6 @@ want to avoid having the hooks run"
   :custom (eldoc-echo-area-use-multiline-p nil)
   :straight (eldoc :source gnu-elpa-mirror)
   :diminish)
-
-(use-package breadcrumb
-  :disabled
-  :straight (breadcrumb :type git :host github :repo "joaotavora/breadcrumb")
-  :config
-  (breadcrumb-mode))
 
 (use-package bookmark
   :config
@@ -527,8 +521,11 @@ want to avoid having the hooks run"
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
          ("TAB" . company-complete-selection))
-  
   :custom
+  (company-frontends '(company-pseudo-tooltip-unless-just-one-frontend
+                       ;; company-preview-if-just-one-frontend
+                       company-preview-frontend
+                       company-echo-metadata-frontend))
   (company-tooltip-align-annotations t)
   (company-minimum-prefix-length 3)
   (company-require-match nil)
@@ -713,17 +710,8 @@ want to avoid having the hooks run"
                                  (clojure . t)
                                  (python . t))))
 
-(use-package copilot
-  :disabled
-  :straight (:host github :repo "zerolfx/copilot.el" :files ("dist" "*.el"))
-  :bind (("M-c" . nil)
-         ("M-c M-c" . copilot-complete)         
-         ("M-c M-a" . copilot-accept-completion)         
-         ("M-c M-p" . copilot-next-completion)         
-         ("M-c M-n" . copilot-previous-completion)                                       
-         ("M-c M-g" . copilot-clear-overlay)))
-
 (use-package sly)
+
 (use-package sly-overlay)
 
 (use-package popper
