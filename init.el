@@ -622,11 +622,22 @@ want to avoid having the hooks run"
   :config (minions-mode 1))
 
 (use-package doom-themes
+  :disabled
   :config
   (let ((theme 'doom-nord))
     (load-theme theme t)
     (enable-theme theme))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
+
+(use-package kaolin-themes
+  :straight (kaolin-themes :type git :host github :repo "mpenet/emacs-kaolin-themes" :branch "mpenet/devel")
+  :custom
+  (kaolin-themes-modeline-border nil)
+  (kaolin-themes-italic-comments t)
+  (kaolin-themes-distinct-fringe t)
+  (kaolin-mono-dark-alt-bg t)
+  :config
+  (load-theme 'kaolin-mono-dark t))
 
 (use-package symbol-overlay
   :custom-face
