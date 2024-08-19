@@ -634,7 +634,6 @@ want to avoid having the hooks run"
   :custom
   (kaolin-themes-modeline-border nil)
   (kaolin-themes-italic-comments t)
-  (kaolin-themes-distinct-fringe t)
   (kaolin-mono-dark-alt-bg t)
   :config
   (load-theme 'kaolin-mono-dark t))
