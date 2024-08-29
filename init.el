@@ -62,6 +62,9 @@
 
 (use-package emacs
   :custom
+  (epg-gpg-program "/opt/homebrew/bin/gpg")
+  (epg-gpg-home-directory "~/.gnupg/")
+  (auth-sources '("~/.authinfo"))
   (load-prefer-newer t)
   (warning-minimum-level :error)
   (gc-cons-threshold 100000000)
@@ -190,7 +193,11 @@ want to avoid having the hooks run"
 
   ;; config changes made through the customize UI will be stored here
   (when (file-exists-p custom-file)
-    (load custom-file)))
+    (load custom-file))
+  :config
+  (let ((personal-file "~/.personal.el.gpg"))
+    (when (file-exists-p personal-file)
+      (load-library personal-file))))
 
 (use-package diminish)
 
@@ -221,7 +228,7 @@ want to avoid having the hooks run"
   :hook ((org-mode . visual-fill-column-mode)))
 
 (use-package winner
-  :custom 
+  :custom
   (winner-dont-bind-my-keys t)
   :config
   (winner-mode +1)
