@@ -34,6 +34,7 @@
                                           isearch
                                           dired
                                           bookmark
+                                          vc
                                           ;; eglot
                                           org
                                           project
@@ -57,8 +58,8 @@
 
 (straight-use-package 'use-package)
 
-
 ;;; Packages
+
 
 (use-package emacs
   :custom
@@ -89,7 +90,7 @@
   (initial-scratch-message nil)
   (initial-major-mode 'fundamental-mode)  ;; skip scratch
   (mouse-yank-at-point t)
-  (which-function-mode t)
+  ;; (which-function-mode t)
   (set-mark-command-repeat-pop t)
   (completion-cycle-threshold 3)
   ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
@@ -236,6 +237,7 @@ want to avoid having the hooks run"
          ("C-x u" . winner-undo)))
 
 (use-package ws-butler
+  :diminish
   :hook ((prog-mode . ws-butler-mode)))
 
 (use-package isearch
@@ -371,6 +373,16 @@ want to avoid having the hooks run"
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
+
+(use-package vc
+  :config
+  (defadvice vc-mode-line (after strip-backend () activate)
+    (when (stringp vc-mode)
+      (let ((noback (replace-regexp-in-string
+                     (format "^ %s-" (vc-backend buffer-file-name))
+                     " "
+                     vc-mode)))
+        (setq vc-mode noback)))))
 
 (use-package autorevert
   :diminish auto-revert-mode)
@@ -510,6 +522,7 @@ want to avoid having the hooks run"
   (fset #'jsonrpc--log-event #'ignore))
 
 (use-package jarchive
+  :diminish
   :straight (jarchive :type git
                       :host nil
                       :repo "https://git.sr.ht/~dannyfreeman/jarchive")
@@ -546,7 +559,9 @@ want to avoid having the hooks run"
 
 (use-package flymake
   :custom-face (flymake-end-of-line-diagnostics-face ((t :height 0.8 :box nil :slant italic)))
-  :custom (flymake-show-diagnostics-at-end-of-line 'short))
+  :custom
+  (flymake-show-diagnostics-at-end-of-line 'short)
+  (flymake-mode-line-lighter ""))
 
 (use-package js-mode
   :defer t
@@ -617,16 +632,12 @@ want to avoid having the hooks run"
 (use-package clojure-snippets)
 
 (use-package doom-modeline
+  :disabled
   :custom
   (doom-modeline-check-simple-format t) ; show full flymake info
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-indent-info nil)
   :init (doom-modeline-mode 1))
-
-(use-package minions
-  :disabled
-  :custom (minions-prominent-modes '(flymake-mode))
-  :config (minions-mode 1))
 
 (use-package doom-themes
   :disabled
@@ -635,6 +646,18 @@ want to avoid having the hooks run"
     (load-theme theme t)
     (enable-theme theme))
   (set-face-attribute 'compilation-warning nil :slant 'normal))
+
+(use-package padded-modeline
+  :after doom-themes
+  :straight (padded-modeline :type git
+                             :host github
+                             :repo "mpenet/padded-modeline"
+                             :branch "main")
+  :config
+  (padded-modeline-mode t))
+
+(use-package breadcrumb
+  :config (breadcrumb-mode))
 
 (use-package kaolin-themes
   :straight (kaolin-themes :type git :host github :repo "mpenet/emacs-kaolin-themes" :branch "mpenet/devel")
@@ -750,4 +773,24 @@ want to avoid having the hooks run"
   (popper-mode +1)
   (popper-echo-mode +1))
 
-(use-package gptel)
+(use-package gptel
+  :config
+  (setq gptel-model "gemini-pro"
+        gptel-backend (gptel-make-gemini "Gemini"
+                        :key gptel-gemini-api-key
+                        :stream t)))
+
+(use-package copilot
+  :config
+  (defun mpenet/copilot-complete-or-accept ()
+    (interactive)
+    (if (copilot--overlay-visible)
+        (progn
+          (copilot-accept-completion))
+      (copilot-complete)))
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :bind (("C-M-c" . mpenet/copilot-complete-or-accept)
+         (:map copilot-mode-map
+               ("C-c C-p" . copilot-previous-completion)
+               ("C-c C-n" . copilot-next-completion)
+               ("C-c g" . copilot-clear-overlay))))
