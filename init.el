@@ -281,6 +281,10 @@ want to avoid having the hooks run"
   :custom (xref-prompt-for-identifier nil))
 
 (use-package consult
+  :preface
+  (defun mpenet/consult-flymake-project ()
+    (interactive)
+    (consult-flymake t))
   :custom 
   ;; Use Consult to select xref locations with preview
   (xref-show-xrefs-function #'consult-xref)
@@ -296,7 +300,7 @@ want to avoid having the hooks run"
          ("C-x C-g" . consult-git-grep)
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
-         ("M-j M-f" . consult-flymake)
+         ("M-j M-f" . mpenet/consult-flymake-project)
          ("C-x j" . consult-bookmark)))
 
 (use-package embark
@@ -341,6 +345,8 @@ want to avoid having the hooks run"
   :custom
   (project-ignores '("\\.clj-kondo" "\\.cpcache" "*\\.cp"))
   (project-switch-commands #'project-find-file)
+  ;; NEW
+  ;; (project-mode-line t)
   :bind (("C-x f" . project-find-file)))
 
 (use-package hl-todo
@@ -357,13 +363,9 @@ want to avoid having the hooks run"
   ;; if there is a dired buffer displayed in the next window, use its
   ;; current subdir, instead of the current subdir of this dired buffer
   (dired-dwim-target nil)
-  
   :config
   ;; dired - reuse current buffer by pressing 'a'
   (put 'dired-find-alternate-file 'disabled nil)
-
-
-
   ;; enable some really cool extensions like C-x C-j(dired-jump)
   (require 'dired-x))
 
@@ -374,15 +376,9 @@ want to avoid having the hooks run"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
-(use-package vc
-  :config
-  (defadvice vc-mode-line (after strip-backend () activate)
-    (when (stringp vc-mode)
-      (let ((noback (replace-regexp-in-string
-                     (format "^ %s-" (vc-backend buffer-file-name))
-                     " "
-                     vc-mode)))
-        (setq vc-mode noback)))))
+(use-package magit-todos
+  :after magit
+  :config (magit-todos-mode 1))
 
 (use-package autorevert
   :diminish auto-revert-mode)
@@ -559,6 +555,7 @@ want to avoid having the hooks run"
 
 (use-package flymake
   :custom-face (flymake-end-of-line-diagnostics-face ((t :height 0.8 :box nil :slant italic)))
+  :bind ("C-x p l" . flymake-show-project-diagnostics)
   :custom
   (flymake-show-diagnostics-at-end-of-line 'short)
   (flymake-mode-line-lighter ""))
@@ -638,14 +635,6 @@ want to avoid having the hooks run"
   (doom-modeline-buffer-encoding nil)
   (doom-modeline-indent-info nil)
   :init (doom-modeline-mode 1))
-
-(use-package doom-themes
-  :disabled
-  :config
-  (let ((theme 'doom-nord))
-    (load-theme theme t)
-    (enable-theme theme))
-  (set-face-attribute 'compilation-warning nil :slant 'normal))
 
 (use-package padded-modeline
   :after doom-themes
@@ -794,3 +783,9 @@ want to avoid having the hooks run"
                ("C-c C-p" . copilot-previous-completion)
                ("C-c C-n" . copilot-next-completion)
                ("C-c g" . copilot-clear-overlay))))
+
+
+(use-package indent-bars
+  :disabled
+  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
+  :hook ((prog-mode) . indent-bars-mode))
