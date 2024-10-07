@@ -376,10 +376,6 @@ want to avoid having the hooks run"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
-(use-package magit-todos
-  :after magit
-  :config (magit-todos-mode 1))
-
 (use-package autorevert
   :diminish auto-revert-mode)
 
@@ -462,15 +458,16 @@ want to avoid having the hooks run"
   :config
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
   ;; use lsp
-  ;; (add-hook 'cider-mode-hook
-  ;;           (lambda ()
-  ;;             (remove-hook 'completion-at-point-functions #'cider-complete-at-point t)))
+  (add-hook 'cider-mode-hook
+            (lambda ()
+              (remove-hook 'completion-at-point-functions #'cider-complete-at-point t)))
+
   (defun +eglot-completion-at-point ()
     (when (boundp 'eglot-completion-at-point)
       (funcall 'eglot-completion-at-point)))
-  
+
   (defalias 'cape-cider-eglot
-    (cape-capf-super #'cider-complete-at-point
+    (cape-capf-super ;; #'cider-complete-at-point
                      #'+eglot-completion-at-point))
 
   (defun mpenet/cider-capf ()
