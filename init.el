@@ -457,26 +457,23 @@ want to avoid having the hooks run"
                 ((t (:box (:line-width -1 :color "orange")))))
   :config
   (add-hook 'cider-repl-mode-hook #'paredit-mode)
-  ;; use lsp
-  (add-hook 'cider-mode-hook
-            (lambda ()
-              (remove-hook 'completion-at-point-functions #'cider-complete-at-point t)))
 
-  (defun +eglot-completion-at-point ()
+  (defun mpenet/eglot-completion-at-point ()
     (when (boundp 'eglot-completion-at-point)
       (funcall 'eglot-completion-at-point)))
 
-  (defalias 'cape-cider-eglot
-    (cape-capf-super ;; #'cider-complete-at-point
-                     #'+eglot-completion-at-point))
+  (defun mpenet/cider-completion-at-point ()
+    (funcall 'cider-complete-at-point))
 
   (defun mpenet/cider-capf ()
-    (add-to-list 'completion-at-point-functions
-                 #'cape-cider-eglot))
+    (setq-local completion-at-point-functions
+                (list #'mpenet/eglot-completion-at-point
+                      #'mpenet/cider-completion-at-point)))
  
   :hook ((cider-mode . mpenet/cider-capf)
          (cider-repl-mode . mpenet/cider-capf)
-         (cider-repl-mode . company-mode))
+         (cider-repl-mode . company-mode)
+         (cider-disconnected . mpenet/cider-capf))
   :bind (:map
          cider-mode-map
          ("C-c C-d" . cider-debug-defun-at-point)
