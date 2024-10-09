@@ -296,11 +296,13 @@ want to avoid having the hooks run"
 
   :bind (("C-t" . consult-line)
          ("C-x b" . consult-buffer)
-         ("M-g M-g" . consult-goto-line)
          ("C-x C-g" . consult-git-grep)
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
-         ("M-j M-f" . mpenet/consult-flymake-project)
+         ("M-g M-g" . consult-goto-line)
+         ("M-g f" . mpenet/consult-flymake-project)
+         ("M-g m" . consult-mark)
+         ("M-g M-m" . consult-global-mark)
          ("C-x C-SPC" . consult-global-mark)))
 
 (use-package embark
