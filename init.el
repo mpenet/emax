@@ -301,7 +301,7 @@ want to avoid having the hooks run"
          ("C-x C-i" . consult-imenu-multi)
          ("C-c C-i" . consult-imenu)
          ("M-j M-f" . mpenet/consult-flymake-project)
-         ("C-x j" . consult-bookmark)))
+         ("C-x C-SPC" . consult-global-mark)))
 
 (use-package embark
   :config
@@ -338,7 +338,7 @@ want to avoid having the hooks run"
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-ibuffer
-  :straight (nerd-icons-ibuffer :type git :host github :repo "seagle0128/nerd-icons-ibuffer")  
+  :straight (nerd-icons-ibuffer :type git :host github :repo "seagle0128/nerd-icons-ibuffer")
   :hook (ibuffer-mode . nerd-icons-ibuffer-mode))
 
 (use-package project
