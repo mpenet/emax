@@ -142,7 +142,7 @@
    ("<C-return>" . newline-and-indent)
    ("<M-return>" . comment-or-uncomment-region)
    ("C-x C-o" . other-window)
-   ("C-x C-k" . kill-buffer)
+   ("C-x C-k" . kill-current-buffer)
    ("C-x . " . delete-other-windows)
    ("C-x ," . split-window-below)
    ("C-x ." . split-window-right)
