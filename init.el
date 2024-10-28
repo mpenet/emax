@@ -142,7 +142,7 @@
    ("<C-return>" . newline-and-indent)
    ("<M-return>" . comment-or-uncomment-region)
    ("C-x C-o" . other-window)
-   ("C-x C-k" . kill-current-buffer)
+   ("C-x C-k" . kill-buffer)
    ("C-x . " . delete-other-windows)
    ("C-x ," . split-window-below)
    ("C-x ." . split-window-right)
@@ -378,6 +378,9 @@ want to avoid having the hooks run"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
+(use-package forge
+  :after magit)
+
 (use-package autorevert
   :diminish auto-revert-mode)
 
@@ -550,11 +553,25 @@ want to avoid having the hooks run"
   :config (company-quickhelp-mode))
 
 (use-package flymake
-  :custom-face (flymake-end-of-line-diagnostics-face ((t :height 0.8 :box nil :slant italic)))
   :bind ("C-x p l" . flymake-show-project-diagnostics)
+  :custom (flymake-mode-line-lighter ""))
+
+(use-package sideline
+  :diminish
+  :preface (setq sideline-custom-default-face '((t :height 0.8 :box nil :slant italic)))
+  :hook (flymake-mode . sideline-mode)
+  :custom-face
+  (sideline-default ,sideline-custom-default-face)
+  (sideline-backend,sideline-custom-default-face)
+  (sideline-flymake-error ,sideline-custom-default-face)
+  (sideline-flymake-warning ,sideline-custom-default-face)
+  (sideline-flymake-success ,sideline-custom-default-face)
+  :hook ((flymake-mode  . sideline-mode)))
+
+(use-package sideline-flymake
   :custom
-  (flymake-show-diagnostics-at-end-of-line 'short)
-  (flymake-mode-line-lighter ""))
+  (sideline-flymake-display-mode 'line)
+  (sideline-backends-right '(sideline-flymake)))
 
 (use-package js-mode
   :defer t
@@ -785,3 +802,10 @@ want to avoid having the hooks run"
   :disabled
   :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
   :hook ((prog-mode) . indent-bars-mode))
+
+
+(use-package rustic
+  :config
+  (setq rustic-format-on-save nil)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
