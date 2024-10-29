@@ -378,9 +378,6 @@ want to avoid having the hooks run"
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
-(use-package forge
-  :after magit)
-
 (use-package autorevert
   :diminish auto-revert-mode)
 
