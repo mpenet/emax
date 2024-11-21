@@ -36,6 +36,7 @@
                                           bookmark
                                           vc
                                           ;; eglot
+                                          use-package
                                           org
                                           project
                                           js-mode
@@ -374,6 +375,7 @@ want to avoid having the hooks run"
 (use-package diredfl
   :config (diredfl-global-mode 1))
 
+
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
@@ -499,6 +501,7 @@ want to avoid having the hooks run"
   (eglot-events-buffer-config '(:size 0))
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
+         (go-ts-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
          (before-save . (lambda ()
                           (when (eglot-managed-p)
@@ -794,15 +797,23 @@ want to avoid having the hooks run"
                ("C-c C-n" . copilot-next-completion)
                ("C-c g" . copilot-clear-overlay))))
 
-
-(use-package indent-bars
-  :disabled
-  :straight (indent-bars :type git :host github :repo "jdtsmith/indent-bars")
-  :hook ((prog-mode) . indent-bars-mode))
-
-
 (use-package rustic
   :config
   (setq rustic-format-on-save nil)
   :custom
   (rustic-cargo-use-last-stored-arguments t))
+
+(use-package reformatter)
+
+(use-package go-ts-mode
+  :hook
+  (go-ts-mode . go-format-on-save-mode)
+  :init
+  (add-to-list 'treesit-language-source-alist '(go "https://github.com/tree-sitter/tree-sitter-go"))
+  (add-to-list 'treesit-language-source-alist '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
+  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+  (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
+  :config
+  (reformatter-define go-format
+    :program "goimports"
+    :args '("/dev/stdin")))
