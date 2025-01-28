@@ -610,7 +610,9 @@ want to avoid having the hooks run"
   :custom (org-export-htmlize-output-type 'css))
 
 (use-package markdown-mode
-  :custom (markdown-fontify-code-blocks-natively t)
+  :custom
+  (markdown-fontify-code-blocks-natively t)
+  (markdown-command "marked")
   :mode (("\\.md\\'" . gfm-mode)
          ("\\.markdown\\'" . gfm-mode))
   :config
