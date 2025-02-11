@@ -377,6 +377,8 @@ want to avoid having the hooks run"
 
 
 (use-package magit
+  :custom
+  (magit-format-file-function #'magit-format-file-nerd-icons)
   :bind (("C-x g" . magit-status)
          ("C-c C-g" . magit-status)))
 
