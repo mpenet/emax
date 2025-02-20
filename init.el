@@ -170,7 +170,7 @@
 
   ;; full screen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  (add-to-list 'default-frame-alist '(undecorated . t))
+  ;; (add-to-list 'default-frame-alist '(undecorated . t))
 
   (defalias 'yes-or-no-p 'y-or-n-p)
   ;; Do not allow the cursor in the minibuffer prompt

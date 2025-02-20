@@ -51,7 +51,7 @@
  ("llama" . "9802c215a3eea748d9d7f81a1465850388006897")
  ("logito" . "d5934ce10ba3a70d3fcfb94d742ce3b9136ce124")
  ("lua-mode" . "d074e4134b1beae9ed4c9b512af741ca0d852ba3")
- ("magit" . "e5440ee1084de021422c68ba9fe1c5a696b00d69")
+ ("magit" . "7116d0572765ab4ca79084e16536fa54f5cffdfd")
  ("map" . "016e8711dea9ddbd26016711a64fbe78cba55668")
  ("marginalia" . "a527fb03b76a2bce1e360c6e73a095e06922c3f3")
  ("markdown-mode" . "7659bc470d096e7a53285fa246cbabcb07d66a33")
