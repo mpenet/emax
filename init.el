@@ -76,6 +76,7 @@
   (scroll-bar-mode nil)
   (tool-bar-mode nil)
   (menu-bar-mode nil)
+  (use-short-answers t)
   (kill-ring-max 150)
   (browse-url-browser-function 'browse-url-generic)
   (browse-url-generic-program "open")
@@ -172,7 +173,6 @@
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; (add-to-list 'default-frame-alist '(undecorated . t))
 
-  (defalias 'yes-or-no-p 'y-or-n-p)
   ;; Do not allow the cursor in the minibuffer prompt
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
