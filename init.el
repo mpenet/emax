@@ -645,14 +645,6 @@ want to avoid having the hooks run"
 
 (use-package clojure-snippets)
 
-(use-package doom-modeline
-  :disabled
-  :custom
-  (doom-modeline-check-simple-format t) ; show full flymake info
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-indent-info nil)
-  :init (doom-modeline-mode 1))
-
 (use-package padded-modeline
   :after doom-themes
   :straight (padded-modeline :type git
