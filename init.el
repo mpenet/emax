@@ -248,7 +248,8 @@ want to avoid having the hooks run"
   (lazy-count-suffix-format nil)
   (isearch-allow-scroll 'unlimited)
   :bind (:map isearch-mode-map
-              ("C-c C-o" . isearch-occur)))
+              ("C-c C-o" . isearch-occur)
+              ("M-s o" . isearch-occur)))
 
 (use-package which-key
   :diminish
@@ -792,6 +793,13 @@ want to avoid having the hooks run"
                ("C-c C-p" . copilot-previous-completion)
                ("C-c C-n" . copilot-next-completion)
                ("C-c g" . copilot-clear-overlay))))
+
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 (use-package rustic
   :config
