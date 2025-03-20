@@ -166,7 +166,7 @@
                       :weight 'normal
                       :height (let ((w (x-display-pixel-width)))
                                 (cond ((>= w 3456) 180) ; mbp screen
-                                      ((>= w 3272) 160) ; plugged
+                                      ((>= w 1920) 160) ; plugged
                                       (t 180)))) ;; default
 
   ;; full screen
@@ -505,6 +505,7 @@ want to avoid having the hooks run"
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure)
+         (java-ts-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
          (before-save . (lambda ()
                           (when (eglot-managed-p)
@@ -815,9 +816,12 @@ want to avoid having the hooks run"
   :init
   (add-to-list 'treesit-language-source-alist '(go "https://github.com/tree-sitter/tree-sitter-go"))
   (add-to-list 'treesit-language-source-alist '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
-  (add-to-list 'auto-mode-alist '("\\.go\\'" . go-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.go$" . go-ts-mode))
   (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
   :config
   (reformatter-define go-format
     :program "goimports"
     :args '("/dev/stdin")))
+
+(use-package java-ts-mode
+  :mode ("\\.java$"))
