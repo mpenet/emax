@@ -159,7 +159,6 @@
    ("C-<next>" . text-scale-increase)
    ("M-<prior>" . text-scale-decrease)
    ("M-j M-r" . xref-find-references))
-  :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
   :init
   (set-face-attribute 'default nil
                       :font "PragmataPro Mono Liga"
@@ -495,8 +494,10 @@ want to avoid having the hooks run"
   :straight (eglot :source gnu-elpa-mirror)
   :ensure t
   :commands (eglot eglot-ensure)
-  :custom-face (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
+  :custom-face
+  (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
   :custom
+  (eglot-code-action-indicator "")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
   (eglot-confirm-server-edits nil)
@@ -514,7 +515,6 @@ want to avoid having the hooks run"
   :bind (:map eglot-mode-map
               ("M-l M-l" . eglot-code-actions))
   :config
-  ;; (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
   (diminish 'eldoc-mode)
   (advice-add 'eglot--format-markup
               :around (lambda (orig &rest args) (let ((inhibit-read-only t)) (apply orig args))))
@@ -781,6 +781,7 @@ want to avoid having the hooks run"
                         :stream t)))
 
 (use-package copilot
+  :disabled
   :config
   (defun mpenet/copilot-complete-or-accept ()
     (interactive)
