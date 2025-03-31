@@ -496,8 +496,10 @@ want to avoid having the hooks run"
   :commands (eglot eglot-ensure)
   :custom-face
   (eglot-highlight-symbol-face ((t (:inherit 'highlight :background "#434C5E"))))
+  (eglot-code-action-indicator-face ((t (:foreground "#f5d742" :weight normal :background "#161618"))))
   :custom
-  (eglot-code-action-indicator "")
+  (left-margin-width 1)
+  (eglot-code-action-indicator "")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
   (eglot-confirm-server-edits nil)
