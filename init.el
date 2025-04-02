@@ -779,11 +779,16 @@ want to avoid having the hooks run"
   (popper-echo-mode +1))
 
 (use-package gptel
-  :config
-  (setq gptel-model "gemini-pro"
-        gptel-backend (gptel-make-gemini "Gemini"
-                        :key gptel-gemini-api-key
-                        :stream t)))
+  :custom
+  ;; (gptel-backend (gptel-make-gemini "Gemini"
+  ;;                  :key gptel-gemini-api-key
+  ;;                  :stream t))
+  (gptel-log-level 'debug)
+  (gptel-backend (gptel-make-openai "ExoGPT"
+                   :stream t
+                   :host gptel-exo-llm-endpoint
+                   :models gptel-exo-llm-models
+                   :curl-args gptel-exo-llm-curl-args)))
 
 (use-package copilot
   :disabled
