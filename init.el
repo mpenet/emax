@@ -783,6 +783,7 @@ want to avoid having the hooks run"
   ;; (gptel-backend (gptel-make-gemini "Gemini"
   ;;                  :key gptel-gemini-api-key
   ;;                  :stream t))
+  (gptel-include-reasoning nil)
   (gptel-log-level 'debug)
   (gptel-backend (gptel-make-openai "ExoGPT"
                    :stream t
@@ -836,3 +837,5 @@ want to avoid having the hooks run"
 
 (use-package java-ts-mode
   :mode ("\\.java$"))
+
+(use-package fish-mode)
