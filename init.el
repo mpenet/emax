@@ -501,7 +501,7 @@ want to avoid having the hooks run"
                                                   :foreground "#f5d742"
                                                   :background "#161618"))))
   :custom
-  (left-margin-width 1)
+  (left-margin-width 2)
   (eglot-code-action-indicator "")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
@@ -589,7 +589,9 @@ want to avoid having the hooks run"
   (js-indent-level tab-width))
 
 (use-package fennel-mode
+  :custom (fennel-program "fnl --repl")
   :hook (fennel-mode . paredit-mode)
+
   :bind (:map fennel-mode-map
               ("C-c C-c" . lisp-eval-defun)))
   
@@ -652,17 +654,11 @@ want to avoid having the hooks run"
 
 (use-package clojure-snippets)
 
-(use-package padded-modeline
-  :after doom-themes
-  :straight (padded-modeline :type git
-                             :host github
-                             :repo "mpenet/padded-modeline"
-                             :branch "main")
-  :config
-  (padded-modeline-mode t))
-
 (use-package breadcrumb
   :config (breadcrumb-mode))
+
+(use-package hl-line
+  :config (global-hl-line-mode t))
 
 (use-package kaolin-themes
   :straight (kaolin-themes :type git :host github :repo "mpenet/emacs-kaolin-themes" :branch "mpenet/devel")
@@ -672,6 +668,14 @@ want to avoid having the hooks run"
   (kaolin-mono-dark-alt-bg t)
   :config
   (load-theme 'kaolin-mono-dark t))
+
+(use-package padded-modeline
+  :straight (padded-modeline :type git
+                             :host github
+                             :repo "mpenet/padded-modeline"
+                             :branch "main")
+  :config
+  (padded-modeline-mode t))
 
 (use-package symbol-overlay
   :custom-face
@@ -792,7 +796,6 @@ want to avoid having the hooks run"
                    :curl-args gptel-exo-llm-curl-args)))
 
 (use-package copilot
-  :disabled
   :config
   (defun mpenet/copilot-complete-or-accept ()
     (interactive)
@@ -839,3 +842,8 @@ want to avoid having the hooks run"
   :mode ("\\.java$"))
 
 (use-package fish-mode)
+
+(use-package nix-mode
+  :mode "\\.nix\\'")
+
+(use-package protobuf-mode)
