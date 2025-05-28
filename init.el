@@ -302,8 +302,6 @@ want to avoid having the hooks run"
          ("C-c C-i" . consult-imenu)
          ("M-g M-g" . consult-goto-line)
          ("M-g f" . mpenet/consult-flymake-project)
-         ("M-g m" . consult-mark)
-         ("M-g M-m" . consult-global-mark)
          ("C-x C-SPC" . consult-global-mark)))
 
 (use-package embark
@@ -847,3 +845,5 @@ want to avoid having the hooks run"
   :mode "\\.nix\\'")
 
 (use-package protobuf-mode)
+
+(use-package earthfile-mode)
