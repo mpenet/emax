@@ -195,10 +195,11 @@ want to avoid having the hooks run"
   ;; config changes made through the customize UI will be stored here
   (when (file-exists-p custom-file)
     (load custom-file))
-  :config
-  (let ((personal-file "~/.personal.el.gpg"))
-    (when (file-exists-p personal-file)
-      (load-library personal-file))))
+  ;; :config
+  ;; (let ((personal-file "~/.personal.el.gpg"))
+  ;;   (when (file-exists-p personal-file)
+  ;;     (load-library personal-file)))
+  )
 
 (use-package diminish)
 
@@ -782,16 +783,10 @@ want to avoid having the hooks run"
 
 (use-package gptel
   :custom
-  ;; (gptel-backend (gptel-make-gemini "Gemini"
-  ;;                  :key gptel-gemini-api-key
-  ;;                  :stream t))
   (gptel-include-reasoning nil)
   (gptel-log-level 'debug)
-  (gptel-backend (gptel-make-openai "ExoGPT"
-                   :stream t
-                   :host gptel-exo-llm-endpoint
-                   :models gptel-exo-llm-models
-                   :curl-args gptel-exo-llm-curl-args)))
+  :config
+  (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
 
 (use-package copilot
   :config
@@ -826,6 +821,7 @@ want to avoid having the hooks run"
 (use-package go-ts-mode
   :hook
   (go-ts-mode . go-format-on-save-mode)
+  (go-ts-mode . copilot-mode)
   :init
   (add-to-list 'treesit-language-source-alist '(go "https://github.com/tree-sitter/tree-sitter-go"))
   (add-to-list 'treesit-language-source-alist '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
