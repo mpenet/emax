@@ -217,7 +217,7 @@ want to avoid having the hooks run"
   :custom (uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 (use-package display-line-numbers
-  :hook ((prog-mode conf-mode) . display-line-numbers-mode)
+  :hook ((prog-mode conf-mode yaml-ts-mode) . display-line-numbers-mode)
   :custom (display-line-numbers-width 3))
 
 (use-package visual-line-mode
