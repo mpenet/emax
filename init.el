@@ -1,4 +1,4 @@
-;;
+;;  -*- lexical-binding: t; -*-
 ;; Author: Max Penet <m@qbits.cc>
 ;; URL: https://github.com/mpenet/emax
 ;; Keywords: emacs config
@@ -217,7 +217,7 @@ want to avoid having the hooks run"
   :custom (uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 (use-package display-line-numbers
-  :hook ((prog-mode conf-mode yaml-ts-mode) . display-line-numbers-mode)
+  :hook ((prog-mode conf-mode yaml-ts-mode yaml-mode) . display-line-numbers-mode)
   :custom (display-line-numbers-width 3))
 
 (use-package visual-line-mode
@@ -500,7 +500,7 @@ want to avoid having the hooks run"
                                                   :foreground "#f5d742"
                                                   :background "#161618"))))
   :custom
-  (left-margin-width 2)
+  (left-margin-width 1)
   (eglot-code-action-indicator "")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
@@ -804,6 +804,13 @@ want to avoid having the hooks run"
                ("C-c g" . copilot-clear-overlay))))
 
 (use-package treesit-auto
+  :disabled
+  :straight (:type git
+             :host github
+             :repo "renzmann/treesit-auto"
+             :fork ( :host github
+                     :repo "noctuid/treesit-auto"
+                     :branch "bind-around-set-auto-mode-0"))
   :custom
   (treesit-auto-install 'prompt)
   :config
