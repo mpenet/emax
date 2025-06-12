@@ -217,7 +217,7 @@ want to avoid having the hooks run"
   :custom (uniquify-buffer-name-style 'post-forward-angle-brackets))
 
 (use-package display-line-numbers
-  :hook ((prog-mode conf-mode yaml-ts-mode yaml-mode) . display-line-numbers-mode)
+  :hook ((prog-mode conf-mode yaml-mode) . display-line-numbers-mode)
   :custom (display-line-numbers-width 3))
 
 (use-package visual-line-mode
@@ -582,7 +582,6 @@ want to avoid having the hooks run"
   (sideline-backends-right '(sideline-flymake)))
 
 (use-package js-mode
-  :defer t
   :mode ("\\.json$" . js-mode)
   :custom
   (js-indent-level tab-width))
@@ -590,7 +589,6 @@ want to avoid having the hooks run"
 (use-package fennel-mode
   :custom (fennel-program "fnl --repl")
   :hook (fennel-mode . paredit-mode)
-
   :bind (:map fennel-mode-map
               ("C-c C-c" . lisp-eval-defun)))
   
@@ -628,8 +626,7 @@ want to avoid having the hooks run"
   :config
   (add-to-list 'markdown-code-lang-modes '("clj" . clojure-mode)))
 
-(use-package yaml-mode
-  :defer t)
+(use-package yaml-mode)
 
 (use-package adoc-mode
   :mode "\\.adoc\\'")
@@ -711,7 +708,6 @@ want to avoid having the hooks run"
   ;; is over them so we don't mess with the displayed buffer itself
   (emojify-point-entered-behaviour 'echo)
   :config
-
   (global-emojify-mode 1))
 
 (use-package jinx
@@ -803,20 +799,6 @@ want to avoid having the hooks run"
                ("C-c C-n" . copilot-next-completion)
                ("C-c g" . copilot-clear-overlay))))
 
-(use-package treesit-auto
-  :disabled
-  :straight (:type git
-             :host github
-             :repo "renzmann/treesit-auto"
-             :fork ( :host github
-                     :repo "noctuid/treesit-auto"
-                     :branch "bind-around-set-auto-mode-0"))
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
-
 (use-package rustic
   :config
   (setq rustic-format-on-save nil)
@@ -826,20 +808,21 @@ want to avoid having the hooks run"
 (use-package reformatter)
 
 (use-package go-ts-mode
+  :mode ("\\.go$")
   :hook
   (go-ts-mode . go-format-on-save-mode)
   (go-ts-mode . copilot-mode)
   :init
   (add-to-list 'treesit-language-source-alist '(go "https://github.com/tree-sitter/tree-sitter-go"))
-  (add-to-list 'treesit-language-source-alist '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))
-  (add-to-list 'auto-mode-alist '("\\.go$" . go-ts-mode))
-  (add-to-list 'auto-mode-alist '("/go\\.mod\\'" . go-mod-ts-mode))
+
   :config
   (reformatter-define go-format
     :program "goimports"
     :args '("/dev/stdin")))
 
 (use-package java-ts-mode
+  :init
+  (add-to-list 'treesit-language-source-alist '(java "https://github.com/tree-sitter/tree-sitter-java"))
   :mode ("\\.java$"))
 
 (use-package fish-mode)
