@@ -170,7 +170,7 @@
 
   ;; full screen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  ;; (add-to-list 'default-frame-alist '(undecorated . t))
+  (add-to-list 'default-frame-alist '(undecorated . t))
 
   ;; Do not allow the cursor in the minibuffer prompt
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
@@ -239,6 +239,9 @@ want to avoid having the hooks run"
 
 (use-package ws-butler
   :diminish
+  :straight (:host github
+             :branch "master"
+             :repo "lewang/ws-butler")
   :hook ((prog-mode . ws-butler-mode)))
 
 (use-package isearch
