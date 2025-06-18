@@ -787,6 +787,12 @@ want to avoid having the hooks run"
   :config
   (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
 
+(use-package gptel-prompts
+  :straight (:host github :repo "jwiegley/gptel-prompts")
+  :config
+  (gptel-prompts-update)
+  (gptel-prompts-add-update-watchers))
+
 (use-package copilot
   :config
   (defun mpenet/copilot-complete-or-accept ()

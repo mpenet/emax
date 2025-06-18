@@ -28,3 +28,4 @@ session.*
 org-*
 emojis
 .cache
+/prompts/
