@@ -1,5 +1,5 @@
 ;;  -*- lexical-binding: t; -*-
-;; Author: Max Penet <m@qbits.cc>
+;; Author: Max Penet <mpenet@s-exp.com>
 ;; URL: https://github.com/mpenet/emax
 ;; Keywords: emacs config
 ;;; Commentary:
@@ -8,7 +8,7 @@
 
 ;;; License:
 
-;; Copyright (C) 2023 Max Penet
+;; Copyright (C) 2025 Max Penet
 
 ;; This program is free software: you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
