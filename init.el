@@ -793,6 +793,16 @@ want to avoid having the hooks run"
   (gptel-prompts-update)
   (gptel-prompts-add-update-watchers))
 
+
+(use-package gptel-quick
+  :straight (:host github :repo "karthink/gptel-quick")
+  :config
+  (gptel-prompts-update)
+  (gptel-prompts-add-update-watchers))
+
+(use-package gptel-magit
+  :hook (magit-mode . gptel-magit-install))
+
 (use-package copilot
   :config
   (defun mpenet/copilot-complete-or-accept ()
