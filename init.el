@@ -256,9 +256,9 @@ want to avoid having the hooks run"
 
 (use-package which-key
   :diminish
-  ;; :custom
-  ;; (which-key-idle-delay 3)
-  ;; (which-key-idle-secondary-delay 0.05)
+  :custom
+  (which-key-idle-delay 3)
+  (which-key-idle-secondary-delay 0.05)
   :config
   (which-key-mode +1))
 
