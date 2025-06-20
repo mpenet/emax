@@ -724,14 +724,6 @@ want to avoid having the hooks run"
 
 (use-package dockerfile-mode)
 
-(use-package eshell
-  :after esh-mode
-  :bind (:map eshell-mode-map
-              ("C-r" . consult-history)))
-
-(use-package esh-autosuggest
-  :hook (eshell-mode . esh-autosuggest-mode))
-
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
@@ -767,7 +759,6 @@ want to avoid having the hooks run"
          ("C-M-t" . popper-toggle-type))
   :init
   (setq popper-reference-buffers '("\\*Messages\\*"
-                                   "\\*eshell\\*"
                                    "Output\\*$"
                                    "\\*Async Shell Command\\*"
                                    sly-mrepl-mode
