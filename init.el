@@ -546,6 +546,8 @@ want to avoid having the hooks run"
   (corfu-popupinfo-delay '(0.5 . 0.3))
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
+  (corfu-auto-prefix 1)          ;; pop after 1 char
+  (corfu-auto-delay 0.1)         ;; pop after delay 0.1s
   (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
   (corfu-quit-no-match t)        ;; Automatically quit if there is no match
   (corfu-preselect-first nil)    ;; Disable candidate preselection
