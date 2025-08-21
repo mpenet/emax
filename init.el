@@ -845,3 +845,8 @@ want to avoid having the hooks run"
 (use-package protobuf-mode)
 
 (use-package earthfile-mode)
+
+(use-package eca
+  :straight (:host github
+                   :branch "master"
+                   :repo "editor-code-assistant/eca-emacs"))
