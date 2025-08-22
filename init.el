@@ -757,13 +757,15 @@ want to avoid having the hooks run"
 (use-package sly-overlay)
 
 (use-package popper
-  :bind (("C-j"   . popper-toggle)
-         ("C-M-j"   . popper-cycle)
+  :custom (popper-window-height 25)
+  :bind (("C-j" . popper-toggle)
+         ("C-M-j" . popper-cycle)
          ("C-M-t" . popper-toggle-type))
   :init
   (setq popper-reference-buffers '("\\*Messages\\*"
                                    "Output\\*$"
                                    "\\*Async Shell Command\\*"
+                                   eca-chat-mode
                                    sly-mrepl-mode
                                    cider-repl-mode
                                    help-mode
