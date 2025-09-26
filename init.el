@@ -163,16 +163,22 @@
   (set-face-attribute 'default nil
                       :font "PragmataPro Mono Liga"
                       :weight 'normal
-                      :height (let ((w (x-display-pixel-width)))
+                      :height
+                      (let ((w (x-display-pixel-width)))
                                 (cond
                                  ((= w 4072) 220) ; exo
                                  ((>= w 3456) 180) ; mbp screen
                                  ((>= w 1920) 160) ; plugged
-                                 (t 180)))) ;; default
+                                 (t 180))))
+
+
+  ;; (add-to-list 'default-frame-alist '(undecorated . t))
+
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  ;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
   ;; full screen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
-  (add-to-list 'default-frame-alist '(undecorated . t))
 
   ;; Do not allow the cursor in the minibuffer prompt
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
@@ -504,7 +510,7 @@ want to avoid having the hooks run"
                                                   :background "#161618"))))
   :custom
   (left-margin-width 1)
-  (eglot-code-action-indicator "")
+  (eglot-code-action-indicator "󰌵")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
   (eglot-confirm-server-edits nil)
