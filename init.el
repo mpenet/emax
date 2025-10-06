@@ -758,10 +758,6 @@ want to avoid having the hooks run"
                                  (clojure . t)
                                  (python . t))))
 
-(use-package sly)
-
-(use-package sly-overlay)
-
 (use-package popper
   :custom (popper-window-height 25)
   :bind (("C-j" . popper-toggle)
@@ -772,7 +768,6 @@ want to avoid having the hooks run"
                                    "Output\\*$"
                                    "\\*Async Shell Command\\*"
                                    eca-chat-mode
-                                   sly-mrepl-mode
                                    cider-repl-mode
                                    help-mode
                                    compilation-mode)
@@ -857,6 +852,7 @@ want to avoid having the hooks run"
 (use-package earthfile-mode)
 
 (use-package eca
+  :custom (eca-chat-use-side-window nil)
   :straight (:host github
                    :branch "master"
                    :repo "editor-code-assistant/eca-emacs"))
