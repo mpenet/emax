@@ -389,6 +389,7 @@ want to avoid having the hooks run"
 (use-package magit
   :custom
   (magit-format-file-function #'magit-format-file-nerd-icons)
+  (magit-diff-visit-prefer-worktree t)
   :bind (("C-c C-g" . magit-status)))
 
 (use-package autorevert
@@ -443,6 +444,7 @@ want to avoid having the hooks run"
               ("RET" . nil)
               ("M-r" . nil)
               ("C-j" . nil)
+              ("\\" . nil) ; disable paredit-backslash
               ("C-M-j"))
   :diminish)
 
