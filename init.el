@@ -161,7 +161,7 @@
    ("M-j M-r" . xref-find-references))
   :init
   (set-face-attribute 'default nil
-                      :font "PragmataPro Mono Liga"
+                      :font "Berkeley Mono Condensed"
                       :weight 'normal
                       :height
                       (let ((w (x-display-pixel-width)))
@@ -171,13 +171,7 @@
                                  ((>= w 1920) 160) ; plugged
                                  (t 180))))
 
-
-  ;; (add-to-list 'default-frame-alist '(undecorated . t))
-
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  ;; (add-to-list 'default-frame-alist '(ns-appearance . dark))
-
-  ;; full screen
+  (add-to-list 'default-frame-alist '(undecorated . t))
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
   ;; Do not allow the cursor in the minibuffer prompt
@@ -512,7 +506,7 @@ want to avoid having the hooks run"
                                                   :background "#161618"))))
   :custom
   (left-margin-width 1)
-  (eglot-code-action-indicator "󰌵")
+  (setq eglot-code-action-indicator "›")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
   (eglot-confirm-server-edits nil)
@@ -845,9 +839,6 @@ want to avoid having the hooks run"
   :mode ("\\.java$"))
 
 (use-package fish-mode)
-
-(use-package nix-mode
-  :mode "\\.nix\\'")
 
 (use-package protobuf-mode)
 
