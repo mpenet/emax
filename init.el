@@ -386,6 +386,8 @@ want to avoid having the hooks run"
   (magit-diff-visit-prefer-worktree t)
   :bind (("C-c C-g" . magit-status)))
 
+(use-package git-link)
+
 (use-package autorevert
   :diminish auto-revert-mode)
 
@@ -506,7 +508,7 @@ want to avoid having the hooks run"
                                                   :background "#161618"))))
   :custom
   (left-margin-width 1)
-  (setq eglot-code-action-indicator "›")
+  (eglot-code-action-indicator "›")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
   (eglot-confirm-server-edits nil)
