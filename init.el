@@ -757,7 +757,7 @@ want to avoid having the hooks run"
                                  (python . t))))
 
 (use-package popper
-  :custom (popper-window-height 25)
+  :custom (popper-window-height 20)
   :bind (("C-j" . popper-toggle)
          ("C-M-j" . popper-cycle)
          ("C-M-t" . popper-toggle-type))
