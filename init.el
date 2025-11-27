@@ -145,12 +145,7 @@
    ("<M-return>" . comment-or-uncomment-region)
    ("C-x C-o" . other-window)
    ("C-x C-k" . kill-buffer)
-   ("C-x . " . delete-other-windows)
-   ("C-x ," . split-window-below)
-   ("C-x ." . split-window-right)
-   ("C-x l" . delete-window)
    ("C-x C-r" . query-replace)
-   ("M-i" . hippie-expand)
    ("M-i" . hippie-expand)
    ("M-j d" . xref-find-definitions)
    ("M-j M-d" . xref-find-definitions)
@@ -487,10 +482,6 @@ want to avoid having the hooks run"
          (cider-repl-mode . mpenet/cider-capf)
          (cider-disconnected . mpenet/cider-capf))
   :bind (:map
-         cider-mode-map
-         ("C-c C-d" . cider-debug-defun-at-point)
-         ("C-c d" . cider-debug-defun-at-point)
-         :map
          cider-repl-mode-map
          ("C-j" . nil)))
 
