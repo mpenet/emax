@@ -779,19 +779,6 @@ want to avoid having the hooks run"
   :config
   (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
 
-(use-package gptel-prompts
-  :straight (:host github :repo "jwiegley/gptel-prompts")
-  :config
-  (gptel-prompts-update)
-  (gptel-prompts-add-update-watchers))
-
-
-(use-package gptel-quick
-  :straight (:host github :repo "karthink/gptel-quick")
-  :config
-  (gptel-prompts-update)
-  (gptel-prompts-add-update-watchers))
-
 (use-package gptel-magit
   :custom (gptel-magit-model 'gpt-5-mini)
   :hook (magit-mode . gptel-magit-install))
