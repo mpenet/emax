@@ -843,12 +843,6 @@ want to avoid having the hooks run"
 
 (use-package earthfile-mode)
 
-(use-package eca
-  :custom (eca-chat-use-side-window nil)
-  :straight (:host github
-                   :branch "master"
-                   :repo "editor-code-assistant/eca-emacs"))
-
 (use-package agent-shell
     :ensure t
     :hook
