@@ -374,6 +374,8 @@ want to avoid having the hooks run"
 (use-package diredfl
   :config (diredfl-global-mode 1))
 
+(use-package smerge-mode
+  :custom (smerge-command-prefix (kbd "C-c m")))
 
 (use-package magit
   :custom
@@ -563,7 +565,8 @@ want to avoid having the hooks run"
 
 (use-package flymake
   :bind ("C-x p l" . flymake-show-project-diagnostics)
-  :custom (flymake-mode-line-lighter ""))
+  :custom
+  (flymake-mode-line-lighter ""))
 
 (use-package sideline
   :diminish
@@ -735,10 +738,12 @@ want to avoid having the hooks run"
 
 (use-package org
   :custom
+  (org-directory "~/org")
   (org-babel-clojure-backend 'cider)
   (org-src-tab-acts-natively t)
   (org-confirm-babel-evaluate nil)
   (org-src-fontify-natively t)
+
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((shell . t)
@@ -788,6 +793,7 @@ want to avoid having the hooks run"
   (gptel-prompts-add-update-watchers))
 
 (use-package gptel-magit
+  :custom (gptel-magit-model 'gpt-5-mini)
   :hook (magit-mode . gptel-magit-install))
 
 (use-package copilot
@@ -842,3 +848,14 @@ want to avoid having the hooks run"
   :straight (:host github
                    :branch "master"
                    :repo "editor-code-assistant/eca-emacs"))
+
+(use-package agent-shell
+    :ensure t
+    :hook
+    (agent-shell-mode . agent-shell-completion-mode)
+    :custom
+    (agent-shell-show-welcome-message nil)
+    ;; (agent-shell-prefer-viewport-interaction t)
+    (agent-shell-github-command '("copilot" "--acp"
+                                  "--model" "gpt-5-mini")))
+
