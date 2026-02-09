@@ -92,7 +92,6 @@
   (initial-scratch-message nil)
   (initial-major-mode 'fundamental-mode)  ;; skip scratch
   (mouse-yank-at-point t)
-  ;; (which-function-mode t)
   (set-mark-command-repeat-pop t)
   (completion-cycle-threshold 3)
   ;; Enable indentation+completion using the TAB key. `completion-at-point' is often bound to M-TAB.
@@ -831,12 +830,13 @@ want to avoid having the hooks run"
 (use-package earthfile-mode)
 
 (use-package agent-shell
-    :ensure t
-    :hook
-    (agent-shell-mode . agent-shell-completion-mode)
-    :custom
-    (agent-shell-show-welcome-message nil)
-    ;; (agent-shell-prefer-viewport-interaction t)
-    (agent-shell-github-command '("copilot" "--acp"
-                                  "--model" "gpt-5-mini")))
+  :ensure t
+  :hook
+  (agent-shell-mode . agent-shell-completion-mode)
+  :custom
+  (agent-shell-show-welcome-message nil)
+  (agent-shell-anthropic-authentication
+   (agent-shell-anthropic-make-authentication :login t))
+  (agent-shell-github-command '("copilot" "--acp" "--model" "gpt-5-mini"))
+  (agent-shell-anthropic-make-authentication))
 
