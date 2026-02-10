@@ -29,3 +29,5 @@ org-*
 emojis
 .cache
 /prompts/
+/tree-sitter/
+/custom.el
