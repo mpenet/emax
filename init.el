@@ -376,6 +376,15 @@ want to avoid having the hooks run"
 (use-package smerge-mode
   :custom (smerge-command-prefix (kbd "C-c m")))
 
+(use-package ediff
+  :custom
+  (ediff-keep-variants nil)
+  (ediff-make-buffers-readonly-at-startup nil)
+  (ediff-show-clashes-only t)
+  (ediff-merge-revisions-with-ancestor t)
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-split-window-function 'split-window-horizontally))
+
 (use-package magit
   :custom
   (magit-format-file-function #'magit-format-file-nerd-icons)
@@ -389,9 +398,10 @@ want to avoid having the hooks run"
 
 (use-package gist)
 
-(use-package expand-region
-  :bind (("C-o" . er/expand-region)
-         ("C-M-o" . er/contract-region)))
+(use-package expreg
+  :ensure t
+  :bind (("C-o" . expreg-expand)
+         ("C-M-o" . expreg-contract)))
 
 (use-package eldoc
   :custom (eldoc-echo-area-use-multiline-p nil)
@@ -532,9 +542,11 @@ want to avoid having the hooks run"
          (clojurec-mode . jarchive-setup)))
 
 (use-package eglot-booster
-    :straight (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
-	:after eglot
-	:config	(eglot-booster-mode))
+  :straight (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
+  :after eglot
+  :custom
+  (eglot-booster-io-only t)
+  :config	(eglot-booster-mode))
 
 (use-package corfu
   :straight (:files (:defaults "extensions/*"))
@@ -595,8 +607,6 @@ want to avoid having the hooks run"
   :bind (:map fennel-mode-map
               ("C-c C-c" . lisp-eval-defun)))
   
-(use-package groovy-mode)
-
 (use-package inferior-lisp
   :hook (inferior-lisp-mode . paredit-mode))
 
@@ -828,6 +838,8 @@ want to avoid having the hooks run"
 (use-package protobuf-mode)
 
 (use-package earthfile-mode)
+
+(use-package acp)
 
 (use-package agent-shell
   :ensure t
