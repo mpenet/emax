@@ -378,12 +378,24 @@ want to avoid having the hooks run"
 
 (use-package ediff
   :custom
+  (ediff-combination-pattern
+   '("<<<<<<< A: HEAD" A "||||||| Ancestor" Ancestor
+     "=======" B ">>>>>>> B: Incoming"))
   (ediff-keep-variants nil)
   (ediff-make-buffers-readonly-at-startup nil)
   (ediff-show-clashes-only t)
   (ediff-merge-revisions-with-ancestor t)
   (ediff-window-setup-function 'ediff-setup-windows-plain)
-  (ediff-split-window-function 'split-window-horizontally))
+  (ediff-split-window-function 'split-window-horizontally)
+  :config
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
 
 (use-package magit
   :custom
@@ -555,7 +567,7 @@ want to avoid having the hooks run"
   (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
   (corfu-auto t)                 ;; Enable auto completion
   (corfu-auto-prefix 1)          ;; pop after 1 char
-  (corfu-auto-delay 0.1)         ;; pop after delay 0.1s
+  (corfu-auto-delay 0.3)         ;; pop after delay 0.1s
   (corfu-quit-at-boundary t)     ;; Automatically quit at word boundary
   (corfu-quit-no-match t)        ;; Automatically quit if there is no match
   (corfu-preselect-first nil)    ;; Disable candidate preselection
@@ -789,7 +801,7 @@ want to avoid having the hooks run"
   (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
 
 (use-package gptel-magit
-  :custom (gptel-magit-model 'gpt-5-mini)
+  :custom (gptel-magit-model 'gpt-4.1)
   :hook (magit-mode . gptel-magit-install))
 
 (use-package copilot
