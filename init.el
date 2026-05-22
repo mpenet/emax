@@ -35,7 +35,7 @@
                                           dired
                                           bookmark
                                           vc
-                                          eglot
+                                          ;; eglot
                                           use-package
                                           org
                                           project
