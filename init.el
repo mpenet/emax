@@ -35,7 +35,7 @@
                                           dired
                                           bookmark
                                           vc
-                                          ;; eglot
+                                          eglot
                                           use-package
                                           org
                                           project
@@ -161,9 +161,8 @@
                       (let ((w (x-display-pixel-width)))
                                 (cond
                                  ((= w 4072) 220) ; exo
-                                 ((>= w 3456) 180) ; mbp screen
                                  ((>= w 1920) 160) ; plugged
-                                 (t 180))))
+                                 (t 220))))
 
   (add-to-list 'default-frame-alist '(undecorated . t))
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -195,7 +194,10 @@ want to avoid having the hooks run"
   ;; (let ((personal-file "~/.personal.el.gpg"))
   ;;   (when (file-exists-p personal-file)
   ;;     (load-library personal-file)))
-  )
+)
+
+(use-package compat
+  :straight (:host github :repo "emacs-compat/compat" :branch "main"))
 
 (use-package diminish)
 
@@ -251,6 +253,7 @@ want to avoid having the hooks run"
               ("M-s o" . isearch-occur)))
 
 (use-package which-key
+  :disabled
   :diminish
   :custom
   (which-key-idle-delay 3)
@@ -558,7 +561,7 @@ want to avoid having the hooks run"
   :after eglot
   :custom
   (eglot-booster-io-only t)
-  :config	(eglot-booster-mode))
+  :config (eglot-booster-mode))
 
 (use-package corfu
   :straight (:files (:defaults "extensions/*"))
