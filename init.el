@@ -160,9 +160,9 @@
                       :height
                       (let ((w (x-display-pixel-width)))
                                 (cond
-                                 ((= w 4072) 220) ; exo
+                                 ((= w 4072) 200) ; exo
                                  ((>= w 1920) 160) ; plugged
-                                 (t 220))))
+                                 (t 200))))
 
   (add-to-list 'default-frame-alist '(undecorated . t))
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -411,8 +411,6 @@ want to avoid having the hooks run"
 (use-package autorevert
   :diminish auto-revert-mode)
 
-(use-package gist)
-
 (use-package expreg
   :ensure t
   :bind (("C-o" . expreg-expand)
@@ -525,6 +523,7 @@ want to avoid having the hooks run"
                                                   :background "#161618"))))
   :custom
   (left-margin-width 1)
+  ;; (eldoc-help-at-pt nil)
   (eglot-code-action-indicator "›")
   (eglot-sync-connect nil)
   (eglot-autoshutdown t)
@@ -533,6 +532,7 @@ want to avoid having the hooks run"
   (eglot-events-buffer-config '(:size 0))
   :hook ((clojure-mode . eglot-ensure)
          (clojurec-mode . eglot-ensure)
+         (fennel-mode . eglot-ensure)
          (go-ts-mode . eglot-ensure)
          (java-ts-mode . eglot-ensure)
          (clojurescript-mode . eglot-ensure)
@@ -666,8 +666,6 @@ want to avoid having the hooks run"
 (use-package restclient
   :mode ("\\.http$". restclient-mode))
 
-(use-package gist)
-
 (use-package yasnippet
   :custom
   (yas-prompt-functions '(yas-dropdown-prompt yas-x-prompt))
@@ -727,16 +725,16 @@ want to avoid having the hooks run"
   (show-paren-mode +1)
   (set-face-foreground 'show-paren-match "red"))
 
-(use-package emojify
-  :custom
-  (emojify-display-style 'image)
-  ;; only replace unicode and github, no ascii)
-  (emojify-emoji-styles '(unicode github))
-  ;; echo the actual underlying character to the minibuffer when point
-  ;; is over them so we don't mess with the displayed buffer itself
-  (emojify-point-entered-behaviour 'echo)
-  :config
-  (global-emojify-mode 1))
+;; (use-package emojify
+;;   :custom
+;;   (emojify-display-style 'image)
+;;   ;; only replace unicode and github, no ascii)
+;;   (emojify-emoji-styles '(unicode github))
+;;   ;; echo the actual underlying character to the minibuffer when point
+;;   ;; is over them so we don't mess with the displayed buffer itself
+;;   (emojify-point-entered-behaviour 'echo)
+;;   :config
+;;   (global-emojify-mode 1))
 
 (use-package jinx
   :disabled
@@ -785,7 +783,7 @@ want to avoid having the hooks run"
   (setq popper-reference-buffers '("\\*Messages\\*"
                                    "Output\\*$"
                                    "\\*Async Shell Command\\*"
-                                   eca-chat-mode
+                                   agent-shell-mode
                                    cider-repl-mode
                                    help-mode
                                    compilation-mode)
@@ -801,10 +799,15 @@ want to avoid having the hooks run"
   (gptel-log-level 'debug)
   :bind (("C-x g" . gptel))
   :config
-  (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
+  (setq gptel-backend
+        (gptel-make-gemini "Gemini"
+          :stream t
+          :key (lambda () (gptel-api-key-from-auth-source "generativelanguage.googleapis.com"))
+          :models '(gemini-3.5-flash-lite))
+        gptel-model 'gemini-3.5-flash-lite))
 
 (use-package gptel-magit
-  :custom (gptel-magit-model 'gpt-4.1)
+  :custom (gptel-magit-model 'gemini-3.5-flash-lite)
   :hook (magit-mode . gptel-magit-install))
 
 (use-package copilot
@@ -861,9 +864,34 @@ want to avoid having the hooks run"
   :hook
   (agent-shell-mode . agent-shell-completion-mode)
   :custom
+  (agent-shell-preferred-agent-config 'claude-code)
+  (agent-shell-activity-group-expand-by-default t)
+  (agent-shell-header-style 'text)
   (agent-shell-show-welcome-message nil)
   (agent-shell-anthropic-authentication
    (agent-shell-anthropic-make-authentication :login t))
   (agent-shell-github-command '("copilot" "--acp" "--model" "gpt-5-mini"))
-  (agent-shell-anthropic-make-authentication))
+  ;; (agent-shell-anthropic-make-authentication)
+  )
+(put 'downcase-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)
 
+
+(use-package ito-mode
+  :straight
+  (:type git
+         :repo "https://github.com/mpenet/ito.git"
+         :local-repo "/Users/mpenet/code/ito"
+         :depth full
+         :files (:defaults "tools/editor/emacs/*.el")))
+
+(use-package repeat
+  :config (repeat-mode 1))
+
+(use-package window
+  :straight (:type built-in)
+  :bind (("C-c w (" . shrink-window)
+         ("C-c w )" . enlarge-window)
+         :repeat-map mpenet/window-resize-repeat-map
+         ("(" . shrink-window)
+         (")" . enlarge-window)))
